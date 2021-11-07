@@ -1,6 +1,7 @@
 from flask_restful import Resource
 from flask import request, jsonify
-
+from models.user_model import Users as UserModel
+from models import db
 
 class Users(Resource):
     user_list = {}
@@ -31,6 +32,10 @@ class Users(Resource):
             "email": newUser['email'],
             "dob": newUser['dob']
         }
+
+        usermodel = UserModel(newUser['name'], newUser['email'], newUser['dob'])
+        db.session.add(usermodel)
+        db.session.commit()
 
         print(self.user_list)
 
