@@ -1,12 +1,8 @@
 from flask_restful import Resource
-from flask import request, jsonify
-from models.user_model import Users as UserModel
-from models import db
+from flask import request
 from handlers.sql_handler import SqlHandler
 
 class Users(Resource):
-    user_list = {}
-
 #   {
 #     "1234":{
 #     "name": "post2",
@@ -17,14 +13,6 @@ class Users(Resource):
 # }
 
     def get(self):
-        # users = UserModel.query.all()
-        # results = [{
-        #     "name": user.name,
-        #     "id": user.id,
-        #     "email": user.email,
-        #     "dob": user.dob
-        # } for user in users]
-
         return SqlHandler.get_all()
 
     def post(self):
@@ -32,23 +20,6 @@ class Users(Resource):
 
         if not newUser:
             return {"message": "no body received"}, 204
-
-        # self.user_list[newUser['id']] = {
-        #     "name": newUser['name'],
-        #     "id": newUser['id'],
-        #     "email": newUser['email'],
-        #     "dob": newUser['dob']
-        # }
-
-        # usermodel = UserModel(newUser['name'], newUser['email'], newUser['dob'])
-
-        # try:
-        #     db.session.add(usermodel)
-        #     db.session.commit()
-        # except Exception:
-        #     return {"message": "email already exists"}, 200
-
-        # print(self.user_list)
 
         return SqlHandler.create(newUser)
 
