@@ -27,7 +27,7 @@ const firebaseConfig = {
 initializeApp(firebaseConfig);
 
 const firestore = getFirestore();
-const MESSAGE_COLLECTION = "Message_Threads";
+const MESSAGE_THREADS_COLLECTION = "Message_threads";
 
 export default function ChatCreator({ navigation }) {
   const [roomName, setRoomName] = useState("");
@@ -36,12 +36,14 @@ export default function ChatCreator({ navigation }) {
     if (roomName.length > 0) {
       // create new thread using firebase & firestore
 
-      let response = await addDoc(collection(firestore, MESSAGE_COLLECTION), {
-        text: `${roomName} created. Welcome!`,
-        createdAt: new Date().getTime(),
-        system: true,
-      });
-
+      let response = await addDoc(
+        collection(firestore, MESSAGE_THREADS_COLLECTION),
+        {
+          text: `${roomName} created. Welcome!`,
+          createdAt: new Date().getTime(),
+          system: true,
+        }
+      );
       navigation.navigate("ChatList");
     }
   }

@@ -20,7 +20,7 @@ import {
 } from "firebase/firestore";
 
 const firestore = getFirestore();
-const MESSAGE_COLLECTION = "Message_Threads";
+const MESSAGE_THREADS_COLLECTION = "Message_threads";
 
 export default function ChatList({ navigation }) {
   const [threads, setThreads] = useState([]);
@@ -28,10 +28,9 @@ export default function ChatList({ navigation }) {
 
   useEffect(() => {
     const q = query(
-      collection(firestore, MESSAGE_COLLECTION),
-      orderBy("latestMessage.createdAt", "desc")
+      collection(firestore, MESSAGE_THREADS_COLLECTION),
+      orderBy("createdAt", "desc")
     );
-
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const threads = querySnapshot.docs.map((documentSnapshot) => {
         return {
@@ -43,7 +42,6 @@ export default function ChatList({ navigation }) {
       });
 
       setThreads(threads);
-      console.log(threads);
       if (loading) {
         setLoading(false);
       }
@@ -68,7 +66,7 @@ export default function ChatList({ navigation }) {
             <View style={styles.row}>
               <View style={styles.content}>
                 <View style={styles.header}>
-                  <Text style={styles.nameText}>{item.name}</Text>
+                  <Text style={styles.nameText}>{item.text}</Text>
                 </View>
                 <Text style={styles.contentText}>
                   {item.latestMessage.text.slice(0, 90)}

@@ -14,15 +14,15 @@ export default function App() {
   return (
     <NavigationContainer initialRouteName="ChatList">
       <Stack.Navigator>
+        <Stack.Screen name="ChatCreator" component={ChatCreator} />
+        <Stack.Screen name="ChatList" component={ChatList} />
         <Stack.Screen
-          name="ChatCreator"
-          component={ChatCreator}
+          name="Messages"
+          component={Messages}
           options={({ route }) => ({
             title: route.params.thread.name,
           })}
         />
-        <Stack.Screen name="ChatList" component={ChatList} />
-        <Stack.Screen name="Messages" component={Messages} />
       </Stack.Navigator>
     </NavigationContainer>
   );
