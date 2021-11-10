@@ -21,7 +21,7 @@ const MESSAGE_THREADS_COLLECTION = "Message_threads";
 export default function Messages({ route }) {
   const { thread } = route.params;
   async function handleSend(newMessage = []) {
-    const text = messages[0].text;
+    const text = newMessage[0].text;
     setMessages(GiftedChat.append(messages, newMessage));
 
     const messageThreadsCollection = collection(
@@ -30,10 +30,7 @@ export default function Messages({ route }) {
     );
     const currentThreadRef = doc(messageThreadsCollection, thread._id);
     //const currentThread = await getDoc(currentThreadRef);
-    const messageCollection = collection(
-      currentThreadRef,
-      MESSAGE_THREADS_COLLECTION
-    );
+    const messageCollection = collection(currentThreadRef, MESSAGE_COLLECTION);
 
     await addDoc(messageCollection, {
       text,
