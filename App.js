@@ -31,8 +31,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   inputText1: {
-    flex: 1,
-    height: 50,
+    height: 60,
     fontSize: 20,
     width: "70%",
     color: "black",
@@ -46,8 +45,7 @@ const styles = StyleSheet.create({
 
   },
   inputText2: {
-    flex: 1,
-    height: 50,
+    height: 60,
     fontSize: 20,
     width: "70%",
     color: "black",
@@ -156,8 +154,8 @@ const styles = StyleSheet.create({
 
 
 export default function App() {
-  const [user, setUsername] = useState(false);
-  const [pass, setPassword] = useState(false);
+  const [username, setUsername] = useState(false);
+  const [password, setPassword] = useState(false);
 
 
   return (
@@ -173,18 +171,21 @@ export default function App() {
         placeholder="Username"
         placeholderTextColor="black"
         editable
-        maxLength={100}
+        maxLength={15}
         secureTextEntry={false}
-        onChangeText={username => setUsername(username)}
+        onChangeText={user => setUsername(user)}
+        username={username}
       />
+
       <TextInput
         style={styles.inputText2}
         editable
         placeholder="Password"
         placeholderTextColor="black"
         secureTextEntry={true}
-        maxLength={100}
-        onChangeText={password => setPassword(password)}
+        maxLength={15}
+        onChangeText={pass => setPassword(pass)}
+        password={password}
       />
 
 
