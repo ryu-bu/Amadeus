@@ -1,10 +1,8 @@
 from flask_restful import Resource
-from flask import request, jsonify
-
+from flask import request
+from handlers.sql_handler import SqlHandler
 
 class Users(Resource):
-    user_list = {}
-
 #   {
 #     "1234":{
 #     "name": "post2",
@@ -15,37 +13,22 @@ class Users(Resource):
 # }
 
     def get(self):
-        return self.user_list, 200
+        return SqlHandler.get_all()
 
     def post(self):
         newUser = request.get_json()
 
-        print(newUser)
-
         if not newUser:
             return {"message": "no body received"}, 204
 
-        self.user_list[newUser['id']] = {
-            "name": newUser['name'],
-            "id": newUser['id'],
-            "email": newUser['email'],
-            "dob": newUser['dob']
-        }
-
-        print(self.user_list)
-
-        return {"message": "success"}, 201
+        return SqlHandler.create(newUser)
 
 
 class User(Users):
 
     def get(self, id):
+
         if not id:
             return {"message" : "no id"}, 204
 
-        if id not in self.user_list:
-            return {"message" : "no match"}, 200
-
-        print(self.user_list)
-
-        return self.user_list[id]
+        return SqlHandler.get_one(id)
