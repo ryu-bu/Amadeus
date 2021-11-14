@@ -7,6 +7,7 @@ import {
   setDoc,
   getDoc,
   addDoc,
+  getDocs,
   doc,
   onSnapshot,
   query,
@@ -20,17 +21,17 @@ const MESSAGE_THREADS_COLLECTION = "Message_threads";
 
 export default function Messages({ route }) {
   const { thread } = route.params;
+
+  const messageThreadsCollection = collection(
+    firestore,
+    MESSAGE_THREADS_COLLECTION
+  );
+  const currentThreadRef = doc(messageThreadsCollection, thread._id);
+  const messageCollection = collection(currentThreadRef, MESSAGE_COLLECTION);
+
   async function handleSend(newMessage = []) {
     const text = newMessage[0].text;
     setMessages(GiftedChat.append(messages, newMessage));
-
-    const messageThreadsCollection = collection(
-      firestore,
-      MESSAGE_THREADS_COLLECTION
-    );
-    const currentThreadRef = doc(messageThreadsCollection, thread._id);
-    //const currentThread = await getDoc(currentThreadRef);
-    const messageCollection = collection(currentThreadRef, MESSAGE_COLLECTION);
 
     await addDoc(messageCollection, {
       text,
@@ -71,16 +72,17 @@ export default function Messages({ route }) {
   ]);
 
   useEffect(() => {
-    const messageThreadsCollection = collection(
-      firestore,
-      MESSAGE_THREADS_COLLECTION
-    );
-    const q = query(
+    // const messageThreadsCollection = collection(
+    //   firestore,
+    //   MESSAGE_THREADS_COLLECTION
+    // );
+    const lastestMessageQuery = query(
       messageThreadsCollection,
       orderBy("latestMessage.createdAt", "desc")
     );
 
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+    // set last message data for ChatList.js screen
+    const unsubscribe = onSnapshot(lastestMessageQuery, (querySnapshot) => {
       const threads = querySnapshot.docs.map((doc) => {
         const firebaseData = doc.data();
 
@@ -101,6 +103,30 @@ export default function Messages({ route }) {
         return data;
       });
     });
+
+    const messagePopulationQuery = query(
+      messageCollection,
+      orderBy("createdAt", "desc")
+    );
+
+    async function populateMessages() {
+      const querySnapshot = await getDocs(messagePopulationQuery);
+      querySnapshot.forEach((message) => {
+        const newMessage = {
+          //_id: message["user"]["_id"],
+          text: message.data()["text"],
+          createdAt: message.data()["createdAt"],
+          user: {
+            _id: message.data()["user"]["_id"],
+            name: message.data()["user"]["displayName"],
+          },
+        };
+        setMessages(GiftedChat.append(messages, newMessage));
+      });
+    }
+
+    // populate message list
+    populateMessages();
 
     return () => unsubscribe();
   }, []);
