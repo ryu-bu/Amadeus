@@ -1,6 +1,7 @@
 from flask import Flask, Blueprint
 from flask_restful import Api
 from resources.Users import Users, User
+from resources.Login import Login
 from config import Config
 from models import db
 from flask_migrate import Migrate
@@ -14,6 +15,7 @@ def create_app():
 
     api.add_resource(Users, '/users/')
     api.add_resource(User, '/user/<string:id>')
+    api.add_resource(Login, '/login')
 
     app.register_blueprint(api_bp, url_prefix='/api/{}'.format(current_version))
 

@@ -1,14 +1,16 @@
 from models.user_model import Users as UserModel
 from models import db
 
-class SqlHandler():
+class UserHandler():
     def get_all():
         users = UserModel.query.all()
         results = [{
             "name": user.name,
-            "id": user.id,
             "email": user.email,
-            "dob": user.dob
+            "dob": user.dob,
+            "genre": user.genre,
+            "location": user.location,
+            "instrument": user.instrument
         } for user in users]
 
         return results, 200
@@ -24,13 +26,14 @@ class SqlHandler():
 
         return {
             "name": user.name,
-            "id": user.id,
             "email": user.email,
-            "dob": user.dob
+            "dob": user.dob,
+            "genre": user.genere,
+            "instrument": user.instrument
         }, 200
 
     def create(user):
-        usermodel = UserModel(user['name'], user['email'], user['dob'])
+        usermodel = UserModel(user['name'], user['email'], user['picture'])
 
         try:
             db.session.add(usermodel)
@@ -41,5 +44,14 @@ class SqlHandler():
         print("create: ", user)
 
         return {"message": "success"}, 201
+
+    def update(id, key, val):
+        try:
+            db.session.query(UserModel).filter(UserModel.email == id).update({key: val})
+            db.session.commit()
+            return {"message": "update success"}, 200
+
+        except Exception:
+            return {"message": "update failed"}, 500
 
     
