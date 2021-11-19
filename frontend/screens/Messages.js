@@ -13,9 +13,24 @@ import {
   query,
   where,
   orderBy,
+  enableIndexedDbPersistence,
 } from "firebase/firestore";
 
 const firestore = getFirestore();
+
+// not compatable with expo it seems
+// enableIndexedDbPersistence(firestore).catch((err) => {
+//   if (err.code == "failed-precondition") {
+//     // Multiple tabs open, persistence can only be enabled
+//     // in one tab at a a time.
+//     // TODO
+//   } else if (err.code == "unimplemented") {
+//     // The current browser does not support all of the
+//     // features required to enable persistence
+//     // TODO
+//   }
+// });
+
 const MESSAGE_COLLECTION = "Messages";
 const MESSAGE_THREADS_COLLECTION = "Message_threads";
 
@@ -30,17 +45,18 @@ export default function Messages({ route }) {
   const messageCollection = collection(currentThreadRef, MESSAGE_COLLECTION);
 
   async function handleSend(newMessage = []) {
-    const text = newMessage[0].text;
     setMessages(GiftedChat.append(messages, newMessage));
-
+    const { _id, createdAt, text, user } = newMessage[0];
     await addDoc(messageCollection, {
+      _id,
+      createdAt,
       text,
-      createdAt: new Date().getTime(),
       user: {
-        _id: "TEST", // TODO: Implement user id
-        displayName: "TEST USER",
+        _id: user._id,
+        displayName: "TEST",
       },
     });
+
     await setDoc(
       currentThreadRef,
       {
@@ -55,13 +71,13 @@ export default function Messages({ route }) {
 
   const [messages, setMessages] = useState([
     {
-      _id: 0,
+      _id: GiftedChat.defaultProps.messageIdGenerator(),
       text: "thread created",
       createdAt: new Date().getTime(),
       system: true,
     },
     {
-      _id: 1,
+      _id: 1000000000,
       text: "hello!",
       createdAt: new Date().getTime(),
       user: {
@@ -70,6 +86,7 @@ export default function Messages({ route }) {
       },
     },
   ]);
+  const [messageID, setMessageID] = useState([0]);
 
   useEffect(() => {
     // const messageThreadsCollection = collection(
@@ -110,19 +127,22 @@ export default function Messages({ route }) {
     );
 
     async function populateMessages() {
+      const newMessages = [];
+
       const querySnapshot = await getDocs(messagePopulationQuery);
       querySnapshot.forEach((message) => {
         const newMessage = {
-          //_id: message["user"]["_id"],
+          _id: message.data()["_id"],
           text: message.data()["text"],
-          createdAt: message.data()["createdAt"],
+          createdAt: message.data()["createdAt"].toDate(),
           user: {
             _id: message.data()["user"]["_id"],
             name: message.data()["user"]["displayName"],
           },
         };
-        setMessages(GiftedChat.append(messages, newMessage));
+        newMessages.push(newMessage);
       });
+      setMessages(GiftedChat.append(messages, newMessages));
     }
 
     // populate message list
