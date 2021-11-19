@@ -17,13 +17,15 @@ class LoginHandler():
 
             db_response = UserHandler.get_one(idinfo['email'])
 
+            print(db_response)
+
             if db_response[1] == 404:
                 UserHandler.create(idinfo)
                 
-                return {"message": "new musician"}, 200
+                return {"message": "new user"}, 200
             
             else:
-                return {"message": "existing musician"}, 200
+                return {"message": "existing user"}, 200
 
         except ValueError:
             # Invalid token
