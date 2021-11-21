@@ -10,7 +10,8 @@ class UserHandler():
             "dob": user.dob,
             "genre": user.genre,
             "location": user.location,
-            "instrument": user.instrument
+            "instrument": user.instrument,
+            "picture": user.pic
         } for user in users]
 
         return results, 200
@@ -19,20 +20,21 @@ class UserHandler():
     def get_one(id):
         user = UserModel.query.get(id)
 
-        print(user)
-
         if not user:
-            return {"message" : "no match"}, 200
+            return {"message" : "no match"}, 404
 
         return {
             "name": user.name,
             "email": user.email,
             "dob": user.dob,
-            "genre": user.genere,
-            "instrument": user.instrument
+            "genre": user.genre,
+            "instrument": user.instrument,
+            "picture": user.pic
         }, 200
 
     def create(user):
+
+        print("called")
         usermodel = UserModel(user['name'], user['email'], user['picture'])
 
         try:
