@@ -1,11 +1,14 @@
 import * as React from 'react';
 import { Text, View, SafeAreaView, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { useNavigation} from '@react-navigation/native';
+import { createNavigationContainerRef } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { SearchBar, Buttons, ListItem, Avatar } from 'react-native-elements';
 import { SectionGrid } from 'react-native-super-grid';
 import PhotoGrid from 'react-native-photo-grid';
+
+export const navigationRef = createNavigationContainerRef()
 
 // Screen Names
 const MusiciansName = 'Find Musicians';
@@ -38,21 +41,15 @@ const ProfileName = 'Profile';
 //     );
   
 
-function MusiciansDetails() {
-    return (
-        <SafeAreaView style={styles.container}>
-            <View>
-                <Text>Musicians Details Here!</Text>
-            </View>
-        </SafeAreaView>
-    );
-}
+
+
 
 function FindMusicians() {
+ const navigation = useNavigation();
   return (
     <SafeAreaView style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
-            <SearchBar
+            {/* <SearchBar
                 placeholder="Search Here..."
                 lightTheme
                 round
@@ -60,15 +57,15 @@ function FindMusicians() {
                 //value={this.state.searchValue}
                 //onChangeText={(text) => this.searchFunction(text)}
                 //autoCorrect={false}
-            /> 
+            />  */}
              <View style={styles.musiciansProfile}>
-                <TouchableOpacity onPress={()=>this.MusiciansDetails()}>
+                <TouchableOpacity onPress={() => navigation.navigate("Profile Screen")}>
                     <Image source={require('./src/images/Alan.jpeg')} style={styles.img}></Image>
                 </TouchableOpacity>
                 <Text style={styles.flexText}> test text </Text>
             </View>
             <View style={styles.musiciansProfile}>
-                <TouchableOpacity onPress={()=>this.MusiciansDetails()}>
+                <TouchableOpacity onPress={() => navigation.navigate("Profile Screen")}>
                     <Image source={require('./src/images/osama.jpg')} style={styles.img}></Image>
                 </TouchableOpacity>
                 <Text> test text </Text>
@@ -374,7 +371,7 @@ const styless = StyleSheet.create({
 
 const Tab = createBottomTabNavigator();
 
-export default function MainContainer() {
+export default function MainContainer({navigation}) {
   return (
     // <NavigationContainer>
     //   <Tab.Navigator>
@@ -384,7 +381,7 @@ export default function MainContainer() {
     //     <Tab.Screen name="Profile" component={Profile} />
     //   </Tab.Navigator>
     // </NavigationContainer>
-    <NavigationContainer>
+    
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
@@ -412,6 +409,6 @@ export default function MainContainer() {
         <Tab.Screen name={GigsName} component = {FindGigs}/>
         <Tab.Screen name={ProfileName} component = {Profile} />
     </Tab.Navigator>
-  </NavigationContainer>
+
   );
 }
