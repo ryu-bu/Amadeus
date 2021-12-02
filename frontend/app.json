@@ -1,12 +1,7 @@
 {
   "expo": {
-<<<<<<< HEAD
-    "name": "Amadeus2",
-    "slug": "Amadeus2",
-=======
-    "name": "frontend",
-    "slug": "frontend",
->>>>>>> main_page
+    "name": "Amadeus",
+    "slug": "Amadeus",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
