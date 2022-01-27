@@ -39,9 +39,13 @@ export default function ChatCreator({ navigation }) {
       let response = await addDoc(
         collection(firestore, MESSAGE_THREADS_COLLECTION),
         {
-          text: `${roomName} created. Welcome!`,
+          text: `${roomName} created`,
           createdAt: new Date().getTime(),
           system: true,
+          users: [
+            { _id: "TEST_USER_ID_1", displayName: "TEST_1" },
+            { _id: "TEST_USER_ID_1", displayName: "TEST_1" },
+          ],
         }
       );
       navigation.navigate("ChatList");
