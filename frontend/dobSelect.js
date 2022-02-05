@@ -44,7 +44,7 @@ export default function dobSelect({route, navigation}) {
               "val": date.toUTCString() })
           .then((res) => {
               console.log(res.data);
-              navigation.navigate("Home Screen", {
+              navigation.navigate("Main Screen", {
                   email: email,
                   name: name
               });
