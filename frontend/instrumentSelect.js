@@ -23,7 +23,7 @@ import { restApiConfig } from './config';
 
 
 export default function instrumentSelect({route, navigation}) {
-    const {email, name} = route.params;
+    const {email, name, jwt} = route.params;
     const [selectedValue, setSelectedValue] = useState();
     const move = async () => {
 
@@ -36,7 +36,8 @@ export default function instrumentSelect({route, navigation}) {
               console.log(res.data);
               navigation.navigate("DOB Selection Screen", {
                   email: email,
-                  name: name
+                  name: name,
+                  jwt: jwt
               });
           })
           .catch(err => {

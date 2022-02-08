@@ -1,5 +1,5 @@
 from models import db 
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.postgresql import UUID, JSON
 import uuid
 
 class Users(db.Model):
@@ -9,7 +9,7 @@ class Users(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False, primary_key=True)
     pic = db.Column(db.String(200), nullable=True)
     genre = db.Column(db.String(120), nullable=True)
-    location = db.Column(db.String(500), nullable=True)
+    location = db.Column(JSON, nullable=True)
     instrument = db.Column(db.String(500), nullable=True)
     dob = db.Column(db.String(200), nullable=True)
 
