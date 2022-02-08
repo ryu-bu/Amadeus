@@ -7,8 +7,8 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { SearchBar, Buttons, ListItem, Avatar } from 'react-native-elements';
 import { SectionGrid } from 'react-native-super-grid';
 import PhotoGrid from 'react-native-photo-grid';
-import deviceStorage from './src/images/services/deviceStorage';
-import { AsyncStorage } from 'react-native';
+import deviceStorage from './src/services/deviceStorage';
+// import { AsyncStorage } from 'react-native';
 
 
 export const navigationRef = createNavigationContainerRef()

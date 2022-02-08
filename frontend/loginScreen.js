@@ -8,7 +8,7 @@ import * as Google from "expo-google-app-auth";
 import axios from 'axios';
 import { restApiConfig } from './config';
 
-import deviceStorage from './src/images/services/deviceStorage';
+import deviceStorage from './src/services/deviceStorage';
 
 
 import {
