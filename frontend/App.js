@@ -31,8 +31,29 @@ import homeScreen from './homeScreen'
 const Stack = createNativeStackNavigator();
 
 export default class App extends Component {
-  render() {
 
+  // localstorage stuff. ignore for now //
+  
+  // constructor() {
+  //   super();
+  //   this.state = {
+  //     jwt: '',
+  //     loading: true
+  //   }
+
+  //   this.newJWT = this.newJWT.bind(this);
+  // }
+
+  // newJWT(jwt){
+  //   this.setState({
+  //     jwt: jwt
+  //   });
+  // }
+
+  render() {
+    // if (!this.state.jwt) {
+    //   return (<Auth newJWT={this.newJWT}/>)
+    // }
     return (
 
       <NavigationContainer>

@@ -8,6 +8,8 @@ import * as Google from "expo-google-app-auth";
 import axios from 'axios';
 import { restApiConfig } from './config';
 
+import deviceStorage from './src/services/deviceStorage';
+
 
 import {
     SafeAreaView,
@@ -189,19 +191,27 @@ export default function loginScreen({ navigation }) {
                 axios.post(restApiConfig.LOGIN_ENDPOINT, result)
                 .then((res) => {
                     console.log(res.data);
+                    var jwt = res.data["access_token"];
+                    deviceStorage.saveJWT("id_token", jwt);
+
+                    
+                    // console.log("jwt saved: " + deviceStorage.getJWT("id_token"));
+
                     if (res.data["message"] === "existing user"){
-                        console.log("AHHHHHHHH")
+                        // console.log("AHHHHHHHH")
                         // take this out later
-                        navigation.navigate("Home Screen", {
+                        navigation.navigate("Main Screen", {
                             email: result.user.email,
-                            name: result.user.name
+                            name: result.user.name,
+                            jwt: jwt
                         })
                         
                     } else {
-                        console.log("Prof AHHHHHHHH")
+                        // console.log("Prof AHHHHHHHH")
                         navigation.navigate("Genre Selection Screen", {
                             email: result.user.email,
-                            name: result.user.name
+                            name: result.user.name,
+                            jwt: jwt
                         })
                     }
                 })

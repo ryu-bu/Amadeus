@@ -1,6 +1,7 @@
 from flask_restful import Resource
 from flask import request
 from handlers.login_handler import LoginHandler
+from flask_jwt_extended import jwt_required
 
 class Login(Resource):
     def post(self):
@@ -12,3 +13,15 @@ class Login(Resource):
             idToken = googleInfo['idToken']
 
             return LoginHandler.verify_google(idToken)
+
+# refresh access token
+class RefreshToken(Resource):
+    @jwt_required(refresh=True)
+    def post(self):
+        return LoginHandler.refresh()
+
+
+# for testing purpose only
+class LoginTest(Resource):
+    def post(self):
+        return LoginHandler.test_login()

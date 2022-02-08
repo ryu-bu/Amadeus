@@ -2,6 +2,7 @@ from google.oauth2 import id_token
 from google.auth.transport import requests
 from config import Config
 from .user_handler import UserHandler
+from flask_jwt_extended import create_access_token, create_refresh_token, get_jwt_identity
 
 class LoginHandler():
     def verify_google(token):
@@ -19,15 +20,31 @@ class LoginHandler():
 
             print(db_response)
 
+            access_token = create_access_token(idinfo['sub'])
+            refresh_token = create_refresh_token(identity="example_user")
+
             if db_response[1] == 404:
                 UserHandler.create(idinfo)
                 
-                return {"message": "new user"}, 200
+                return {"message": "new user", "access_token": access_token, "refresh_token": refresh_token}, 200
             
             else:
-                return {"message": "existing user"}, 200
+                return {"message": "existing user", "access_token": access_token, "refresh_token": refresh_token}, 200
 
         except ValueError:
             # Invalid token
             print("error: unverified token")
+
+    def refresh():
+        identity = get_jwt_identity()
+        print("identity: ", identity)
+        access_token = create_access_token(identity)
+
+        return {"access_token": access_token}, 200
+
+    #testing purpose only
+    def test_login():
+        access_token = create_access_token(identity="example_user")
+        refresh_token = create_refresh_token(identity="example_user")
+        return {"access_token": access_token, "refresh_token": refresh_token}
 

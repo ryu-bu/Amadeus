@@ -7,6 +7,9 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { SearchBar, Buttons, ListItem, Avatar } from 'react-native-elements';
 import { SectionGrid } from 'react-native-super-grid';
 import PhotoGrid from 'react-native-photo-grid';
+import deviceStorage from './src/services/deviceStorage';
+// import { AsyncStorage } from 'react-native';
+
 
 export const navigationRef = createNavigationContainerRef()
 
@@ -15,6 +18,7 @@ const MusiciansName = 'Find Musicians';
 const GigsName = 'Find Gigs';
 const MessagesName = 'Messages';
 const ProfileName = 'Profile';
+
 
 // function constructor() {
 //     super();
@@ -371,7 +375,9 @@ const styless = StyleSheet.create({
 
 const Tab = createBottomTabNavigator();
 
-export default function MainContainer({navigation}) {
+export default function MainContainer({route, navigation}) {
+    const {email, name, jwt} = route.params;
+    console.log("jwt is: " + jwt);
   return (
     // <NavigationContainer>
     //   <Tab.Navigator>
