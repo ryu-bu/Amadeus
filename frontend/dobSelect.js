@@ -23,7 +23,7 @@ import { restApiConfig } from './config';
 
 
 export default function dobSelect({route, navigation}) {
-    const {email, name} = route.params;
+    const {email, name, jwt} = route.params;
     const [date, setDate] = useState(new Date(Date.now()));
 
     const onChange = (event, value) => {
@@ -44,9 +44,10 @@ export default function dobSelect({route, navigation}) {
               "val": date.toUTCString() })
           .then((res) => {
               console.log(res.data);
-              navigation.navigate("Main Screen", {
+              navigation.navigate("Location Selection Screen", {
                   email: email,
-                  name: name
+                  name: name,
+                  jwt: jwt
               });
           })
           .catch(err => {

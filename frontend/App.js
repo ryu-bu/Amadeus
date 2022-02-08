@@ -26,7 +26,8 @@ import loginScreen from './loginScreen';
 import genreSelect from './genreSelect';
 import instrumentSelect from './instrumentSelect';
 import dobSelect from './dobSelect';
-import homeScreen from './homeScreen'
+// import homeScreen from './homeScreen'
+import locationSelect from './locationSelect';
 
 const Stack = createNativeStackNavigator();
 
@@ -70,9 +71,9 @@ export default class App extends Component {
           <Stack.Screen name="Genre Selection Screen" component={genreSelect} />
           <Stack.Screen name="Instrument Selection Screen" component={instrumentSelect} />
           <Stack.Screen name="DOB Selection Screen" component={dobSelect} />
+          <Stack.Screen name="Location Selection Screen" component={locationSelect} />
           <Stack.Screen name = 'Main Screen' component= {MainContainer}/>
           <Stack.Screen name = "Profile Screen"  component =  {ProfileScreen}/>
-
 
 
           {/* <Stack.Screen name="Gig Addition Screen" component={gigCreate} /> */}

@@ -194,12 +194,15 @@ export default function loginScreen({ navigation }) {
                     var jwt = res.data["access_token"];
                     deviceStorage.saveJWT("id_token", jwt);
 
+                    console.log("jwt obtained from backend: ", jwt);
+
                     
                     // console.log("jwt saved: " + deviceStorage.getJWT("id_token"));
 
                     if (res.data["message"] === "existing user"){
                         // console.log("AHHHHHHHH")
                         // take this out later
+                        // move back Main Screen
                         navigation.navigate("Main Screen", {
                             email: result.user.email,
                             name: result.user.name,
