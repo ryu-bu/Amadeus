@@ -2,3 +2,10 @@ flask
 flask_restful
 requests
 python-dotenv
+sqlalchemy
+flask_sqlalchemy
+flask-migrate 
+alembic 
+psycopg2
+google-auth
+flask_jwt_extended
