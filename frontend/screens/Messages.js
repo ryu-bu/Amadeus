@@ -53,7 +53,7 @@ export default function Messages({ route }) {
       system: true,
     },
     {
-      _id: 1000000000,
+      _id: GiftedChat.defaultProps.messageIdGenerator(),
       text: "Hello!",
       createdAt: new Date().getTime(),
       user: {

@@ -32,7 +32,7 @@ const MESSAGE_THREADS_COLLECTION = "Message_threads";
 export default function ChatCreator({ navigation }) {
   const [roomName, setRoomName] = useState("");
 
-  async function handleButtonPress() {
+  async function createChatRoom() {
     if (roomName.length > 0) {
       // create new thread using firebase & firestore
 
@@ -52,15 +52,24 @@ export default function ChatCreator({ navigation }) {
     }
   }
 
+  async function browseChatRooms() {
+    navigation.navigate("ChatList");
+  }
+
   return (
     <View style={styles.container}>
-      <TextInput
-        style={styles.textInput}
-        placeholder="Thread Name"
-        onChangeText={(roomName) => setRoomName(roomName)}
-      />
-      <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
-        <Text style={styles.buttonText}>Create chat room</Text>
+      <View>
+        <TextInput
+          style={styles.textInput}
+          placeholder="Thread Name"
+          onChangeText={(roomName) => setRoomName(roomName)}
+        />
+        <TouchableOpacity style={styles.button} onPress={createChatRoom}>
+          <Text style={styles.buttonText}>Create chat room</Text>
+        </TouchableOpacity>
+      </View>
+      <TouchableOpacity style={styles.button} onPress={browseChatRooms}>
+        <Text style={styles.buttonText}>Browse chat rooms</Text>
       </TouchableOpacity>
     </View>
   );
@@ -69,7 +78,7 @@ export default function ChatCreator({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "space-around",
     alignItems: "center",
     backgroundColor: "#dee2eb",
   },
