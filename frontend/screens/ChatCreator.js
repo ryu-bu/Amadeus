@@ -52,7 +52,7 @@ export default function ChatCreator({ navigation }) {
     }
   }
 
-  async function browseChatRooms() {
+  function browseChatRooms() {
     navigation.navigate("ChatList");
   }
 
