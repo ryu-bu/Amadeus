@@ -72,9 +72,16 @@ export default function Messages({ route }) {
       (tx) => {
         tx.executeSql(
           "INSERT INTO text_cache (chat_id, message_id, created_at, text, sender_id, sender_name) VALUES (?, ?, ?, ?, ?, ?)",
-          [thread._id, _id, createdAt.getTime(), text, user._id, user.name],
+          [
+            thread._id,
+            _id,
+            createdAt.getTime().toString(),
+            text,
+            user._id,
+            user.name,
+          ],
           (txObj, resultSet) => {
-            console.log("Inserted into cache: ", resultSet);
+            //console.log("Inserted into cache: ", resultSet);
           },
           (txObj, error) => {
             console.log("Error inserting message: ", error);
@@ -136,10 +143,11 @@ export default function Messages({ route }) {
             (txObj, resultSet) => {
               // loop through result set, adding each message to cachedMessages array
               resultSet.rows._array.forEach((element) => {
+                console.log(parseInt(element.created_at));
                 cachedMessages.push({
                   _id: element.message_id,
                   text: element.text,
-                  createdAt: element.created_at,
+                  createdAt: parseInt(element.created_at),
                   user: {
                     _id: element.sender_id,
                     name: element.sender_name,
@@ -165,7 +173,6 @@ export default function Messages({ route }) {
     // retrieve last cached message time
     latestMessageTime = 0;
     cachedMessages.forEach((message) => {
-      //newMessageTime = parseInt(message["createdAt"]);
       newMessageTime = parseInt(message["createdAt"]);
       if (latestMessageTime == 0 || newMessageTime > latestMessageTime) {
         latestMessageTime = newMessageTime;
