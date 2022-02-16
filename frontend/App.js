@@ -1,9 +1,11 @@
 import * as React from "react";
-import MainContainer from "./MainContainer";
-import ProfileScreen from "./ProfileScreen";
+import { createNavigationContainerRef } from "@react-navigation/native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Component } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { useState, Component } from "react";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 
 import {
   SafeAreaView,
@@ -13,12 +15,24 @@ import {
   Text,
   useColorScheme,
   View,
+  TouchableOpacity,
   TextInput,
   Button,
   Image,
   ImageBackground,
   BackHandler,
 } from "react-native";
+
+import {
+  SearchBar,
+  Buttons,
+  ListItem,
+  Avatar,
+  FlatList,
+} from "react-native-elements";
+
+import MainContainer from "./MainContainer";
+import ProfileScreen from "./screens/ProfileScreen";
 
 import loginScreen from "./loginScreen";
 import genreSelect from "./genreSelect";
@@ -30,29 +44,6 @@ import locationSelect from "./locationSelect";
 import ChatCreator from "./screens/ChatCreator.js";
 import ChatList from "./screens/ChatList.js";
 import Messages from "./screens/Messages.js";
-
-import {
-  Text,
-  View,
-  SafeAreaView,
-  Image,
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-  BackHandler,
-} from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { createNavigationContainerRef } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import {
-  SearchBar,
-  Buttons,
-  ListItem,
-  Avatar,
-  FlatList,
-} from "react-native-elements";
-import { useState, Component } from "react";
 
 import {
   HomeScreenNavigator,
