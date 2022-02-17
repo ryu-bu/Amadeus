@@ -34,7 +34,7 @@ import { restApiConfig } from './config';
 export default function genreSelect({route, navigation}) {
     //const [username, setUsername] = useState(false);
     //const [password, setPassword] = useState(false);
-    const {email, name, jwt} = route.params;
+    const {email, name, jwt, uuid} = route.params;
     const [selectedValue, setSelectedValue] = useState("Rock");
     const [setInstrument, instrumentText] = useState();
 
@@ -56,7 +56,8 @@ export default function genreSelect({route, navigation}) {
               navigation.navigate("Instrument Selection Screen", {
                   email: email,
                   name: name,
-                  jwt: jwt
+                  jwt: jwt,
+                  uuid: uuid
               });
           })
           .catch(err => {

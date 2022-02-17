@@ -376,8 +376,10 @@ const styless = StyleSheet.create({
 const Tab = createBottomTabNavigator();
 
 export default function MainContainer({route, navigation}) {
-    const {email, name, jwt} = route.params;
+    const {email, name, jwt, uuid} = route.params;
     console.log("jwt is: " + jwt);
+    console.log("uuid is: " + uuid);
+
   return (
     // <NavigationContainer>
     //   <Tab.Navigator>
