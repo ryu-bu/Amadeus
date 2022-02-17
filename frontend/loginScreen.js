@@ -192,6 +192,8 @@ export default function loginScreen({ navigation }) {
                 .then((res) => {
                     console.log(res.data);
                     var jwt = res.data["access_token"];
+                    var uuid = res.data["uuid"]
+
                     deviceStorage.saveJWT("id_token", jwt);
 
                     console.log("jwt obtained from backend: ", jwt);
@@ -206,7 +208,8 @@ export default function loginScreen({ navigation }) {
                         navigation.navigate("Main Screen", {
                             email: result.user.email,
                             name: result.user.name,
-                            jwt: jwt
+                            jwt: jwt,
+                            uuid: uuid
                         })
                         
                     } else {
@@ -214,7 +217,8 @@ export default function loginScreen({ navigation }) {
                         navigation.navigate("Genre Selection Screen", {
                             email: result.user.email,
                             name: result.user.name,
-                            jwt: jwt
+                            jwt: jwt,
+                            uuid: uuid
                         })
                     }
                 })

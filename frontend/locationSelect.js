@@ -13,7 +13,7 @@ import { restApiConfig } from './config';
 
 
 export default function locationSelect({route, navigation}) {
-    const {email, name, jwt} = route.params;
+    const {email, name, jwt, uuid} = route.params;
     const [location, setLocation] = useState(null);
     const [local, setLocal] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
@@ -41,7 +41,7 @@ export default function locationSelect({route, navigation}) {
         // Location.getCurrentPositionAsync returns more precise current location but it is 
         // slower than Location.getLastKnownPositionAsync, which obtains less accurate last 
         // known location but faster
-        
+
         //   let location = await Location.getCurrentPositionAsync({});
         let location = await Location.getLastKnownPositionAsync();
         setLocation(location);
@@ -81,7 +81,8 @@ export default function locationSelect({route, navigation}) {
                 navigation.navigate("Main Screen", {
                     email: email,
                     name: name,
-                    jwt: jwt
+                    jwt: jwt,
+                    uuid: uuid
                 });
             }).catch(err => {
                 console.log(err);

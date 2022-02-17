@@ -16,6 +16,19 @@ class UserHandler():
 
         return results, 200
 
+    def filter_email(email):
+        user = UserModel.query.filter_by(email=email).first()
+
+        print(user)
+
+        if not user:
+            return {"message" : "no match"}, 404
+
+        return {
+            "name": user.name,
+            "email": user.email,
+            "uuid": user.id
+        }, 200
 
     def get_one(id):
         user = UserModel.query.get(id)

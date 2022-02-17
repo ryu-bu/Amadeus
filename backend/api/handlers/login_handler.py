@@ -16,7 +16,9 @@ class LoginHandler():
             if idinfo['aud'] != Config.GOOGLE_CLIENT_ID:
                 return {"message": "verification failed"}, 200
 
-            db_response = UserHandler.get_one(idinfo['email'])
+            # db_response = UserHandler.get_one(idinfo['email'])
+
+            db_response = UserHandler.filter_email(idinfo['email'])
 
             print(db_response)
 
@@ -25,11 +27,15 @@ class LoginHandler():
 
             if db_response[1] == 404:
                 UserHandler.create(idinfo)
-                
-                return {"message": "new user", "access_token": access_token, "refresh_token": refresh_token}, 200
+
+                uuid = str(UserHandler.filter_email(idinfo['email'])[0]['uuid'])
+
+                return {"message": "new user", "access_token": access_token, "refresh_token": refresh_token, "uuid": uuid}, 200
             
             else:
-                return {"message": "existing user", "access_token": access_token, "refresh_token": refresh_token}, 200
+                uuid = str(UserHandler.filter_email(idinfo['email'])[0]['uuid'])
+
+                return {"message": "existing user", "access_token": access_token, "refresh_token": refresh_token, "uuid": uuid}, 200
 
         except ValueError:
             # Invalid token
