@@ -9,7 +9,7 @@ const HomeScreen = ({navigation}) => {
        <SafeAreaView style={styles.container}>
            <ScrollView showsVerticalScrollIndicator={false}>
                
-               <SearchBar
+               {/* <SearchBar
                    placeholder="Search Here..."
                    lightTheme
                    round
@@ -18,7 +18,7 @@ const HomeScreen = ({navigation}) => {
                    // value={this.state.searchValue}
                    // onChangeText={(text) => this.searchFunction(text)}
                    // autoCorrect={false}
-               /> 
+               />  */}
    
                 {/* <View style={styles.GridViewContainer}>
                    <TouchableOpacity onPress={() => navigation.navigate("Profile Screen")}>
@@ -214,7 +214,7 @@ export default HomeScreen
       backgroundColor: "#FFF"
   },
   text: {
-      fontFamily: "HelveticaNeue",
+      fontFamily: "HelveticaNeue-Medium",
       color: "#52575D"
   },
   image: {

@@ -6,6 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useState, Component } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { Font, AppLoading } from 'expo';
 
 import {
   SafeAreaView,
@@ -51,9 +52,26 @@ import {
   MapScreenNavigator,
   ProfileScreenNavigator,
 } from "./CustomizeNav";
+import { render } from "react-dom";
+
 const Tab = createBottomTabNavigator();
 
 const App: () => React$Node = () => {
+
+  // constructor(props) {
+  //   super(props)
+  //   this.state = {
+  //     fontLoaded: false
+  //   }
+  // }
+
+  // async componentDidMount() {
+  //   await Font.loadAsync({
+  //     Light: require('./assets/fonts/SemplicitaPro-Light.otf')
+  //   })
+  //   this.setState({ fontLoaded: true })
+  // }
+
   return (
     <>
       <NavigationContainer>
@@ -82,19 +100,19 @@ const App: () => React$Node = () => {
           })}
         >
           <Tab.Screen
-            name="Home Screen"
+            name="Home"
             component={HomeScreenNavigator} // Replaced Screen 1
           />
           <Tab.Screen
-            name="Message Screen"
+            name="Message"
             component={MessageScreenNavigator} // Replaced Screen 2
           />
           <Tab.Screen
-            name="Map Screen"
+            name="Map"
             component={MapScreenNavigator} // Replaced Screen 3
           />
           <Tab.Screen
-            name="Profile Screen"
+            name="Profile"
             component={ProfileScreenNavigator} // Replace Screen 4
           />
         </Tab.Navigator>

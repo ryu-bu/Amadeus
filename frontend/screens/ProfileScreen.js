@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
       backgroundColor: "#FFF"
   },
   text: {
-      fontFamily: "HelveticaNeue",
+      fontFamily: "HelveticaNeue-Medium",
       color: "#52575D"
   },
   image: {
