@@ -54,28 +54,12 @@ import {
 } from "./CustomizeNav";
 import { render } from "react-dom";
 
+const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const App: () => React$Node = () => {
-
-  // constructor(props) {
-  //   super(props)
-  //   this.state = {
-  //     fontLoaded: false
-  //   }
-  // }
-
-  // async componentDidMount() {
-  //   await Font.loadAsync({
-  //     Light: require('./assets/fonts/SemplicitaPro-Light.otf')
-  //   })
-  //   this.setState({ fontLoaded: true })
-  // }
-
+function Home() {
   return (
-    <>
-      <NavigationContainer>
-        <Tab.Navigator
+    <Tab.Navigator
           screenOptions={({ route }) => ({
             tabBarIcon: ({ focused, color, size }) => {
               let iconName;
@@ -116,6 +100,38 @@ const App: () => React$Node = () => {
             component={ProfileScreenNavigator} // Replace Screen 4
           />
         </Tab.Navigator>
+  );
+} 
+const App: () => React$Node = () => {
+
+  // constructor(props) {
+  //   super(props)
+  //   this.state = {
+  //     fontLoaded: false
+  //   }
+  // }
+
+  // async componentDidMount() {
+  //   await Font.loadAsync({
+  //     Light: require('./assets/fonts/SemplicitaPro-Light.otf')
+  //   })
+  //   this.setState({ fontLoaded: true })
+  // }
+
+  return (
+    <>
+      <NavigationContainer>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+          }}
+          cardStyle={{
+            backgroundColor: "white",
+          }}
+        >
+          <Stack.Screen name="Main" component={Home} />
+          <Stack.Screen name="Messages" component={Messages} />
+        </Stack.Navigator>
       </NavigationContainer>
     </>
   );
