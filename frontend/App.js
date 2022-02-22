@@ -46,6 +46,8 @@ import ChatCreator from "./screens/ChatCreator.js";
 import ChatList from "./screens/ChatList.js";
 import Messages from "./screens/Messages.js";
 
+import NestScreens from "./screens/NestScreens";
+
 import {
   HomeScreenNavigator,
   MessageScreenNavigator,
@@ -124,13 +126,15 @@ const App: () => React$Node = () => {
         <Stack.Navigator
           screenOptions={{
             headerShown: false,
+            gestureEnabled: true,
           }}
           cardStyle={{
             backgroundColor: "white",
           }}
         >
           <Stack.Screen name="Main" component={Home} />
-          <Stack.Screen name="Messages" component={Messages} />
+          <Stack.Screen name="NestScreens" component={NestScreens} />
+          <Stack.Screen name="Messages" component={Messages} options={{headerShown: true}} />
         </Stack.Navigator>
       </NavigationContainer>
     </>
