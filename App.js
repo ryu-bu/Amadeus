@@ -1,6 +1,6 @@
 //James Wasson
 
-import React, { Component, useEffect, useState } from 'react';
+import React, { cloneElement, Component, useEffect, useState } from 'react';
 
 import {
   SafeAreaView,
@@ -111,11 +111,11 @@ const styles = StyleSheet.create({
   },
   logo: {
     marginBottom: 40,
-    width: 350,
+    width: 400,
     height: 100,
+    alignContent: 'center',
     backgroundColor: "white",
-    marginLeft: 18,
-    position: 'absolute', top: 120, left: 18, right: 0, bottom: 0,
+    position: 'absolute', top: 120, left: 0, right: 0, bottom: 0,
   },
   section1: {
     flex: 1,
