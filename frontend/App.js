@@ -82,7 +82,7 @@ export default class map extends React.Component {
   }
 
   getAddress() {
-    fetch('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + this.state.region.latitude + ',' + this.state.region.longitude + '&key=AIzaSyCua10NS1pa0UgspwRpN5A90b0BCi-4sZg')
+    fetch('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + this.state.region.latitude + ',' + this.state.region.longitude + '&key=AIzaSyAYCE13nMMKpLLxIr22Yktuq8i9uEsTJHs')
       .then((response) =>
         response.json()).then((responseJson) => {
           console.log('Geocode =>' + JSON.stringify(responseJson));
@@ -167,7 +167,7 @@ export default class map extends React.Component {
               return "";
             }}
             query={{
-              key: 'AIzaSyCua10NS1pa0UgspwRpN5A90b0BCi-4sZg',
+              key: 'AIzaSyAYCE13nMMKpLLxIr22Yktuq8i9uEsTJHs',
               language: 'en',
               components: 'country:US',
             }}
