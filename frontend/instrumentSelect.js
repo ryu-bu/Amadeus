@@ -22,7 +22,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { restApiConfig } from './config';
 
 
-export default function instrumentSelect({route, navigation}) {
+export default function InstrumentSelect({route, navigation}) {
     const {email, name, jwt, uuid} = route.params;
     const [selectedValue, setSelectedValue] = useState();
     const move = async () => {

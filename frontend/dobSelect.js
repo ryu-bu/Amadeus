@@ -22,7 +22,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { restApiConfig } from './config';
 
 
-export default function dobSelect({route, navigation}) {
+export default function DobSelect({route, navigation}) {
     const {email, name, jwt, uuid} = route.params;
     const [date, setDate] = useState(new Date(Date.now()));
 
