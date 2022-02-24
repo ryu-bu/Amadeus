@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
 });
 
 
-export default function loginScreen({ navigation }) {
+export default function LoginScreen({ navigation }) {
     const [username, setUsername] = useState(false);
     const [password, setPassword] = useState(false);
 
@@ -203,7 +203,7 @@ export default function loginScreen({ navigation }) {
                         // console.log("AHHHHHHHH")
                         // take this out later
                         // move back Main Screen
-                        navigation.navigate("Main Screen", {
+                        navigation.navigate("Main", {
                             email: result.user.email,
                             name: result.user.name,
                             jwt: jwt,
