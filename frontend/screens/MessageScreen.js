@@ -72,7 +72,7 @@ export default function MessageScreen( {navigation} ) {
     // TODO: fill this list with some real info from database
   const [discoverList, setDiscoverList] = useState([
     {
-      id: '19NQlBhQUjKijYvLbG2w',
+      _id: '19NQlBhQUjKijYvLbG2w',
       displayName: 'Create Test Chat',
       avatar_url: 'https://www.bu.edu/eng/files/2018/03/Osama-Alshaykh-700x700.jpg',
       subtitle: 'Test chats are lit',
