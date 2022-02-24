@@ -20,31 +20,14 @@ import { stringLiteral } from '@babel/types';
 import { Ionicons } from '@expo/vector-icons';
 import { restApiConfig } from './config';
 
-// async function move({val, email, name, navigation}){
-//   const res = await axios.put(restApiConfig.MUSICIAN_ENDPOINT, { 'email': email, 'field': 'genre', 'key': val });
-// //   console.log(val)
-// //   console.log(name)
-//   navigation.navigate("Gig Addition Screen", {
-//     email: email,
-//     genre: val
-// })
-// }
 
-
-export default function genreSelect({route, navigation}) {
-    //const [username, setUsername] = useState(false);
-    //const [password, setPassword] = useState(false);
+export default function GenreSelect({route, navigation}) {
     const {email, name, jwt, uuid} = route.params;
     const [selectedValue, setSelectedValue] = useState("Rock");
     const [setInstrument, instrumentText] = useState();
 
     const move = async () => {
       console.log("Prof Create movement");
-    //   console.log(email)
-    //   navigation.navigate("Gig Addition Screen", {
-    //     email: email,
-    //     genre: selectedValue
-    // });
 
       try {
           axios.put(restApiConfig.USER_ENDPOINT, { 

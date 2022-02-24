@@ -12,7 +12,7 @@ import * as Location from 'expo-location';
 import { restApiConfig } from './config';
 
 
-export default function locationSelect({route, navigation}) {
+export default function LocationSelect({route, navigation}) {
     const {email, name, jwt, uuid} = route.params;
     const [location, setLocation] = useState(null);
     const [local, setLocal] = useState(null);
@@ -78,7 +78,7 @@ export default function locationSelect({route, navigation}) {
                 "val": location
             }).then((res) => {
                 console.log(res.data);
-                navigation.navigate("Main Screen", {
+                navigation.navigate("Main", {
                     email: email,
                     name: name,
                     jwt: jwt,
