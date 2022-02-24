@@ -46,7 +46,7 @@ export default function Messages({ route }) {
   const messageCollection = collection(currentThreadRef, MESSAGE_COLLECTION);
 
   const [messages, setMessages] = useState([
-    {
+    /*{
       _id: GiftedChat.defaultProps.messageIdGenerator(),
       text: "chat created",
       createdAt: new Date().getTime(),
@@ -60,22 +60,23 @@ export default function Messages({ route }) {
         _id: "TEST_USER_ID_2",
         name: "TEST_2",
       },
-    },
+    },*/
   ]);
 
   async function handleSend(newMessage = []) {
-    setMessages(GiftedChat.append(messages, newMessage));
+    //setMessages(GiftedChat.append(messages, newMessage[0]));
     const { _id, createdAt, text, user } = newMessage[0];
+    const createdAtUnix = createdAt.getTime();
 
     // add message to local message cache
-    db.transaction(
+    /*db.transaction(
       (tx) => {
         tx.executeSql(
           "INSERT INTO text_cache (chat_id, message_id, created_at, text, sender_id, sender_name) VALUES (?, ?, ?, ?, ?, ?)",
           [
             thread._id,
             _id,
-            createdAt.getTime().toString(),
+            createdAtUnix.toString(),
             text,
             user._id,
             user.name,
@@ -91,11 +92,12 @@ export default function Messages({ route }) {
       (error) => {
         console.log("Error with insertion transaction: ", error);
       }
-    );
+    );*/
 
+    
     await addDoc(messageCollection, {
       _id,
-      createdAt,
+      createdAt: createdAtUnix,
       text,
       fromUser: {
         _id: user._id,
@@ -116,13 +118,26 @@ export default function Messages({ route }) {
   }
 
   useEffect(() => {
-    const cachedMessages = [];
-    function populateMessages() {
+    var cachedMessages = [];
+    var latestMessageTime = 0;
+    var unsubscribe; 
+   
+    function retrieveLastMessageTime() {
+      // retrieve last cached message time
+      cachedMessages.forEach((message) => {
+        const newMessageTime = parseInt(message["createdAt"]);
+        if (newMessageTime > latestMessageTime) {
+          latestMessageTime = newMessageTime;
+        }
+      });
+    }
+
+    function retrieveCachedMessages(successCallback, retrieveStartTime = 0) {
       // create table if it does not yet exist
       db.transaction(
         (tx) => {
           tx.executeSql(
-            "CREATE TABLE IF NOT EXISTS text_cache (chat_id TEXT, message_id TEXT, created_at TEXT, text TEXT, sender_id INTEGER, sender_name TEXT)",
+            "CREATE TABLE IF NOT EXISTS text_cache (chat_id TEXT, message_id TEXT, created_at INTEGER, text TEXT, sender_id INTEGER, sender_name TEXT)",
             [],
             (txObj, resultSet) => {},
             (txObj, error) => console.log("Error creating table: ", error)
@@ -137,28 +152,31 @@ export default function Messages({ route }) {
       db.transaction(
         (tx) => {
           tx.executeSql(
-            //"SELECT * FROM text_cache ORDER BY created_at DESC",
-            "SELECT * FROM text_cache WHERE chat_id=? ORDER BY created_at DESC",
-            [thread._id],
+            "SELECT * FROM text_cache WHERE chat_id=? AND created_at>? ORDER BY created_at ASC",
+            [thread._id, retrieveStartTime],
             (txObj, resultSet) => {
               // loop through result set, adding each message to cachedMessages array
               resultSet.rows._array.forEach((element) => {
-                console.log(parseInt(element.created_at));
                 cachedMessages.push({
                   _id: element.message_id,
                   text: element.text,
-                  createdAt: parseInt(element.created_at),
+                  createdAt: element.created_at,
                   user: {
                     _id: element.sender_id,
                     name: element.sender_name,
                   },
                 });
               });
+
               // add cachedMessages to GiftedChat
-              setMessages(GiftedChat.append(messages, cachedMessages));
+              setMessages(GiftedChat.append(messages, cachedMessages).sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt)));
+
+              if (successCallback) {
+                successCallback();
+              }
             },
             (txObj, error) => {
-              console.log("Error retrieving cached messages: ", error);
+              console.log("Error retrieving cached messages: ", error); 
             }
           );
         },
@@ -167,92 +185,86 @@ export default function Messages({ route }) {
         }
       );
     }
-    // populate message list
-    populateMessages();
+    
+    function retrieveNewMessages() {
+      retrieveLastMessageTime();
+      const messageRetrievalQuery = query(
+        messageCollection,
+        orderBy("createdAt", "asc"),
+        where("createdAt", ">", latestMessageTime)
+      ); 
 
-    // retrieve last cached message time
-    latestMessageTime = 0;
-    cachedMessages.forEach((message) => {
-      newMessageTime = parseInt(message["createdAt"]);
-      if (latestMessageTime == 0 || newMessageTime > latestMessageTime) {
-        latestMessageTime = newMessageTime;
-      }
-    });
-
-    const messageRetrievalQuery = query(
-      messageCollection,
-      orderBy("createdAt", "desc"),
-      where("createdAt", ">", latestMessageTime)
-    );
-
-    // fetch new messages
-    const unsubscribe = onSnapshot(messageRetrievalQuery, (querySnapshot) => {
-      const newMessages = querySnapshot.docs.map((thread_doc) => {
-        const firebaseData = thread_doc.data();
-
-        const data = {
-          _id: thread_doc["_id"],
-          text: thread_doc["text"],
-          createdAt: new Date(thread_doc["createdAt"]).getTime(),
-          ...firebaseData,
-        };
-
-        if (!firebaseData.system) {
-          data.user = {
-            ...firebaseData.user,
-            name: firebaseData.user.displayName,
+      // fetch new messages
+      unsubscribe = onSnapshot(messageRetrievalQuery, (querySnapshot) => {
+        retrieveLastMessageTime();
+        const newMessages = querySnapshot.docs.filter(function(thread_doc) {
+          if (thread_doc.data().createdAt > latestMessageTime) {
+            return true;
+          } else {
+            return false;
+          }
+        }).map((thread_doc) => {
+          const firebaseData = thread_doc.data();
+  
+          const data = {
+            _id: firebaseData._id,
+            text: firebaseData.text,
+            createdAt: new Date(firebaseData.createdAt).getTime(),
+            ...firebaseData,
           };
-        }
-
-        return data;
+  
+          if (!firebaseData.system) {
+            data.user = {
+              _id: firebaseData.fromUser._id,
+              displayName: firebaseData.fromUser.displayName,
+              //...firebaseData.fromUser,
+            };
+          }
+  
+          return data;
+        });
+    
+        // add message to local message cache if it has not been cached already
+        newMessages.forEach(
+          (message) => {
+            db.transaction(
+              (tx) => {
+                tx.executeSql(
+                  "INSERT INTO text_cache (chat_id, message_id, created_at, text, sender_id, sender_name) VALUES (?, ?, ?, ?, ?, ?)",
+                  [
+                    thread._id,
+                    message._id,
+                    message.createdAt,
+                    message.text,
+                    message.user._id,
+                    message.user.displayName,
+                  ],
+                  (txObj, resultSet) => {
+                    retrieveCachedMessages(null, latestMessageTime);
+                  },
+                  (txObj, error) => {
+                    console.log("Error inserting retrieved messages: ", error);
+                  }
+                );
+              },
+              (txObj, error) => {
+                console.log("Error with inserting retrieved messages: ", error);
+              }
+            );
+          },
+        );
       });
+    }
 
-      // fix date formatting on each message
-      newMessages.forEach((message) => {
-        message["createdAt"] = message["createdAt"].toDate();
-        if (message["createdAt"] <= messages[messages.length - 1]) {
-          newMessages.shift();
-        }
-      });
-
-      // add message to local message cache if it has not been cached already
-      newMessages.forEach(
-        (message) => {
-          db.transaction(
-            (tx) => {
-              tx.executeSql(
-                "INSERT INTO text_cache (chat_id, message_id, created_at, text, sender_id, sender_name) VALUES (?, ?, ?, ?, ?, ?)",
-                [
-                  thread._id,
-                  message._id,
-                  message._createdAt,
-                  message._text,
-                  message._user._id,
-                  message._user.displayName,
-                ]
-              );
-            },
-            (txObj, resultSet) => {},
-            (txObj, error) => {
-              console.log("Error inserting retrieved messages: ", error);
-            }
-          );
-        },
-        (txObj, error) => {
-          console.log("Error with inserting retrieved messages: ", error);
-        }
-      );
-
-      setMessages(
-        GiftedChat.append(messages, cachedMessages.concat(newMessages))
-      );
-    });
+    // populate message list with cached messages
+    retrieveCachedMessages(retrieveNewMessages);
 
     return () => unsubscribe();
   }, []);
 
   return (
     <GiftedChat
+      inverted={false}
       messages={messages}
       onSend={handleSend}
       user={{

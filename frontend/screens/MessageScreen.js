@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, SafeAreaView, Image, TouchableOpacity, StyleSheet, ScrollView, Touchable, ActivityIndicator } from 'react-native';
+import { Text, View, SafeAreaView, Image, TouchableOpacity, TouchableHighlight, StyleSheet, ScrollView, Touchable, ActivityIndicator } from 'react-native';
 import { SearchBar, Buttons, ListItem, Avatar, FlatList } from 'react-native-elements';
 import { initializeApp } from "firebase/app";
 import {
@@ -45,16 +45,39 @@ const chatList = [
     }*/
 ]
 
-// TODO: fill this list with some real info from database
-const discoverList = [
-
-]
+const createChat = async (roomName) => {
+  if (roomName.length > 0) {
+    // create new thread using firebase & firestore
+    let response = await addDoc(
+      collection(firestore, MESSAGE_THREADS_COLLECTION),
+      {
+        text: `${roomName} created`,
+        createdAt: new Date().getTime(),
+        system: true,
+        users: [
+          { _id: "TEST_USER_ID_1", displayName: "TEST_1" },
+          { _id: "TEST_USER_ID_1", displayName: "TEST_1" },
+        ],
+      }
+    ); 
+  } //end if 
+}
 
 export default function MessageScreen( {navigation} ) {
   const [chatMode, setChatMode] = useState(0);
 
   const [existingThreads, setExistingThreads] = useState([]);
   const [loading, setLoading] = useState(true);
+
+    // TODO: fill this list with some real info from database
+  const [discoverList, setDiscoverList] = useState([
+    {
+      id: '19NQlBhQUjKijYvLbG2w',
+      displayName: 'Create Test Chat',
+      avatar_url: 'https://www.bu.edu/eng/files/2018/03/Osama-Alshaykh-700x700.jpg',
+      subtitle: 'Test chats are lit',
+    }
+  ])
 
   useEffect(() => {
     const q = query(
@@ -65,7 +88,7 @@ export default function MessageScreen( {navigation} ) {
       const existingThreads = querySnapshot.docs.map((documentSnapshot) => {
         return {
           _id: documentSnapshot.id,
-          name: "",
+          text: documentSnapshot.text,
           latestMessage: { text: "" },
           ...documentSnapshot.data(),
         };
@@ -91,12 +114,12 @@ export default function MessageScreen( {navigation} ) {
       <Text>Messages!</Text>
       </View> */}
       <View style={{flexBasis: 50, flex: 1, flexGrow: 0, flexDirection: "row", justifyContent: "center", alignContent: "flex-start"}}>
-        <TouchableOpacity style={styles.button} onPress={() => setChatMode(0)}>
+        <TouchableHighlight style={styles.button} onPress={() => setChatMode(0)}>
           <Text style={styles.buttonText}>Chats: </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => setChatMode(1)}>
+        </TouchableHighlight>
+        <TouchableHighlight style={styles.button} onPress={() => setChatMode(1)}>
           <Text style={styles.buttonText}>Discover: </Text>
-        </TouchableOpacity>
+        </TouchableHighlight>
       </View>
 
       {chatMode == 0 && 
@@ -116,11 +139,15 @@ export default function MessageScreen( {navigation} ) {
         </ScrollView> || 
         <ScrollView style={{flex: 10}}> 
           {discoverList.map((l, i) => (
-            <TouchableOpacity onPress={() => navigation.navigate("Messages", { thread: l })} >
+            <TouchableOpacity onPress={async() => {
+              //navigation.navigate("Messages", { thread: l });
+              createChat(l.displayName);
+            }} >
               <ListItem key={l._id} bottomDivider>
                 <Avatar source={{uri: l.avatar_url}} />
                 <ListItem.Content>
-                  <ListItem.Title>{l.users[0]["displayName"]}</ListItem.Title>
+                  <ListItem.Title>{l.displayName}</ListItem.Title>
+                  <ListItem.Subtitle>{l.subtitle}</ListItem.Subtitle>
                 </ListItem.Content>
                 <ListItem.Chevron/>
               </ListItem>
