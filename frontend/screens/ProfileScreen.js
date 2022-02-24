@@ -14,15 +14,52 @@ import {
     ImageBackground,
     Picker,
 } from 'react-native';
+import axios from 'axios';
+import * as Location from 'expo-location';
 
+import { restApiConfig } from '../config';
 
-export default function ProfileScreen({navigation}){
+export default function ProfileScreen(props, {navigation}){
+    console.log(props)
+
+    const [image, setImage] = useState("");
+    const [location, setLocation] = useState("");
+    const [genre, setGenre] = useState("");
+    const [instrument, setInstrument] = useState("");
+
+    const GetLocation = async(coords) => {
+        let { latitude, longitude } = coords;
+        console.log(latitude, longitude)
+        let loc = await Location.reverseGeocodeAsync({
+            latitude,
+            longitude
+        });
+        setLocation(`${loc[0].city}, ${loc[0].country}`);
+    }
+
+    useEffect(() => {
+        axios.get(restApiConfig.FIND_USER_ENDPOINT + props.uuid, {
+            headers: {
+                Authorization: "Bearer " + props.jwt
+            }})
+        .then((res) => {
+            console.log(res.data.location.coords.latitude);
+            setImage(res.data.picture);
+            setInstrument(res.data.instrument);
+            setGenre(res.data.genre);
+            GetLocation(res.data.location.coords);
+        })
+        .catch(err => {
+            console.log(err)
+        });
+    }, []);
+
     return (
 <SafeAreaView style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
             <View style={{ alignSelf: "center" }}>
                 <View style={styles.profileImage}>
-                    <Image source={require('../src/images/osama.jpg')} style={styles.image} resizeMode="cover"></Image>
+                    <Image source={{'uri': image }} style={styles.image} resizeMode="cover"></Image>
                 </View>
                 {/* <View style={styles.dm}>
                     <MaterialIcons name="chat" size={18} color="#DFD8C8"></MaterialIcons>
@@ -34,10 +71,10 @@ export default function ProfileScreen({navigation}){
             </View>
 
             <View style={styles.infoContainer}>
-                <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>Osama Alshaykh</Text>
-                <Text style={[styles.text, { color: "#FF0000", fontSize: 22 }]}>Pionist</Text>
-                <Text style={[styles.text, { color: "#d3d3d3", fontSize: 15 }]}>Los Angeles, CA   Band: My Chemical Romance</Text>
-                <Text style={[styles.text, { color: "#d3d3d3", fontSize: 15 }]}>Level: Professional   Genre: rock</Text>
+                <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>{props.name}</Text>
+                <Text style={[styles.text, { color: "#FF0000", fontSize: 22 }]}>{instrument}</Text>
+                <Text style={[styles.text, { color: "#d3d3d3", fontSize: 15 }]}>{location}  Band: My Chemical Romance</Text>
+                <Text style={[styles.text, { color: "#d3d3d3", fontSize: 15 }]}>Level: Professional   Genre: {genre}</Text>
             </View>
 
             <View style={styles.statsContainer}>
