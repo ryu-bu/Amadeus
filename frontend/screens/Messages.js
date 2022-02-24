@@ -209,7 +209,7 @@ export default function Messages({ route }) {
           const data = {
             _id: firebaseData._id,
             text: firebaseData.text,
-            createdAt: new Date(firebaseData.createdAt).getTime(),
+            createdAt: firebaseData.createdAt,
             ...firebaseData,
           };
   
@@ -265,6 +265,7 @@ export default function Messages({ route }) {
   return (
     <GiftedChat
       inverted={false}
+      scrollToBottom={false}
       messages={messages}
       onSend={handleSend}
       user={{
