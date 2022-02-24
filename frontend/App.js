@@ -8,6 +8,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { Font, AppLoading } from 'expo';
 
+import DrawerNav from "./DrawerNav";
+
 import {
   SafeAreaView,
   ScrollView,
@@ -47,6 +49,7 @@ import ChatList from "./screens/ChatList.js";
 import Messages from "./screens/Messages.js";
 
 import NestScreens from "./screens/NestScreens";
+import Logout from "./screens/LogoutScreen";
 
 import {
   HomeScreenNavigator,
@@ -123,6 +126,7 @@ const App: () => React$Node = () => {
   return (
     <>
       <NavigationContainer>
+        {/* <DrawerNav></DrawerNav> */}
         <Stack.Navigator
           screenOptions={{
             headerShown: false,
@@ -133,7 +137,7 @@ const App: () => React$Node = () => {
           }}
         >
           <Stack.Screen name="Main" component={Home} />
-          <Stack.Screen name="NestScreens" component={NestScreens} />
+          <Stack.Screen name="NestScreens" component={NestScreens} options={{headerShown: true}}/>
           <Stack.Screen name="Messages" component={Messages} options={{headerShown: true}} />
         </Stack.Navigator>
       </NavigationContainer>
@@ -151,7 +155,6 @@ export default App;
 
 // //tab navigation
 // const Tab = createBottomTabNavigator();
-
 // export function TabsNavigation() {
 //   return (
 //     <Tab.Navigator
