@@ -2,6 +2,7 @@ import * as React from "react";
 import { createNavigationContainerRef } from "@react-navigation/native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { useNavigation } from "@react-navigation/native";
 import { useState, Component } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -36,31 +37,48 @@ import {
 
 //import MainContainer from "./MainContainer";
 import ProfileScreen from "./screens/ProfileScreen";
+import HomeScreen from "./screens/HomeScreen";
+import MessageScreen from "./screens/MessageScreen";
+import MapScreen from "./screens/MapScreen";
 
-import LoginScreen from "./loginScreen";
-import GenreSelect from "./genreSelect";
-import InstrumentSelect from "./instrumentSelect";
-import DobSelect from "./dobSelect";
-import LocationSelect from "./locationSelect";
+import LoginScreen from "./LoginScreen";
+import GenreSelect from "./GenreSelect";
+import InstrumentSelect from "./InstrumentSelect";
+import DobSelect from "./DobSelect";
+import LocationSelect from "./LocationSelect";
 
 import ChatCreator from "./screens/ChatCreator.js";
 import ChatList from "./screens/ChatList.js";
 import Messages from "./screens/Messages.js";
 
 import NestScreens from "./screens/NestScreens";
-import Logout from "./screens/LogoutScreen";
+import LogoutScreen from "./screens/LogoutScreen";
 
-import {
-  HomeScreenNavigator,
-  MessageScreenNavigator,
-  MapScreenNavigator,
-  ProfileScreenNavigator,
-} from "./CustomizeNav";
+// import {
+//   HomeScreenNavigator,
+//   MessageScreenNavigator,
+//   MapScreenNavigator,
+//   ProfileScreenNavigator,
+// } from "./CustomizeNav";
+import AboutScreen from './screens/AboutScreen'
 
 import { render } from "react-dom";
+import { Message } from "react-native-gifted-chat";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+
+const Drawer = createDrawerNavigator();
+
+function DrawerNavi() {
+    return (
+        <Drawer.Navigator initialRouteName="Home">
+            <Drawer.Screen name = "Home" component = { HomeScreen } />
+            <Drawer.Screen name = "About Us" component = { AboutScreen } />
+            <Drawer.Screen name = "Logout" component = { LogoutScreen } />
+        </Drawer.Navigator>
+    )
+}
 
 function Home() {
   return (
@@ -90,19 +108,20 @@ function Home() {
         >
           <Tab.Screen
             name="Home"
-            component={HomeScreenNavigator} // Replaced Screen 1
+            component={DrawerNavi} // Replaced Screen 1
+            options={{headerShown: false}}
           />
           <Tab.Screen
             name="Message"
-            component={MessageScreenNavigator} // Replaced Screen 2
+            component={MessageScreen} // Replaced Screen 2
           />
           <Tab.Screen
             name="Map"
-            component={MapScreenNavigator} // Replaced Screen 3
+            component={MapScreen} // Replaced Screen 3
           />
           <Tab.Screen
             name="Profile"
-            component={ProfileScreenNavigator} // Replace Screen 4
+            component={ProfileScreen} // Replace Screen 4
           />
         </Tab.Navigator>
   );
@@ -124,7 +143,7 @@ const App: () => React$Node = () => {
         >
           {/* <Stack.Screen name = 'Main Screen' component= {MainContainer}/> */}
           {/* <Stack.Screen name = "Profile Screen"  component =  {ProfileScreen}/> */}
-          <Stack.Screen name="Main" component={Home} />
+          <Stack.Screen name="Main" component={Home} options={{headerShown: false}}/>
           <Stack.Screen name="NestScreens" component={NestScreens} options={{headerShown: true}}/>
           <Stack.Screen name="Messages" component={Messages} options={{headerShown: true}} />
 

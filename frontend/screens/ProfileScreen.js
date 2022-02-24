@@ -35,7 +35,7 @@ export default function ProfileScreen({navigation}){
 
             <View style={styles.infoContainer}>
                 <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>Osama Alshaykh</Text>
-                <Text style={[styles.text, { color: "#FF0000", fontSize: 22 }]}>Pionist</Text>
+                <Text style={[styles.text, { color: "#FF0000", fontSize: 22 }]}>Pianist</Text>
                 <Text style={[styles.text, { color: "#d3d3d3", fontSize: 15 }]}>Los Angeles, CA   Band: My Chemical Romance</Text>
                 <Text style={[styles.text, { color: "#d3d3d3", fontSize: 15 }]}>Level: Professional   Genre: rock</Text>
             </View>

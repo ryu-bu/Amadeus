@@ -2,20 +2,18 @@ import * as React from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 
 //include other screens
-import HomeScreen from './screens/HomeScreen'
-import MapScreen from './screens/MapScreen'
-import MessageScreen from './screens/MessageScreen'
-import ProfileScreen from './screens/ProfileScreen'
+import BottomNav from './BottomNavigator'
+import AboutScreen from './screens/AboutScreen'
+import LogoutScreen from './screens/LogoutScreen'
 
 const Drawer = createDrawerNavigator();
 
 function DrawerNav() {
     return (
-        <Drawer.Navigator initialRouteName="Home">
-            <Drawer.Screen name = "Home" component = { HomeScreen }/>
-            <Drawer.Screen name = "Map" component = { MapScreen }/>
-            <Drawer.Screen name = "Message" component = { MessageScreen } />
-            <Drawer.Screen name = "Profile" component = { ProfileScreen } />
+        <Drawer.Navigator>
+            <Drawer.Screen name = "Home" component = { BottomNav }/>
+            <Drawer.Screen name = "About Us" component = { AboutScreen } />
+            <Drawer.Screen name = "Logout" component = { LogoutScreen } />
         </Drawer.Navigator>
     )
 }

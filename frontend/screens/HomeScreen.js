@@ -9,7 +9,7 @@ const HomeScreen = ({navigation}) => {
        <SafeAreaView style={styles.container}>
            <ScrollView showsVerticalScrollIndicator={false}>
                
-               {/* <SearchBar
+               <SearchBar
                    placeholder="Search Here..."
                    lightTheme
                    round
@@ -18,7 +18,7 @@ const HomeScreen = ({navigation}) => {
                    // value={this.state.searchValue}
                    // onChangeText={(text) => this.searchFunction(text)}
                    // autoCorrect={false}
-               />  */}
+               /> 
    
                 {/* <View style={styles.GridViewContainer}>
                    <TouchableOpacity onPress={() => navigation.navigate("Profile Screen")}>
@@ -51,7 +51,7 @@ const HomeScreen = ({navigation}) => {
                 <View style={styles.GridViewContainer}>
                 <TouchableOpacity 
                 style={styles.mainProfile}
-                onPress={() => navigation.navigate("Profile Screen")}>
+                onPress={() => navigation.navigate("NestScreens")}>
                    <Image source={require('../src/images/guitar.jpeg')} resizeMode='contain' style={{flex:.6}} />
                    <Text style={{flex:1}}>     Aristodemos Adela </Text>
                </TouchableOpacity>
@@ -59,7 +59,7 @@ const HomeScreen = ({navigation}) => {
                 <View style={styles.GridViewContainer}>
                 <TouchableOpacity 
                 style={styles.mainProfile}
-                onPress={() => navigation.navigate("Profile Screen")}>
+                onPress={() => navigation.navigate("NestScreens")}>
                    <Image source={require('../src/images/axophonist.jpeg')} resizeMode='contain' style={{flex:.6}} />
                    <Text style={{flex:1}}>     Sabina Tadeja </Text>
                </TouchableOpacity>
@@ -67,7 +67,7 @@ const HomeScreen = ({navigation}) => {
                 <View style={styles.GridViewContainer}>
                 <TouchableOpacity 
                 style={styles.mainProfile}
-                onPress={() => navigation.navigate("Profile Screen")}>
+                onPress={() => navigation.navigate("NestScreens")}>
                    <Image source={require('../src/images/classic.jpeg')} resizeMode='contain' style={{flex:.6}} />
                    <Text style={{flex:1}}>     Gloria Gunilla </Text>
                </TouchableOpacity>
@@ -75,7 +75,7 @@ const HomeScreen = ({navigation}) => {
                 <View style={styles.GridViewContainer}>
                 <TouchableOpacity 
                 style={styles.mainProfile}
-                onPress={() => navigation.navigate("Profile Screen")}>
+                onPress={() => navigation.navigate("NestScreens")}>
                    <Image source={require('../src/images/piano.jpg')} resizeMode='contain' style={{flex:.6}} />
                    <Text style={{flex:1}}>     Patrick Meiriona </Text>
                </TouchableOpacity>

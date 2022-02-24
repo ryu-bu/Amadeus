@@ -265,6 +265,7 @@ export default function Messages({ route }) {
   return (
     <GiftedChat
       inverted={false}
+      scrollToBottom={false}
       messages={messages}
       onSend={handleSend}
       user={{
