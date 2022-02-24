@@ -8,6 +8,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { Font, AppLoading } from 'expo';
 
+import DrawerNav from "./DrawerNav";
+
 import {
   SafeAreaView,
   ScrollView,
@@ -32,20 +34,21 @@ import {
   FlatList,
 } from "react-native-elements";
 
-import MainContainer from "./MainContainer";
+//import MainContainer from "./MainContainer";
 import ProfileScreen from "./screens/ProfileScreen";
 
-import LoginScreen from "./LoginScreen";
-import GenreSelect from "./GenreSelect";
-import InstrumentSelect from "./InstrumentSelect";
-import DobSelect from "./DobSelect";
-import LocationSelect from "./LocationSelect";
+import LoginScreen from "./loginScreen";
+import GenreSelect from "./genreSelect";
+import InstrumentSelect from "./instrumentSelect";
+import DobSelect from "./dobSelect";
+import LocationSelect from "./locationSelect";
 
 import ChatCreator from "./screens/ChatCreator.js";
 import ChatList from "./screens/ChatList.js";
 import Messages from "./screens/Messages.js";
 
 import NestScreens from "./screens/NestScreens";
+import Logout from "./screens/LogoutScreen";
 
 import {
   HomeScreenNavigator,
@@ -53,6 +56,7 @@ import {
   MapScreenNavigator,
   ProfileScreenNavigator,
 } from "./CustomizeNav";
+
 import { render } from "react-dom";
 
 const Stack = createNativeStackNavigator();
@@ -108,6 +112,7 @@ const App: () => React$Node = () => {
   return (
     <>
       <NavigationContainer>
+        {/* <DrawerNav></DrawerNav> */}
         <Stack.Navigator
           screenOptions={{
             headerShown: false,
@@ -120,7 +125,7 @@ const App: () => React$Node = () => {
           {/* <Stack.Screen name = 'Main Screen' component= {MainContainer}/> */}
           {/* <Stack.Screen name = "Profile Screen"  component =  {ProfileScreen}/> */}
           <Stack.Screen name="Main" component={Home} />
-          <Stack.Screen name="NestScreens" component={NestScreens} />
+          <Stack.Screen name="NestScreens" component={NestScreens} options={{headerShown: true}}/>
           <Stack.Screen name="Messages" component={Messages} options={{headerShown: true}} />
 
           <Stack.Screen name="Login Screen" component={LoginScreen} />
