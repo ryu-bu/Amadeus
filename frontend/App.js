@@ -34,14 +34,14 @@ import {
   FlatList,
 } from "react-native-elements";
 
-import MainContainer from "./MainContainer";
+//import MainContainer from "./MainContainer";
 import ProfileScreen from "./screens/ProfileScreen";
 
-import LoginScreen from "./LoginScreen";
-import GenreSelect from "./GenreSelect";
-import InstrumentSelect from "./InstrumentSelect";
-import DobSelect from "./DobSelect";
-import LocationSelect from "./LocationSelect";
+import LoginScreen from "./loginScreen";
+import GenreSelect from "./genreSelect";
+import InstrumentSelect from "./instrumentSelect";
+import DobSelect from "./dobSelect";
+import LocationSelect from "./locationSelect";
 
 import ChatCreator from "./screens/ChatCreator.js";
 import ChatList from "./screens/ChatList.js";
@@ -56,6 +56,7 @@ import {
   MapScreenNavigator,
   ProfileScreenNavigator,
 } from "./CustomizeNav";
+
 import { render } from "react-dom";
 
 const Stack = createNativeStackNavigator();
