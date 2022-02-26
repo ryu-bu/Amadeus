@@ -75,7 +75,7 @@ const MessageScreenNavigator = () => {
   
   export {MapScreenNavigator};  // Stack-Navigator for Screen 3 Tab
 
-  const ProfileScreenNavigator = () => {
+  const ProfileScreenNavigator = (props) => {
     return (
       <Stack.Navigator 
       screenOptions= {{
@@ -83,7 +83,8 @@ const MessageScreenNavigator = () => {
       }}>
           <Stack.Screen
             name="Profile_Base_Screen"
-            component={ProfileScreen}
+            children = {()=><ProfileScreen name={props.name} uuid={props.uuid} jwt={props.jwt}/>}
+            // component={ProfileScreen}
         />
          <Stack.Screen
           name="NestedScreens"

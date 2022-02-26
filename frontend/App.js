@@ -58,7 +58,8 @@ import { render } from "react-dom";
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-function Home() {
+function Home({route, navigation}) {
+  const {email, name, jwt, uuid} = route.params;
   return (
     <Tab.Navigator
           screenOptions={({ route }) => ({
@@ -98,7 +99,8 @@ function Home() {
           />
           <Tab.Screen
             name="Profile"
-            component={ProfileScreenNavigator} // Replace Screen 4
+            children = {()=><ProfileScreenNavigator name={name} uuid={uuid} jwt={jwt}/>}
+            // component={ProfileScreenNavigator} // Replace Screen 4
           />
         </Tab.Navigator>
   );
@@ -119,16 +121,16 @@ const App: () => React$Node = () => {
         >
           {/* <Stack.Screen name = 'Main Screen' component= {MainContainer}/> */}
           {/* <Stack.Screen name = "Profile Screen"  component =  {ProfileScreen}/> */}
-          <Stack.Screen name="Main" component={Home} />
-          <Stack.Screen name="NestScreens" component={NestScreens} />
-          <Stack.Screen name="Messages" component={Messages} options={{headerShown: true}} />
-
           <Stack.Screen name="Login Screen" component={LoginScreen} />
           {/* <Stack.Screen name="Map Screen" component={Map} /> */}
           <Stack.Screen name="Genre Selection Screen" component={GenreSelect} />
           <Stack.Screen name="Instrument Selection Screen" component={InstrumentSelect} />
           <Stack.Screen name="DOB Selection Screen" component={DobSelect} />
           <Stack.Screen name="Location Selection Screen" component={LocationSelect} />
+
+          <Stack.Screen name="Main" component={Home} />
+          <Stack.Screen name="NestScreens" component={NestScreens} />
+          <Stack.Screen name="Messages" component={Messages} options={{headerShown: true}} />
         </Stack.Navigator>
       </NavigationContainer>
     </>
