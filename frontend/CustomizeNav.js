@@ -75,23 +75,24 @@
   
 //   export {MapScreenNavigator};  // Stack-Navigator for Screen 3 Tab
 
-//   const ProfileScreenNavigator = () => {
-//     return (
-//       <Stack.Navigator 
-//       screenOptions= {{
-//         headerShown : false
-//       }}>
-//           <Stack.Screen
-//             name="Profile_Base_Screen"
-//             component={ProfileScreen}
-//         />
-//          <Stack.Screen
-//           name="NestedScreens"
-//           component={NestScreens}
-//           options={{ headerShown: false }}
-//         />
-//       </Stack.Navigator>
-//     );
-//   }
+  const ProfileScreenNavigator = (props) => {
+    return (
+      <Stack.Navigator 
+      screenOptions= {{
+        headerShown : false
+      }}>
+          <Stack.Screen
+            name="Profile_Base_Screen"
+            children = {()=><ProfileScreen name={props.name} uuid={props.uuid} jwt={props.jwt}/>}
+            // component={ProfileScreen}
+        />
+         <Stack.Screen
+          name="NestedScreens"
+          component={NestScreens}
+          options={{ headerShown: false }}
+        />
+      </Stack.Navigator>
+    );
+  }
   
 //   export {ProfileScreenNavigator};  // Stack-Navigator for Screen 4 Tab

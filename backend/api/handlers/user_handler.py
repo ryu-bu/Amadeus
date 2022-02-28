@@ -42,7 +42,8 @@ class UserHandler():
             "dob": user.dob,
             "genre": user.genre,
             "instrument": user.instrument,
-            "picture": user.pic
+            "picture": user.pic,
+            "location": user.location
         }, 200
 
     def create(user):

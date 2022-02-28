@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, SafeAreaView, Image, TouchableOpacity, TouchableHighlight, StyleSheet, ScrollView, Touchable, ActivityIndicator } from 'react-native';
+import { Text, View, SafeAreaView, Image, TouchableOpacity, TouchableHighlight, StyleSheet, ScrollView, Touchable, ActivityIndicator, ProgressViewIOSComponent } from 'react-native';
 import { SearchBar, Buttons, ListItem, Avatar, FlatList } from 'react-native-elements';
 import { initializeApp } from "firebase/app";
 import {
@@ -45,7 +45,7 @@ const chatList = [
     }*/
 ]
 
-const createChat = async (roomName) => {
+const createChat = async (roomName, userID, userDisplayName) => {
   if (roomName.length > 0) {
     // create new thread using firebase & firestore
     let response = await addDoc(
@@ -55,7 +55,7 @@ const createChat = async (roomName) => {
         createdAt: new Date().getTime(),
         system: true,
         users: [
-          { _id: "TEST_USER_ID_1", displayName: "TEST_1" },
+          { _id: userID, displayName: userDisplayName },
           { _id: "TEST_USER_ID_1", displayName: "TEST_1" },
         ],
       }
@@ -63,7 +63,9 @@ const createChat = async (roomName) => {
   } //end if 
 }
 
-export default function MessageScreen( {navigation} ) {
+export default function MessageScreen({route, navigation}) {
+  const {name, uuid, jwt} = route.params;
+
   const [chatMode, setChatMode] = useState(0);
 
   const [existingThreads, setExistingThreads] = useState([]);
@@ -82,7 +84,8 @@ export default function MessageScreen( {navigation} ) {
   useEffect(() => {
     const q = query(
       collection(firestore, MESSAGE_THREADS_COLLECTION),
-      orderBy("createdAt", "desc")
+      orderBy("createdAt", "desc"),
+      where("users", "array-contains", {_id: uuid, displayName: name})
     );
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const existingThreads = querySnapshot.docs.map((documentSnapshot) => {
@@ -125,7 +128,7 @@ export default function MessageScreen( {navigation} ) {
       {chatMode == 0 && 
       <ScrollView style={{flex: 10, flexGrow: 1}}> 
         {existingThreads.map((l, i) => (
-          <TouchableOpacity onPress={() => navigation.navigate("Messages", { thread: l })} >
+          <TouchableOpacity onPress={() => navigation.navigate("Messages", { thread: l, uuid: uuid, name: name })} >
             <ListItem key={l._id} bottomDivider>
               <Avatar source={{uri: l.avatar_url}} />
               <ListItem.Content>
@@ -141,7 +144,7 @@ export default function MessageScreen( {navigation} ) {
           {discoverList.map((l, i) => (
             <TouchableOpacity onPress={async() => {
               //navigation.navigate("Messages", { thread: l });
-              createChat(l.displayName);
+              createChat(l.displayName, uuid, name);
             }} >
               <ListItem key={l._id} bottomDivider>
                 <Avatar source={{uri: l.avatar_url}} />

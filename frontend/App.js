@@ -54,12 +54,12 @@ import Messages from "./screens/Messages.js";
 import NestScreens from "./screens/NestScreens";
 import LogoutScreen from "./screens/LogoutScreen";
 
-// import {
-//   HomeScreenNavigator,
-//   MessageScreenNavigator,
-//   MapScreenNavigator,
-//   ProfileScreenNavigator,
-// } from "./CustomizeNav";
+import {
+  HomeScreenNavigator,
+  MessageScreenNavigator,
+  MapScreenNavigator,
+  ProfileScreenNavigator,
+} from "./CustomizeNav";
 import AboutScreen from './screens/AboutScreen'
 
 import { render } from "react-dom";
@@ -80,7 +80,8 @@ function DrawerNavi() {
     )
 }
 
-function Home() {
+function Home({route, navigation}) {
+  const {email, name, jwt, uuid} = route.params;
   return (
     <Tab.Navigator
           screenOptions={({ route }) => ({
@@ -113,7 +114,9 @@ function Home() {
           />
           <Tab.Screen
             name="Message"
-            component={MessageScreen} // Replaced Screen 2
+            component={MessageScreen}
+            initialParams={{name: name, uuid: uuid, jwt: jwt}}
+            //children = {()=><MessageScreen name={name} uuid={uuid} jwt={jwt}/>} // Replaced Screen 2
           />
           <Tab.Screen
             name="Map"
@@ -121,7 +124,8 @@ function Home() {
           />
           <Tab.Screen
             name="Profile"
-            component={ProfileScreen} // Replace Screen 4
+            children = {()=><ProfileScreenNavigator name={name} uuid={uuid} jwt={jwt}/>}
+            // component={ProfileScreenNavigator} // Replace Screen 4
           />
         </Tab.Navigator>
   );
@@ -143,16 +147,16 @@ const App: () => React$Node = () => {
         >
           {/* <Stack.Screen name = 'Main Screen' component= {MainContainer}/> */}
           {/* <Stack.Screen name = "Profile Screen"  component =  {ProfileScreen}/> */}
-          <Stack.Screen name="Main" component={Home} options={{headerShown: false}}/>
-          <Stack.Screen name="NestScreens" component={NestScreens} options={{headerShown: true}}/>
-          <Stack.Screen name="Messages" component={Messages} options={{headerShown: true}} />
-
           <Stack.Screen name="Login Screen" component={LoginScreen} />
           {/* <Stack.Screen name="Map Screen" component={Map} /> */}
           <Stack.Screen name="Genre Selection Screen" component={GenreSelect} />
           <Stack.Screen name="Instrument Selection Screen" component={InstrumentSelect} />
           <Stack.Screen name="DOB Selection Screen" component={DobSelect} />
           <Stack.Screen name="Location Selection Screen" component={LocationSelect} />
+
+          <Stack.Screen name="Main" component={Home} />
+          <Stack.Screen name="NestScreens" component={NestScreens} />
+          <Stack.Screen name="Messages" component={Messages} options={{headerShown: true}} />
         </Stack.Navigator>
       </NavigationContainer>
     </>
