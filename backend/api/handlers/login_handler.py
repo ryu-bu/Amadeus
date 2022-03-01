@@ -6,8 +6,9 @@ from flask_jwt_extended import create_access_token, create_refresh_token, get_jw
 
 class LoginHandler():
     def verify_google(token):
-        try:
+        #try:
             # Specify the CLIENT_ID of the app that accesses the backend:
+            print(token)
             idinfo = id_token.verify_oauth2_token(token, requests.Request(), Config.GOOGLE_CLIENT_ID)
             print("CLIENT: ", Config.GOOGLE_CLIENT_ID)
 
@@ -37,9 +38,9 @@ class LoginHandler():
 
                 return {"message": "existing user", "access_token": access_token, "refresh_token": refresh_token, "uuid": uuid}, 200
 
-        except ValueError:
+        #except ValueError:
             # Invalid token
-            print("error: unverified token")
+        #    print("error: unverified token")
 
     def refresh():
         identity = get_jwt_identity()

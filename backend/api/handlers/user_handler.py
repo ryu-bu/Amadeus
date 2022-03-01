@@ -5,6 +5,7 @@ class UserHandler():
     def get_all():
         users = UserModel.query.all()
         results = [{
+            "uuid": str(user.id),
             "name": user.name,
             "email": user.email,
             "dob": user.dob,

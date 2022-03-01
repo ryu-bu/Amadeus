@@ -1,79 +1,79 @@
-import React from "react"
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+// import React from "react"
+// import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-//import the screens
-import NestScreens from "./screens/NestScreens.js"
-import UserProfile from "./screens/UserProfile.js"
-import HomeScreen from './screens/HomeScreen.js'
-import MapScreen from './screens/MapScreen.js'
-import MessageScreen from './screens/MessageScreen.js'
-import ProfileScreen from './screens/ProfileScreen.js'
+// //import the screens
+// import NestScreens from "./screens/NestScreens.js"
+// import UserProfile from "./screens/UserProfile.js"
+// import HomeScreen from './screens/HomeScreen.js'
+// import MapScreen from './screens/MapScreen.js'
+// import MessageScreen from './screens/MessageScreen.js'
+// import ProfileScreen from './screens/ProfileScreen.js'
 
-const Stack = createNativeStackNavigator();  // creates object for Stack Navigator
+// const Stack = createNativeStackNavigator();  // creates object for Stack Navigator
 
-const HomeScreenNavigator = () => {
-  return (
-    // contains all child component screens within a stack. 
-    <Stack.Navigator 
-    screenOptions= {{
-      headerShown : false
-    }}>   
-       <Stack.Screen
-        name="Home_Base_Screen"
-        component={HomeScreen}
-      />
-       <Stack.Screen
-        name="NestedScreens"
-        component={NestScreens}
-        options={{ headerShown: false }}
-      />
-    </Stack.Navigator>
-  );
-}
+// const HomeScreenNavigator = () => {
+//   return (
+//     // contains all child component screens within a stack. 
+//     <Stack.Navigator 
+//     screenOptions= {{
+//       headerShown : false
+//     }}>   
+//        <Stack.Screen
+//         name="Home_Base_Screen"
+//         component={HomeScreen}
+//       />
+//        <Stack.Screen
+//         name="NestedScreens"
+//         component={NestScreens}
+//         options={{ headerShown: false }}
+//       />
+//     </Stack.Navigator>
+//   );
+// }
 
-export {HomeScreenNavigator}; // Stack-Navigator for Screen 1 Tab
+// export {HomeScreenNavigator}; // Stack-Navigator for Screen 1 Tab
 
-const MessageScreenNavigator = () => {
-    return (
-      <Stack.Navigator 
-      screenOptions= {{
-        headerShown : false
-      }}>
-          <Stack.Screen
-            name="Message_Base_Screen"
-            component={MessageScreen}
-        />
-         <Stack.Screen
-          name="NestScreens"
-          component={NestScreens}
-          options={{ headerShown: false }}
-        />
-      </Stack.Navigator>
-    );
-  }
+// const MessageScreenNavigator = () => {
+//     return (
+//       <Stack.Navigator 
+//       screenOptions= {{
+//         headerShown : false
+//       }}>
+//           <Stack.Screen
+//             name="Message_Base_Screen"
+//             component={MessageScreen}
+//         />
+//          <Stack.Screen
+//           name="NestScreens"
+//           component={NestScreens}
+//           options={{ headerShown: false }}
+//         />
+//       </Stack.Navigator>
+//     );
+//   }
   
-  export {MessageScreenNavigator}; // Stack-Navigator for Screen 2 Tab
+//   export {MessageScreenNavigator}; // Stack-Navigator for Screen 2 Tab
 
-  const MapScreenNavigator = () => {
-    return (
-      <Stack.Navigator 
-      screenOptions= {{
-        headerShown : false
-      }}>
-          <Stack.Screen
-            name="Maps_Base_Screen"
-            component={MapScreen}
-        />
-         <Stack.Screen
-          name="NestedScreens"
-          component={NestScreens}
-          options={{ headerShown: false }}
-        />
-      </Stack.Navigator>
-    );
-  }
+//   const MapScreenNavigator = () => {
+//     return (
+//       <Stack.Navigator 
+//       screenOptions= {{
+//         headerShown : false
+//       }}>
+//           <Stack.Screen
+//             name="Maps_Base_Screen"
+//             component={MapScreen}
+//         />
+//          <Stack.Screen
+//           name="NestedScreens"
+//           component={NestScreens}
+//           options={{ headerShown: false }}
+//         />
+//       </Stack.Navigator>
+//     );
+//   }
   
-  export {MapScreenNavigator};  // Stack-Navigator for Screen 3 Tab
+//   export {MapScreenNavigator};  // Stack-Navigator for Screen 3 Tab
 
   const ProfileScreenNavigator = (props) => {
     return (
@@ -95,4 +95,4 @@ const MessageScreenNavigator = () => {
     );
   }
   
-  export {ProfileScreenNavigator};  // Stack-Navigator for Screen 4 Tab
+//   export {ProfileScreenNavigator};  // Stack-Navigator for Screen 4 Tab

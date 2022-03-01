@@ -2,11 +2,14 @@ import * as React from "react";
 import { createNavigationContainerRef } from "@react-navigation/native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { useNavigation } from "@react-navigation/native";
 import { useState, Component } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { Font, AppLoading } from 'expo';
+
+import DrawerNav from "./DrawerNav";
 
 import {
   SafeAreaView,
@@ -32,8 +35,11 @@ import {
   FlatList,
 } from "react-native-elements";
 
-import MainContainer from "./MainContainer";
+//import MainContainer from "./MainContainer";
 import ProfileScreen from "./screens/ProfileScreen";
+import HomeScreen from "./screens/HomeScreen";
+import MessageScreen from "./screens/MessageScreen";
+import MapScreen from "./screens/MapScreen";
 
 import LoginScreen from "./LoginScreen";
 import GenreSelect from "./GenreSelect";
@@ -46,6 +52,7 @@ import ChatList from "./screens/ChatList.js";
 import Messages from "./screens/Messages.js";
 
 import NestScreens from "./screens/NestScreens";
+import LogoutScreen from "./screens/LogoutScreen";
 
 import {
   HomeScreenNavigator,
@@ -53,10 +60,25 @@ import {
   MapScreenNavigator,
   ProfileScreenNavigator,
 } from "./CustomizeNav";
+import AboutScreen from './screens/AboutScreen'
+
 import { render } from "react-dom";
+import { Message } from "react-native-gifted-chat";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+
+const Drawer = createDrawerNavigator();
+
+function DrawerNavi() {
+    return (
+        <Drawer.Navigator initialRouteName="Home">
+            <Drawer.Screen name = "Home" component = { HomeScreen } />
+            <Drawer.Screen name = "About Us" component = { AboutScreen } />
+            <Drawer.Screen name = "Logout" component = { LogoutScreen } />
+        </Drawer.Navigator>
+    )
+}
 
 function Home({route, navigation}) {
   const {email, name, jwt, uuid} = route.params;
@@ -87,19 +109,22 @@ function Home({route, navigation}) {
         >
           <Tab.Screen
             name="Home"
-            component={HomeScreenNavigator} // Replaced Screen 1
+            component={DrawerNavi} // Replaced Screen 1
+            options={{headerShown: false}}
           />
           <Tab.Screen
             name="Message"
-            component={MessageScreenNavigator} // Replaced Screen 2
+            component={MessageScreen}
+            initialParams={{name: name, uuid: uuid, jwt: jwt}}
+            //children = {()=><MessageScreen name={name} uuid={uuid} jwt={jwt}/>} // Replaced Screen 2
           />
           <Tab.Screen
             name="Map"
-            component={MapScreenNavigator} // Replaced Screen 3
+            component={MapScreen} // Replaced Screen 3
           />
           <Tab.Screen
             name="Profile"
-            children = {()=><ProfileScreenNavigator name={name} uuid={uuid} jwt={jwt}/>}
+            children = {()=><ProfileScreen name={name} uuid={uuid} jwt={jwt}/>}
             // component={ProfileScreenNavigator} // Replace Screen 4
           />
         </Tab.Navigator>
@@ -110,6 +135,7 @@ const App: () => React$Node = () => {
   return (
     <>
       <NavigationContainer>
+        {/* <DrawerNav></DrawerNav> */}
         <Stack.Navigator
           screenOptions={{
             headerShown: false,
