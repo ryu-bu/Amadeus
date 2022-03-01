@@ -69,15 +69,24 @@ const retrieveDiscoverChats = async (userID, discoverList, setDiscoverList) => {
   .then((res) => 
   { 
     //console.log(res.data[0].name);
-    if (userID !== res.data[0].uuid) {
-      discoverList.push({
-        _id: res.data[0].uuid,
-        displayName: res.data[0].name,
-        avatar_url: res.data[0].picture,
-        subtitle: res.data[0].genre,
+
+    if (res.data.length > 0) {
+      discoverList = [];
+
+      res.data.forEach(element => {
+        if (element.uuid !== userID) {
+          discoverList.push({
+            _id: element.uuid,
+            displayName: element.name,
+            avatar_url: element.picture,
+            subtitle: element.genre,
+          });
+        }
       });
+  
       setDiscoverList(discoverList);
-    } 
+    }
+
   });
 }
 
@@ -90,6 +99,7 @@ export default function MessageScreen({route, navigation}) {
   const [loading, setLoading] = useState(true);
 
   const [discoverList, setDiscoverList] = useState([
+    // add test user. will show if there are no other users to chat with
     {
       _id: '19NQlBhQUjKijYvLbG2w',
       displayName: 'James Wasson',
