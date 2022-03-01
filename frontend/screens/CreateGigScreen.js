@@ -34,6 +34,7 @@ const CreateGigScreen = ({route, navigation}) => {
             }})
             .then((res) => {
                 console.log(res.data);
+                navigation.navigate("Home");
             })
             .catch((err) => {
                 console.log(err);
@@ -101,7 +102,7 @@ const CreateGigScreen = ({route, navigation}) => {
         onPress={(data, details) => onChangeLocation({
             'name': data.description,
             'lat': details.geometry.location.lat,
-            'long': details.geometry.location.lng
+            'lng': details.geometry.location.lng
         })}
         onFail={(error) => console.error(error)}
       />
