@@ -125,7 +125,7 @@ export default function Messages({ route }) {
     function retrieveLastMessageTime() {
       // retrieve last cached message time
       cachedMessages.forEach((message) => {
-        const newMessageTime = message["createdAt"].getTime();
+        const newMessageTime = parseInt(message["createdAt"]);
         if (newMessageTime > latestMessageTime) {
           latestMessageTime = newMessageTime;
         }
@@ -160,7 +160,7 @@ export default function Messages({ route }) {
                 cachedMessages.push({
                   _id: element.message_id,
                   text: element.text,
-                  createdAt: new Date(element.created_at),
+                  createdAt: element.created_at,
                   user: {
                     _id: element.sender_id,
                     name: element.sender_name,
