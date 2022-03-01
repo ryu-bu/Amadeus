@@ -32,7 +32,7 @@ const HomeScreen = ({route, navigation}) => {
                 <View style={styles.GridViewContainer}>
                 <TouchableOpacity 
                 style={styles.mainProfile}
-                onPress={() => navigation.navigate("Profile Screen")}>
+                onPress={() => navigation.navigate("NestScreens")}>
                    <Image source={require('../src/images/guitar.jpeg')} resizeMode='contain' style={{flex:.6}} />
                    <Text style={{flex:1}}>     Aristodemos Adela </Text>
                </TouchableOpacity>
@@ -40,7 +40,7 @@ const HomeScreen = ({route, navigation}) => {
                 <View style={styles.GridViewContainer}>
                 <TouchableOpacity 
                 style={styles.mainProfile}
-                onPress={() => navigation.navigate("Profile Screen")}>
+                onPress={() => navigation.navigate("NestScreens")}>
                    <Image source={require('../src/images/axophonist.jpeg')} resizeMode='contain' style={{flex:.6}} />
                    <Text style={{flex:1}}>     Sabina Tadeja </Text>
                </TouchableOpacity>
@@ -48,7 +48,7 @@ const HomeScreen = ({route, navigation}) => {
                 <View style={styles.GridViewContainer}>
                 <TouchableOpacity 
                 style={styles.mainProfile}
-                onPress={() => navigation.navigate("Profile Screen")}>
+                onPress={() => navigation.navigate("NestScreens")}>
                    <Image source={require('../src/images/classic.jpeg')} resizeMode='contain' style={{flex:.6}} />
                    <Text style={{flex:1}}>     Gloria Gunilla </Text>
                </TouchableOpacity>
@@ -56,7 +56,7 @@ const HomeScreen = ({route, navigation}) => {
                 <View style={styles.GridViewContainer}>
                 <TouchableOpacity 
                 style={styles.mainProfile}
-                onPress={() => navigation.navigate("Profile Screen")}>
+                onPress={() => navigation.navigate("NestScreens")}>
                    <Image source={require('../src/images/piano.jpg')} resizeMode='contain' style={{flex:.6}} />
                    <Text style={{flex:1}}>     Patrick Meiriona </Text>
                </TouchableOpacity>

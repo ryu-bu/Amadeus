@@ -36,7 +36,7 @@ const MESSAGE_COLLECTION = "Messages";
 const MESSAGE_THREADS_COLLECTION = "Message_threads";
 
 export default function Messages({ route }) {
-  const { thread } = route.params;
+  const {thread, uuid, name} = route.params;
 
   const messageThreadsCollection = collection(
     firestore,
@@ -101,7 +101,7 @@ export default function Messages({ route }) {
       text,
       fromUser: {
         _id: user._id,
-        displayName: "TEST_1",
+        displayName: name,
       },
     });
 
@@ -223,6 +223,8 @@ export default function Messages({ route }) {
   
           return data;
         });
+
+        // if there are no cached messages, and no retrieved messages, this is an empty chat, so add timestamp
     
         // add message to local message cache if it has not been cached already
         newMessages.forEach(
@@ -269,8 +271,8 @@ export default function Messages({ route }) {
       messages={messages}
       onSend={handleSend}
       user={{
-        _id: "TEST_USER_ID_1", //TODO: USER ID
-        name: "TEST_1",
+        _id: uuid,
+        name: name,
       }}
     />
   );

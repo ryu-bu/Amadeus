@@ -182,6 +182,7 @@ export default function LoginScreen({ navigation }) {
             if (result.type === "success") {
                 // Then you can use the Google REST API
                 console.log("Successful Login");
+                console.log(restApiConfig.LOGIN_ENDPOINT);
                 // navigation.navigate("Profile Creation Screen", {
                 //             email: result.user.email,
                 //             name: result.user.name
@@ -263,7 +264,7 @@ export default function LoginScreen({ navigation }) {
             <View>
                 <View style={styles.loginbtn}>
                     <Button title="Login" color="white"
-                        onPress={() => navigation.navigate('Map Screen')}
+                        onPress={signInAsync}//{() => navigation.navigate('Map Screen')}
                     />
 
                 </View>
@@ -279,7 +280,7 @@ export default function LoginScreen({ navigation }) {
             <View style={styles.section1}>
                 <View style={styles.button1}>
                     <Ionicons style={styles.Icon1} name="logo-facebook" size={20} color="blue" />
-                    <Button title="Sign in with Facebook" color="white" />
+                    <Button title="Sign in with Facebook" color="white"/>
                 </View>
             </View>
 

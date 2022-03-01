@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, SafeAreaView, Image, TouchableOpacity, TouchableHighlight, StyleSheet, ScrollView, Touchable, ActivityIndicator } from 'react-native';
+import { Text, View, SafeAreaView, Image, TouchableOpacity, TouchableHighlight, StyleSheet, ScrollView, Touchable, ActivityIndicator, ProgressViewIOSComponent } from 'react-native';
 import { SearchBar, Buttons, ListItem, Avatar, FlatList } from 'react-native-elements';
 import { initializeApp } from "firebase/app";
 import {
@@ -13,6 +13,9 @@ import {
   where,
   orderBy,
 } from "firebase/firestore";
+
+import axios from 'axios';
+import { restApiConfig } from './../config';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBMSgBgaMAlX6hEVOpF-nHfZa6yUmIR-Wk",
@@ -45,44 +48,71 @@ const chatList = [
     }*/
 ]
 
-const createChat = async (roomName) => {
-  if (roomName.length > 0) {
-    // create new thread using firebase & firestore
-    let response = await addDoc(
-      collection(firestore, MESSAGE_THREADS_COLLECTION),
-      {
-        text: `${roomName} created`,
-        createdAt: new Date().getTime(),
-        system: true,
-        users: [
-          { _id: "TEST_USER_ID_1", displayName: "TEST_1" },
-          { _id: "TEST_USER_ID_1", displayName: "TEST_1" },
-        ],
-      }
-    ); 
-  } //end if 
+const createChat = async (userID, userDisplayName, otherUserID, otherUserDisplayName) => {
+  // create new thread using firebase & firestore
+  let response = await addDoc(
+    collection(firestore, MESSAGE_THREADS_COLLECTION),
+    {
+      text: `chat between ${userDisplayName} and ${otherUserDisplayName}`,
+      createdAt: new Date().getTime(),
+      system: true,
+      users: [
+        { _id: userID, displayName: userDisplayName },
+        { _id: otherUserID, displayName: otherUserDisplayName},
+      ],
+    }
+  ); 
 }
 
-export default function MessageScreen( {navigation} ) {
+const retrieveDiscoverChats = async (userID, discoverList, setDiscoverList) => {
+  axios.get(restApiConfig.USER_ENDPOINT)
+  .then((res) => 
+  { 
+    //console.log(res.data[0].name);
+
+    if (res.data.length > 0) {
+      discoverList = [];
+
+      res.data.forEach(element => {
+        if (element.uuid !== userID) {
+          discoverList.push({
+            _id: element.uuid,
+            displayName: element.name,
+            avatar_url: element.picture,
+            subtitle: element.genre,
+          });
+        }
+      });
+  
+      setDiscoverList(discoverList);
+    }
+
+  });
+}
+
+export default function MessageScreen({route, navigation}) {
+  const {name, uuid, jwt} = route.params;
+
   const [chatMode, setChatMode] = useState(0);
 
   const [existingThreads, setExistingThreads] = useState([]);
   const [loading, setLoading] = useState(true);
 
-    // TODO: fill this list with some real info from database
   const [discoverList, setDiscoverList] = useState([
+    // add test user. will show if there are no other users to chat with
     {
       _id: '19NQlBhQUjKijYvLbG2w',
-      displayName: 'Create Test Chat',
+      displayName: 'James Wasson',
       avatar_url: 'https://www.bu.edu/eng/files/2018/03/Osama-Alshaykh-700x700.jpg',
-      subtitle: 'Test chats are lit',
+      subtitle: 'Worlds #1 best man',
     }
   ])
 
   useEffect(() => {
     const q = query(
       collection(firestore, MESSAGE_THREADS_COLLECTION),
-      orderBy("createdAt", "desc")
+      orderBy("createdAt", "desc"),
+      where("users", "array-contains", {_id: uuid, displayName: name})
     );
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const existingThreads = querySnapshot.docs.map((documentSnapshot) => {
@@ -117,7 +147,10 @@ export default function MessageScreen( {navigation} ) {
         <TouchableHighlight style={styles.button} onPress={() => setChatMode(0)}>
           <Text style={styles.buttonText}>Chats: </Text>
         </TouchableHighlight>
-        <TouchableHighlight style={styles.button} onPress={() => setChatMode(1)}>
+        <TouchableHighlight style={styles.button} onPress={() => {
+            retrieveDiscoverChats(uuid, discoverList, setDiscoverList);
+            setChatMode(1);
+        }}> 
           <Text style={styles.buttonText}>Discover: </Text>
         </TouchableHighlight>
       </View>
@@ -125,11 +158,11 @@ export default function MessageScreen( {navigation} ) {
       {chatMode == 0 && 
       <ScrollView style={{flex: 10, flexGrow: 1}}> 
         {existingThreads.map((l, i) => (
-          <TouchableOpacity onPress={() => navigation.navigate("Messages", { thread: l })} >
+          <TouchableOpacity onPress={() => navigation.navigate("Messages", { thread: l, uuid: uuid, name: name })} >
             <ListItem key={l._id} bottomDivider>
               <Avatar source={{uri: l.avatar_url}} />
               <ListItem.Content>
-                <ListItem.Title>{l.users[0]["displayName"]}</ListItem.Title>
+                <ListItem.Title>{name !== l.users[0]["displayName"] && l.users[0]["displayName"] || l.users[1]["displayName"]}</ListItem.Title>
                 <ListItem.Subtitle>{l.latestMessage.text.slice(0, 90)}</ListItem.Subtitle>
               </ListItem.Content>
               <ListItem.Chevron/>
@@ -140,8 +173,7 @@ export default function MessageScreen( {navigation} ) {
         <ScrollView style={{flex: 10}}> 
           {discoverList.map((l, i) => (
             <TouchableOpacity onPress={async() => {
-              //navigation.navigate("Messages", { thread: l });
-              createChat(l.displayName);
+              createChat(uuid, name, l._id, l.displayName);
             }} >
               <ListItem key={l._id} bottomDivider>
                 <Avatar source={{uri: l.avatar_url}} />
