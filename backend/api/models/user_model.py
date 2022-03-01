@@ -12,6 +12,7 @@ class Users(db.Model):
     location = db.Column(JSON, nullable=True)
     instrument = db.Column(db.String(500), nullable=True)
     dob = db.Column(db.String(200), nullable=True)
+    gig = db.relationship('Gigplayers', back_populates='user', lazy=True) # relation to Gigplayer table
 
     def __init__(self, name, email, pic):
         self.name = name

@@ -11,25 +11,29 @@
 
 // const Stack = createNativeStackNavigator();  // creates object for Stack Navigator
 
-// const HomeScreenNavigator = () => {
-//   return (
-//     // contains all child component screens within a stack. 
-//     <Stack.Navigator 
-//     screenOptions= {{
-//       headerShown : false
-//     }}>   
-//        <Stack.Screen
-//         name="Home_Base_Screen"
-//         component={HomeScreen}
-//       />
-//        <Stack.Screen
-//         name="NestedScreens"
-//         component={NestScreens}
-//         options={{ headerShown: false }}
-//       />
-//     </Stack.Navigator>
-//   );
-// }
+const HomeScreenNavigator = (props, {navigation}) => {
+  const params = React.createContext(props);
+
+  return (
+    // contains all child component screens within a stack. 
+    <Stack.Navigator 
+    screenOptions= {{
+      headerShown : false
+    }}>   
+       <Stack.Screen
+        name="Home_Base_Screen"
+        component={HomeScreen}
+        initialParams={{ name: props.name, jwt: props.jwt, uuid: props.uuid }}
+        // children = {()=><HomeScreen name={props.name} uuid={props.uuid} jwt={props.jwt}/>}
+      />
+       {/* <Stack.Screen
+        name="NestedScreens"
+        component={NestScreens}
+        options={{ headerShown: false }}
+      /> */}
+    </Stack.Navigator>
+  );
+}
 
 // export {HomeScreenNavigator}; // Stack-Navigator for Screen 1 Tab
 

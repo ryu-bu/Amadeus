@@ -223,8 +223,6 @@ export default function Messages({ route }) {
   
           return data;
         });
-
-        // if there are no cached messages, and no retrieved messages, this is an empty chat, so add timestamp
     
         // add message to local message cache if it has not been cached already
         newMessages.forEach(

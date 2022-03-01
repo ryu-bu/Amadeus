@@ -83,7 +83,7 @@ export default class MapScreen extends React.Component {
   }
 
   getAddress() {
-    fetch('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + this.state.region.latitude + ',' + this.state.region.longitude + restApiConfig.GEOCODE_KEY)
+    fetch('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + this.state.region.latitude + ',' + this.state.region.longitude + "&key=" + restApiConfig.GEOCODE_KEY)
       .then((response) =>
         response.json()).then((responseJson) => {
           // console.log('Geocode =>' + JSON.stringify(responseJson));
@@ -164,7 +164,7 @@ export default class MapScreen extends React.Component {
               return "";
             }}
             query={{
-              key: 'AIzaSyAYCE13nMMKpLLxIr22Yktuq8i9uEsTJHs',
+              key: restApiConfig.GEOCODE_KEY,
               language: 'en',
               components: 'country:US',
             }}

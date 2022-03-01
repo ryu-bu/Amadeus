@@ -53,6 +53,7 @@ import Messages from "./screens/Messages.js";
 
 import NestScreens from "./screens/NestScreens";
 import LogoutScreen from "./screens/LogoutScreen";
+import CreateGigScreen from "./screens/CreateGigScreen";
 
 import {
   HomeScreenNavigator,
@@ -70,10 +71,11 @@ const Tab = createBottomTabNavigator();
 
 const Drawer = createDrawerNavigator();
 
-function DrawerNavi() {
+function DrawerNavi({route, navigation}) {
+  const {email, name, jwt, uuid} = route.params;
     return (
         <Drawer.Navigator initialRouteName="Home">
-            <Drawer.Screen name = "Home" component = { HomeScreen } />
+            <Drawer.Screen name = "Home" component = { HomeScreen } initialParams={ {name: name, uuid: uuid, jwt: jwt} }/>
             <Drawer.Screen name = "About Us" component = { AboutScreen } />
             <Drawer.Screen name = "Logout" component = { LogoutScreen } />
         </Drawer.Navigator>
@@ -110,7 +112,11 @@ function Home({route, navigation}) {
           <Tab.Screen
             name="Home"
             component={DrawerNavi} // Replaced Screen 1
-            options={{headerShown: false}}
+            initialParams={{name: name, uuid: uuid, jwt: jwt}}
+            options={{
+                headerShown: false,
+            }}
+            // children = {()=><HomeScreen name={name} uuid={uuid} jwt={jwt}/>}
           />
           <Tab.Screen
             name="Message"
@@ -156,6 +162,7 @@ const App: () => React$Node = () => {
 
           <Stack.Screen name="Main" component={Home} />
           <Stack.Screen name="NestScreens" component={NestScreens} />
+          <Stack.Screen name="CreateGig" component={CreateGigScreen} />
           <Stack.Screen name="Messages" component={Messages} options={{headerShown: true}} />
         </Stack.Navigator>
       </NavigationContainer>
