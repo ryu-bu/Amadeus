@@ -124,7 +124,7 @@ function Home({route, navigation}) {
           />
           <Tab.Screen
             name="Profile"
-            children = {()=><ProfileScreenNavigator name={name} uuid={uuid} jwt={jwt}/>}
+            children = {()=><ProfileScreen name={name} uuid={uuid} jwt={jwt}/>}
             // component={ProfileScreenNavigator} // Replace Screen 4
           />
         </Tab.Navigator>
