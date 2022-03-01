@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     margin: 12,
     marginLeft: 60,
     marginBottom: 25,
-    marginTop: 300,
+    marginTop: 250,
     padding: 20,
     borderWidth: 1,
     borderRadius: 25,
@@ -112,10 +112,10 @@ const styles = StyleSheet.create({
   logo: {
     marginBottom: 40,
     width: 400,
-    height: 100,
+    height: 150,
     alignContent: 'center',
     backgroundColor: "white",
-    position: 'absolute', top: 120, left: 0, right: 0, bottom: 0,
+    marginTop: 400,
   },
   section1: {
     flex: 1,
@@ -143,12 +143,18 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: "gray",
     alignSelf: 'center',
+    justifyContent: 'center',
   },
   line: {
     fontSize: 10,
     color: "gray",
     alignSelf: 'center',
-    position: 'absolute', top: 141, left: 65, right: 0, bottom: 0,
+    marginBottom: 0,
+    //position: 'absolute', top: 141, left: 65, right: 0, bottom: 0,
+  },
+  fun_line: {
+    flexDirection: "row",
+    justifyContent: 'center',
   }
 });
 
@@ -163,7 +169,6 @@ export default function App() {
       <View style={styles.container}>
         <Image style={styles.logo} source={logo} />
       </View >
-
 
 
       <TextInput
@@ -196,10 +201,12 @@ export default function App() {
         <View style={styles.forgot}>
           <Button title="Forgot Password?" color="gray" />
         </View>
-        <Text style={styles.OR}>OR </Text>
-        <Text style={styles.line}>____________________            ____________________ </Text>
+        <View style={styles.fun_line}>
+          <Text style={styles.line}>____________________     </Text>
+          <Text style={styles.OR}>OR </Text>
+          <Text style={styles.line}>    ____________________ </Text>
+        </View>
       </View>
-
 
 
       <View style={styles.section1}>
