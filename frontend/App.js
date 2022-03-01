@@ -71,10 +71,11 @@ const Tab = createBottomTabNavigator();
 
 const Drawer = createDrawerNavigator();
 
-function DrawerNavi() {
+function DrawerNavi({route, navigation}) {
+  const {email, name, jwt, uuid} = route.params;
     return (
         <Drawer.Navigator initialRouteName="Home">
-            <Drawer.Screen name = "Home" component = { HomeScreen } />
+            <Drawer.Screen name = "Home" component = { HomeScreen } initialParams={ {name: name, uuid: uuid, jwt: jwt} }/>
             <Drawer.Screen name = "About Us" component = { AboutScreen } />
             <Drawer.Screen name = "Logout" component = { LogoutScreen } />
         </Drawer.Navigator>
@@ -110,8 +111,11 @@ function Home({route, navigation}) {
         >
           <Tab.Screen
             name="Home"
-            component={HomeScreen} // Replaced Screen 1
+            component={DrawerNavi} // Replaced Screen 1
             initialParams={{name: name, uuid: uuid, jwt: jwt}}
+            options={{
+                headerShown: false,
+            }}
             // children = {()=><HomeScreen name={name} uuid={uuid} jwt={jwt}/>}
           />
           <Tab.Screen

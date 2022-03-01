@@ -125,7 +125,7 @@ export default function Messages({ route }) {
     function retrieveLastMessageTime() {
       // retrieve last cached message time
       cachedMessages.forEach((message) => {
-        const newMessageTime = parseInt(message["createdAt"]);
+        const newMessageTime = message["createdAt"].getTime();
         if (newMessageTime > latestMessageTime) {
           latestMessageTime = newMessageTime;
         }
@@ -160,7 +160,7 @@ export default function Messages({ route }) {
                 cachedMessages.push({
                   _id: element.message_id,
                   text: element.text,
-                  createdAt: element.created_at,
+                  createdAt: new Date(element.created_at),
                   user: {
                     _id: element.sender_id,
                     name: element.sender_name,
@@ -223,8 +223,6 @@ export default function Messages({ route }) {
   
           return data;
         });
-
-        // if there are no cached messages, and no retrieved messages, this is an empty chat, so add timestamp
     
         // add message to local message cache if it has not been cached already
         newMessages.forEach(
