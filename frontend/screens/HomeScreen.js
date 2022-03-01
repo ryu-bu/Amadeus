@@ -4,40 +4,21 @@ import { useNavigation} from '@react-navigation/native';
 import { SearchBar, Buttons, ListItem, Avatar, FlatList } from 'react-native-elements';
 
 //combine tab with stack
-const HomeScreen = ({navigation}) => {
+const HomeScreen = ({route, navigation}) => {
+    const {name, jwt, uuid} = route.params;
     return (
        <SafeAreaView style={styles.container}>
            <ScrollView showsVerticalScrollIndicator={false}>
-               
-               {/* <SearchBar
-                   placeholder="Search Here..."
-                   lightTheme
-                   round
-                   value
-                   //containerStyle={{backgroundColor: 'white', borderWidth: 1, borderRadius: 5}}
-                   // value={this.state.searchValue}
-                   // onChangeText={(text) => this.searchFunction(text)}
-                   // autoCorrect={false}
-               />  */}
-   
-                {/* <View style={styles.GridViewContainer}>
-                   <TouchableOpacity onPress={() => navigation.navigate("Profile Screen")}>
-                       <Image source={require('./src/images/Alan.jpeg')} style={styles.img}></Image>
-                   </TouchableOpacity>
-                   <Text style={styles.titleBar}> Alan Pisano</Text>
-               </View>
-               <View style={styles.GridViewContainer}>
-                   <TouchableOpacity onPress={() => navigation.navigate("Profile Screen")}>
-                       <Image source={require('./src/images/osama.jpg')} style={styles.img}></Image>
-                   </TouchableOpacity>
-                   <Text> Osama Alshaykh</Text>
-               </View>   */}
                 <View style={styles.GridViewContainer}>
                 <TouchableOpacity 
                 style={styles.mainProfile}
-                onPress={() => navigation.navigate("NestScreens")}>
+                onPress={() => navigation.navigate("CreateGig", {
+                    name: name,
+                    jwt: jwt,
+                    uuid: uuid
+                })}>
                    <Image source={require('../src/images/drums.jpeg')} resizeMode='contain' style={{flex:.6}} />
-                   <Text style={{flex:1}}>     Venera Kusti </Text>
+                   <Text style={{flex:1}}>     Create Gigs </Text>
                </TouchableOpacity>
                 </View>
                 <View style={styles.GridViewContainer}>
@@ -80,119 +61,12 @@ const HomeScreen = ({navigation}) => {
                    <Text style={{flex:1}}>     Patrick Meiriona </Text>
                </TouchableOpacity>
                 </View>
-               
-           {/* Integrate FlatList with TouchableOpacity */}
-           
-           {/* <View style={{ margin: 30, backgroundColor: '#ddd' }}>
-           <FlatList
-             data={list}
-             renderItem={({ item, index }) => {
-               return <FlatListItem item={item} index={index} />;
-             }}
-           />
-         </View> */}
            </ScrollView> 
        </SafeAreaView>
     );
 }
 
 export default HomeScreen 
-
-// export default function HomeScreen() {
-//     const navigation = useNavigation();
-   
-//      return (
-//        <SafeAreaView style={styles.container}>
-//            <ScrollView showsVerticalScrollIndicator={false}>
-               
-//                {/* <SearchBar
-//                    placeholder="Search Here..."
-//                    lightTheme
-//                    round
-//                    value
-//                    containerStyle={{backgroundColor: 'white', borderWidth: 1, borderRadius: 5}}
-//                    // value={this.state.searchValue}
-//                    // onChangeText={(text) => this.searchFunction(text)}
-//                    // autoCorrect={false}
-//                />  */}
-   
-//                 {/* <View style={styles.GridViewContainer}>
-//                    <TouchableOpacity onPress={() => navigation.navigate("Profile Screen")}>
-//                        <Image source={require('./src/images/Alan.jpeg')} style={styles.img}></Image>
-//                    </TouchableOpacity>
-//                    <Text style={styles.titleBar}> Alan Pisano</Text>
-//                </View>
-//                <View style={styles.GridViewContainer}>
-//                    <TouchableOpacity onPress={() => navigation.navigate("Profile Screen")}>
-//                        <Image source={require('./src/images/osama.jpg')} style={styles.img}></Image>
-//                    </TouchableOpacity>
-//                    <Text> Osama Alshaykh</Text>
-//                </View>   */}
-//                 <View style={styles.GridViewContainer}>
-//                 <TouchableOpacity 
-//                 style={styles.mainProfile}
-//                 onPress={() => navigation.navigate("Profile Screen")}>
-//                    <Image source={require('./src/images/drums.jpeg')} resizeMode='contain' style={{flex:.6}} />
-//                    <Text style={{flex:1}}>     Venera Kusti </Text>
-//                </TouchableOpacity>
-//                 </View>
-//                 <View style={styles.GridViewContainer}>
-//                 <TouchableOpacity 
-//                 style={styles.mainProfile}
-//                 onPress={() => navigation.navigate("Profile Screen")}>
-//                    <Image source={require('./src/images/dj.jpeg')} resizeMode='contain' style={{flex:.6}} />
-//                    <Text style={{flex:1}}>     Irmak Vita </Text>
-//                </TouchableOpacity>
-//                 </View>
-//                 <View style={styles.GridViewContainer}>
-//                 <TouchableOpacity 
-//                 style={styles.mainProfile}
-//                 onPress={() => navigation.navigate("Profile Screen")}>
-//                    <Image source={require('./src/images/guitar.jpeg')} resizeMode='contain' style={{flex:.6}} />
-//                    <Text style={{flex:1}}>     Aristodemos Adela </Text>
-//                </TouchableOpacity>
-//                 </View>
-//                 <View style={styles.GridViewContainer}>
-//                 <TouchableOpacity 
-//                 style={styles.mainProfile}
-//                 onPress={() => navigation.navigate("Profile Screen")}>
-//                    <Image source={require('./src/images/axophonist.jpeg')} resizeMode='contain' style={{flex:.6}} />
-//                    <Text style={{flex:1}}>     Sabina Tadeja </Text>
-//                </TouchableOpacity>
-//                 </View>
-//                 <View style={styles.GridViewContainer}>
-//                 <TouchableOpacity 
-//                 style={styles.mainProfile}
-//                 onPress={() => navigation.navigate("Profile Screen")}>
-//                    <Image source={require('./src/images/classic.jpeg')} resizeMode='contain' style={{flex:.6}} />
-//                    <Text style={{flex:1}}>     Gloria Gunilla </Text>
-//                </TouchableOpacity>
-//                 </View>
-//                 <View style={styles.GridViewContainer}>
-//                 <TouchableOpacity 
-//                 style={styles.mainProfile}
-//                 onPress={() => navigation.navigate("Profile Screen")}>
-//                    <Image source={require('./src/images/piano.jpg')} resizeMode='contain' style={{flex:.6}} />
-//                    <Text style={{flex:1}}>     Patrick Meiriona </Text>
-//                </TouchableOpacity>
-//                 </View>
-               
-//            {/* Integrate FlatList with TouchableOpacity */}
-           
-//            {/* <View style={{ margin: 30, backgroundColor: '#ddd' }}>
-//            <FlatList
-//              data={list}
-//              renderItem={({ item, index }) => {
-//                return <FlatListItem item={item} index={index} />;
-//              }}
-//            />
-//          </View> */}
-//            </ScrollView> 
-//        </SafeAreaView>
-//      );
-//    }
- 
-
    const styles = StyleSheet.create({
     mainProfile: {
         flexDirection:"row",

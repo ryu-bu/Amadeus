@@ -46,6 +46,7 @@ import ChatList from "./screens/ChatList.js";
 import Messages from "./screens/Messages.js";
 
 import NestScreens from "./screens/NestScreens";
+import CreateGigScreen from "./screens/CreateGigScreen";
 
 import {
   HomeScreenNavigator,
@@ -87,7 +88,8 @@ function Home({route, navigation}) {
         >
           <Tab.Screen
             name="Home"
-            component={HomeScreenNavigator} // Replaced Screen 1
+            // component={HomeScreenNavigator} // Replaced Screen 1
+            children = {()=><HomeScreenNavigator name={name} uuid={uuid} jwt={jwt}/>}
           />
           <Tab.Screen
             name="Message"
@@ -130,6 +132,7 @@ const App: () => React$Node = () => {
 
           <Stack.Screen name="Main" component={Home} />
           <Stack.Screen name="NestScreens" component={NestScreens} />
+          <Stack.Screen name="CreateGig" component={CreateGigScreen} />
           <Stack.Screen name="Messages" component={Messages} options={{headerShown: true}} />
         </Stack.Navigator>
       </NavigationContainer>
