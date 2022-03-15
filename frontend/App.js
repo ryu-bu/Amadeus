@@ -126,8 +126,8 @@ function Home({route, navigation}) {
           />
           <Tab.Screen
             name="Map"
-            component={MapScreen} // Replaced Screen 3
-          />
+            // component={MapScreen} // Replaced Screen 3
+            children = {()=><MapScreen name={name} uuid={uuid} jwt={jwt}/>}          />
           <Tab.Screen
             name="Profile"
             children = {()=><ProfileScreen name={name} uuid={uuid} jwt={jwt}/>}

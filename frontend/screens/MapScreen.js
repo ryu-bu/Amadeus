@@ -24,6 +24,7 @@ import {
 import MapView, { Overlay, ProviderPropType } from 'react-native-maps';
 import { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import axios from 'axios';
 
 //const { cityInput } = route.params;
 
@@ -42,11 +43,14 @@ export default class MapScreen extends React.Component {
   constructor(props) {
     super(props);
 
+    this.uuid = props.uuid;
+    this.jwt = props.jwt;
+
     this.state = {
       marker1: true,
       region: {
-        latitude: LATITUDE,
-        longitude: LONGITUDE,
+        latitude: 0,
+        longitude: 0,
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA,
       },
@@ -57,10 +61,11 @@ export default class MapScreen extends React.Component {
       currentLat: '',
       currentLng: '',
       forceRefresh: 0,
+      gigMarkers: []
       //marker2: false,
     };
   }
-
+  
 
   goToInitPos = (region) => {
     let initialRegion = Object.assign({}, region);
@@ -68,6 +73,124 @@ export default class MapScreen extends React.Component {
     initialRegion["longitudeDelta"] = 0.005;
     this.mapView.animateToRegion(initialRegion, 2000);
   }
+
+  mapMarkers = () => {
+    console.log(this.state.gigMarkers)
+    return this.state.gigMarkers.map((marker) => <Marker
+      key={marker.locationName}
+      coordinate={marker.coordinates}
+      title={marker.gigName}
+      description={marker.description}
+    >
+    </Marker >)
+  }
+
+  updateGig() {
+    // get local gigs
+    this.setState({
+      gigMarkers: []
+    })
+    axios.get(restApiConfig.GIG_ENDPOINT, {
+      headers: {
+        Authorization: "Bearer " + this.jwt
+      }
+    })
+    .then((res) => {
+      // console.log(res.data.length);
+      let gigs = res.data
+      let gigArray = [];
+      for (let i = 0; i < gigs.length; i++) {
+        let gig = gigs[i];
+        console.log(gig.name)
+        gigArray.push({
+          description: gig.description,
+          genre: gig.genre,
+          coordinates: {
+            latitude: gig.location.lat,
+            longitude: gig.location.lng,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA,
+          },
+          locationName: gig.location.name,
+          gigName: gig.name
+        });
+      }
+      this.setState({
+        gigMarkers: gigArray
+      })
+      console.log(this.state.gigMarkers);
+
+      // this.mapMarkers();
+
+      // this.mapView.Marker(this.state.gigMakers)
+    })
+  }
+
+  componentDidMount() {    
+    axios.get(restApiConfig.FIND_USER_ENDPOINT + this.uuid, {
+      headers: {
+        Authorization: "Bearer " + this.jwt
+      }
+    })
+    .then((res) => {
+      // updated current location
+      this.setState({
+        region: {
+          latitude: res.data.location.coords.latitude,
+          longitude: res.data.location.coords.longitude,
+          latitudeDelta: LATITUDE_DELTA,
+          longitudeDelta: LONGITUDE_DELTA,
+        }
+      });
+      this.goToInitPos(this.state.region);
+    });
+
+    // get local gigs
+    // axios.get(restApiConfig.GIG_ENDPOINT, {
+    //   headers: {
+    //     Authorization: "Bearer " + this.jwt
+    //   }
+    // })
+    // .then((res) => {
+    //   // console.log(res.data.length);
+    //   let gigs = res.data
+    //   for (let i = 0; i < gigs.length; i++) {
+    //     var gigArray = [];
+    //     let gig = gigs[i];
+    //     gigArray.push({
+    //       description: gig.description,
+    //       genre: gig.genre,
+    //       coordinates: {
+    //         latitude: gig.location.lat,
+    //         longitude: gig.location.lng,
+    //         latitudeDelta: LATITUDE_DELTA,
+    //         longitudeDelta: LONGITUDE_DELTA,
+    //       },
+    //       locationName: gig.location.name,
+    //       gigName: gig.name
+    //     });
+    //   }
+    //   this.setState({
+    //     gigMarkers: gigArray
+    //   })
+    //   // console.log(this.state.gigMarkers);
+
+    //   // this.mapMarkers();
+
+    //   // this.mapView.Marker(this.state.gigMakers)
+    // })
+
+    this.updateGig();
+    
+    // this.setState({
+    //   region: {
+    //     latitude: 0,
+    //     longitude: 0,
+    //     latitudeDelta: LATITUDE_DELTA,
+    //     longitudeDelta: LONGITUDE_DELTA,
+    //   }
+    // })
+    }
 
   RegionChange = (Region) => {
     this.setState({
@@ -80,6 +203,10 @@ export default class MapScreen extends React.Component {
 
   componentWillUnmount() {
     this.getAddress();
+  }
+
+  componentWillMount() {
+    this.updateGig();
   }
 
   getAddress() {
@@ -98,7 +225,6 @@ export default class MapScreen extends React.Component {
   }
 
   render() {
-
     return (
       <SafeAreaView style={styles.container}>
         <MapView
@@ -115,12 +241,14 @@ export default class MapScreen extends React.Component {
           <Marker draggable
             onPress={() => this.setState({ marker1: !this.state.marker1 })}
             coordinate={this.state.region}
+            title="current location"
           //centerOffset={{ x: -18, y: -60 }}
           //anchor={{ x: 0.69, y: 1 }}
           //image={this.state.marker1 ? flagBlueImg : flagPinkImg}
           // onChangeText={food => setQuery(food)} //onChangeText is how you store user input
           // onDragEnd={(e) => this.setState({ x: e.nativeEvent.coordinate })}
           />
+          {this.mapMarkers()}
         </MapView >
 
         <View style={styles.panel}>
