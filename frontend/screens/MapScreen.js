@@ -21,10 +21,11 @@ import {
 //import { stringLiteral } from '@babel/types';
 //import { Ionicons } from '@expo/vector-icons';
 
-import MapView, { Overlay, ProviderPropType } from 'react-native-maps';
+import MapView, { Callout }from 'react-native-maps';
 import { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import axios from 'axios';
+import { TouchableHighlight } from 'react-native-gesture-handler';
 
 //const { cityInput } = route.params;
 
@@ -75,14 +76,28 @@ export default class MapScreen extends React.Component {
   }
 
   mapMarkers = () => {
-    console.log(this.state.gigMarkers)
-    return this.state.gigMarkers.map((marker) => <Marker
+    // console.log(this.state.gigMarkers)
+    return this.state.gigMarkers.map((marker) => <MapView.Marker
       key={marker.locationName}
       coordinate={marker.coordinates}
       title={marker.gigName}
-      description={marker.description}
+      description={marker.locationName + "\n\n" + marker.description}
+      // stopPropagation={true}
+      // onSelect={() => console.log("marker pressed")}
+      // onCalloutPress={() => console.log("button pressed")}
     >
-    </Marker >)
+      {/* <Callout tooltip>
+        <View>
+          <Text>Location: {marker.locationName}</Text>
+          <Text>Description: {marker.description}</Text>
+        </View>
+        <Button
+          onPress={() => this.updateGig()}
+          title="go"
+          color="blue"
+          />
+      </Callout> */}
+    </MapView.Marker >)
   }
 
   updateGig() {
@@ -96,12 +111,12 @@ export default class MapScreen extends React.Component {
       }
     })
     .then((res) => {
-      // console.log(res.data.length);
+      console.log(res.data.length);
       let gigs = res.data
       let gigArray = [];
       for (let i = 0; i < gigs.length; i++) {
         let gig = gigs[i];
-        console.log(gig.name)
+        // console.log(gig.name)
         gigArray.push({
           description: gig.description,
           genre: gig.genre,
@@ -118,7 +133,7 @@ export default class MapScreen extends React.Component {
       this.setState({
         gigMarkers: gigArray
       })
-      console.log(this.state.gigMarkers);
+      // console.log(this.state.gigMarkers);
 
       // this.mapMarkers();
 
@@ -145,51 +160,8 @@ export default class MapScreen extends React.Component {
       this.goToInitPos(this.state.region);
     });
 
-    // get local gigs
-    // axios.get(restApiConfig.GIG_ENDPOINT, {
-    //   headers: {
-    //     Authorization: "Bearer " + this.jwt
-    //   }
-    // })
-    // .then((res) => {
-    //   // console.log(res.data.length);
-    //   let gigs = res.data
-    //   for (let i = 0; i < gigs.length; i++) {
-    //     var gigArray = [];
-    //     let gig = gigs[i];
-    //     gigArray.push({
-    //       description: gig.description,
-    //       genre: gig.genre,
-    //       coordinates: {
-    //         latitude: gig.location.lat,
-    //         longitude: gig.location.lng,
-    //         latitudeDelta: LATITUDE_DELTA,
-    //         longitudeDelta: LONGITUDE_DELTA,
-    //       },
-    //       locationName: gig.location.name,
-    //       gigName: gig.name
-    //     });
-    //   }
-    //   this.setState({
-    //     gigMarkers: gigArray
-    //   })
-    //   // console.log(this.state.gigMarkers);
-
-    //   // this.mapMarkers();
-
-    //   // this.mapView.Marker(this.state.gigMakers)
-    // })
-
     this.updateGig();
-    
-    // this.setState({
-    //   region: {
-    //     latitude: 0,
-    //     longitude: 0,
-    //     latitudeDelta: LATITUDE_DELTA,
-    //     longitudeDelta: LONGITUDE_DELTA,
-    //   }
-    // })
+
     }
 
   RegionChange = (Region) => {
@@ -248,7 +220,22 @@ export default class MapScreen extends React.Component {
           // onChangeText={food => setQuery(food)} //onChangeText is how you store user input
           // onDragEnd={(e) => this.setState({ x: e.nativeEvent.coordinate })}
           />
+           <View
+              style={{
+                  position: 'absolute',//use absolute position to show button on top of the map
+                  top: '80%', //for center align
+                  alignSelf: 'flex-end' //for align to right
+              }}
+          >
+            <Button 
+              // style={styles.footer}
+              onPress={() => this.updateGig()}
+              title="Update Map"
+              color="blue"
+            />
+          </View>
           {this.mapMarkers()}
+          {console.log("trigger map")}
         </MapView >
 
         <View style={styles.panel}>
@@ -323,7 +310,7 @@ export default class MapScreen extends React.Component {
           />
         </View>
 
-        <KeyboardAvoidingView style={styles.footer}>
+        {/* <KeyboardAvoidingView style={styles.footer}>
 
           <TextInput
             multiline={true}
@@ -347,7 +334,7 @@ export default class MapScreen extends React.Component {
             </Text>
 
           </View>
-        </KeyboardAvoidingView>
+        </KeyboardAvoidingView> */}
       </SafeAreaView>
     );
   }
@@ -364,9 +351,11 @@ const styles = StyleSheet.create({
     width: 400,
     justifyContent: 'flex-end',
     alignItems: 'center',
+    flex: 1
   },
   map: {
     ...StyleSheet.absoluteFillObject,
+    flex: 1
   },
   backbtn: {
     position: 'absolute', top: 60, left: 10, right: 0, bottom: 0,
