@@ -4,6 +4,15 @@ from models.user_model import Users
 from models import db
 
 class GigHandler():
+    def objdata(self, id, name, description, genre, location):
+        return {
+            "id": id,
+            "name": name,
+            "description": description,
+            "genre": genre,
+            "location": location
+        }
+
     def get_all(self):
         gigs = GigModel.query.all()
         results = [{
