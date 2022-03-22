@@ -37,3 +37,36 @@ class User(Users):
             return {"message" : "no id"}, 204
 
         return UserHandler.get_one(id)
+
+
+class SearchUsersByName(Resource):
+
+    # @jwt_required()
+    def get(self, query):
+
+        if not query:
+            return {"message" : "no query"}, 204
+
+        return UserHandler.search_name(query)
+
+
+class SearchUsersByGenre(Resource):
+
+    # @jwt_required()
+    def get(self, query):
+
+        if not query:
+            return {"message" : "no query"}, 204
+
+        return UserHandler.search_genre(query)
+
+
+class SearchUsersByInstrument(Resource):
+
+    # @jwt_required()
+    def get(self, query):
+
+        if not query:
+            return {"message" : "no query"}, 204
+
+        return UserHandler.search_instrument(query)

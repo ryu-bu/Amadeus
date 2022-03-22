@@ -71,4 +71,49 @@ class UserHandler():
         except Exception:
             return {"message": "update failed"}, 500
 
+    def search_name(query):
+        user = db.session.query(UserModel).filter(UserModel.name.op('regexp')(r'{}'.format(query))).all()
+      
+        print(user)
+
+        results = [{
+            "name": user.name,
+            "email": user.email,
+            "dob": user.dob,
+            "genre": user.genre,
+            "instrument": user.instrument,
+            "picture": user.pic,
+            "location": user.location
+        } for users in user]
+
+        return results, 200
+
+    def search_genre(query):
+        user = db.session.query(UserModel).filter(UserModel.genre.op('regexp')(r'{}'.format(query))).all()
     
+        results = [{
+            "name": user.name,
+            "email": user.email,
+            "dob": user.dob,
+            "genre": user.genre,
+            "instrument": user.instrument,
+            "picture": user.pic,
+            "location": user.location
+        } for users in user]
+        
+        return results, 200
+
+    def search_instrument(query):
+        user = db.session.query(UserModel).filter(UserModel.instrument.op('regexp')(r'{}'.format(query))).all()
+    
+        results = [{
+            "name": user.name,
+            "email": user.email,
+            "dob": user.dob,
+            "genre": user.genre,
+            "instrument": user.instrument,
+            "picture": user.pic,
+            "location": user.location
+        } for users in user]
+        
+        return results, 200
