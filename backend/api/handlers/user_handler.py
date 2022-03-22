@@ -72,9 +72,9 @@ class UserHandler():
             return {"message": "update failed"}, 500
 
     def search_name(query):
-        user = db.session.query(UserModel).filter(UserModel.name.op('regexp')(r'{}'.format(query))).all()
+        users = db.session.query(UserModel).filter(UserModel.name.regexp_match('{}'.format(query), 'i')).all()
       
-        print(user)
+        print(users)
 
         results = [{
             "name": user.name,
@@ -84,12 +84,12 @@ class UserHandler():
             "instrument": user.instrument,
             "picture": user.pic,
             "location": user.location
-        } for users in user]
+        } for user in users]
 
         return results, 200
 
     def search_genre(query):
-        user = db.session.query(UserModel).filter(UserModel.genre.op('regexp')(r'{}'.format(query))).all()
+        users = db.session.query(UserModel).filter(UserModel.genre.regexp_match('{}'.format(query), 'i')).all()
     
         results = [{
             "name": user.name,
@@ -99,12 +99,12 @@ class UserHandler():
             "instrument": user.instrument,
             "picture": user.pic,
             "location": user.location
-        } for users in user]
+        } for user in users]
         
         return results, 200
 
     def search_instrument(query):
-        user = db.session.query(UserModel).filter(UserModel.instrument.op('regexp')(r'{}'.format(query))).all()
+        users = db.session.query(UserModel).filter(UserModel.instrument.regexp_match('{}'.format(query), 'i')).all()
     
         results = [{
             "name": user.name,
@@ -114,6 +114,6 @@ class UserHandler():
             "instrument": user.instrument,
             "picture": user.pic,
             "location": user.location
-        } for users in user]
+        } for user in users]
         
         return results, 200
