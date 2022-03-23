@@ -8,6 +8,15 @@ const HomeScreen = ({route, navigation}) => {
     const {name, jwt, uuid} = route.params;
     return (
        <SafeAreaView style={styles.container}>
+           <SearchBar
+                placeholder="Search Here..."
+                lightTheme
+                round
+                value
+                // value={this.state.searchValue}
+                // onChangeText={(text) => this.searchFunction(text)}
+                // autoCorrect={false}
+            /> 
            <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.GridViewContainer}>
                 <TouchableOpacity 
