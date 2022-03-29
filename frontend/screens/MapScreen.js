@@ -81,7 +81,7 @@ export default class MapScreen extends React.Component {
       key={marker.locationName}
       coordinate={marker.coordinates}
       title={marker.gigName}
-      description={marker.locationName + "\n\n" + marker.description}
+      description={marker.locationName + "\n" + marker.description + "\n" + "Hosted by: " + marker.hostname}
       // stopPropagation={true}
       // onSelect={() => console.log("marker pressed")}
       // onCalloutPress={() => console.log("button pressed")}
@@ -127,7 +127,8 @@ export default class MapScreen extends React.Component {
             longitudeDelta: LONGITUDE_DELTA,
           },
           locationName: gig.location.name,
-          gigName: gig.name
+          gigName: gig.name,
+          hostname: gig.hostname
         });
       }
       this.setState({
@@ -227,12 +228,12 @@ export default class MapScreen extends React.Component {
                   alignSelf: 'flex-end' //for align to right
               }}
           >
-            <Button 
+            {/* <Button 
               // style={styles.footer}
               onPress={() => this.updateGig()}
               title="Update Map"
               color="blue"
-            />
+            /> */}
           </View>
           {this.mapMarkers()}
           {console.log("trigger map")}

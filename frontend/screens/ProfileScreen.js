@@ -38,7 +38,8 @@ export default function ProfileScreen(props, {navigation}){
         setLocation(`${loc[0].city}, ${loc[0].country}`);
     }
 
-    useEffect(() => {
+    const updateProf = () => {
+        setGigs([]);
         axios.get(restApiConfig.FIND_USER_ENDPOINT + props.uuid, {
             headers: {
                 Authorization: "Bearer " + props.jwt
@@ -57,6 +58,10 @@ export default function ProfileScreen(props, {navigation}){
         .catch(err => {
             console.log(err)
         });
+    }
+
+    useEffect(() => {
+        updateProf.call()
     }, []);
 
     const populateList = () => {
@@ -69,7 +74,22 @@ export default function ProfileScreen(props, {navigation}){
             <Text>Location: {gig.location.name}</Text>
             <Button
                 title="delete"
-                onPress={() => console.log("delete called")}
+                onPress={() => axios.delete(restApiConfig.GIG_ENDPOINT, {
+                    data: {
+                        "id": gig.id
+                    }
+                }, {
+                    header: {
+                        Authorization: "Bearer " + props.jwt
+                    }
+                }).then((res) => {
+                    console.log(res.data);
+                    updateProf.call(); // refresh the list
+                }).catch((err) => {
+                    console.log(err);
+                })
+            
+            }
             />
         </View>
         )
