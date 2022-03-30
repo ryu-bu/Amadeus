@@ -2,10 +2,7 @@
 PostgreSQL DB needed. 
 
 1. Go to directory /backend/api after cloning the Amadeus project
-```
-cd api
- ```
- 
+
 2. Create python env through
 ```
 python3 -m venv env
