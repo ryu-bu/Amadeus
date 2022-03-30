@@ -36,6 +36,7 @@ import {
 } from "react-native-elements";
 
 //import MainContainer from "./MainContainer";
+import OtherProfileScreen from "./screen/OtherProfileScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import HomeScreen from "./screens/HomeScreen";
 import MessageScreen from "./screens/MessageScreen";
@@ -131,7 +132,6 @@ function Home({route, navigation}) {
           <Tab.Screen
             name="Profile"
             children = {()=><ProfileScreen name={name} uuid={uuid} jwt={jwt}/>}
-            // component={ProfileScreenNavigator} // Replace Screen 4
           />
         </Tab.Navigator>
   );
@@ -164,6 +164,7 @@ const App: () => React$Node = () => {
           <Stack.Screen name="NestScreens" component={NestScreens} />
           <Stack.Screen name="CreateGig" component={CreateGigScreen} />
           <Stack.Screen name="Messages" component={Messages} options={{headerShown: true}} />
+          <Stack.Screen name="Profile Display" component={OtherProfileScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </>

@@ -3,7 +3,10 @@ import { Text, View, SafeAreaView, Image, TouchableOpacity, StyleSheet, ScrollVi
 import { useNavigation} from '@react-navigation/native';
 import { SearchBar, Buttons, ListItem, Avatar, FlatList } from 'react-native-elements';
 
-//combine tab with stack
+const displayOtherUserProfile = (userInfo, navigation) => {
+    navigation.navigate("Profile Display", {userInfo});
+}
+
 const HomeScreen = ({route, navigation}) => {
     const {name, jwt, uuid} = route.params;
     return (
