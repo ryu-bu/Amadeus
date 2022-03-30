@@ -4,7 +4,7 @@ from handlers.user_handler import UserHandler
 from flask_jwt_extended import jwt_required
 
 class Users(Resource):
-    # @jwt_required()
+    @jwt_required()
     def get(self):
         return UserHandler.get_all()
 
@@ -30,7 +30,7 @@ class Users(Resource):
 
 class User(Users):
 
-    # @jwt_required()
+    @jwt_required()
     def get(self, id):
 
         if not id:

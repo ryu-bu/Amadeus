@@ -14,3 +14,11 @@ class Gigs(Resource):
             return {"message": "no body received"}, 204
 
         return GigHandler().create(newGig)
+
+    def delete(self):
+        gig = request.get_json()
+
+        if not gig:
+            return {"message": "no body received"}, 204
+
+        return GigHandler().delete_gig(gig['id'])
