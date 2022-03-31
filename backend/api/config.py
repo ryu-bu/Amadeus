@@ -9,3 +9,5 @@ class Config(object):
     JWT_SECRET = os.environ.get("JWT_SECRET")
     KAFKA_SERVER = os.environ.get("KAFKA_SERVER")
     GIG_TOPIC = os.environ.get("GIG_TOPIC")
+    SUB_TOPIC = os.environ.get("SUB_TOPIC")
+    ENRICHED_TOPIC = os.environ.get("ENRICHED_TOPIC")

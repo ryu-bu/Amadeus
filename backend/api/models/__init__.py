@@ -11,3 +11,16 @@ gigProducer = KafkaProducer(
     key_serializer = str.encode,
     value_serializer = lambda v: json.dumps(v).encode('utf-8')
 )
+
+subProducer = KafkaProducer(
+    bootstrap_servers = Config.KAFKA_SERVER,
+    key_serializer = str.encode,
+    value_serializer = lambda v: json.dumps(v).encode('utf-8')
+)
+
+enrichedConsumer = KafkaConsumer(
+    Config.ENRICHED_TOPIC,
+    bootstrap_servers = Config.KAFKA_SERVER,
+    key_deserializer = lambda v: json.dumps(v).encode('utf-8'),
+    value_deserializer = lambda v: json.dumps(v).encode('utf-8')
+)
