@@ -36,7 +36,7 @@ import {
 } from "react-native-elements";
 
 //import MainContainer from "./MainContainer";
-import OtherProfileScreen from "./screen/OtherProfileScreen";
+import OtherProfileScreen from "./screens/OtherProfileScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import HomeScreen from "./screens/HomeScreen";
 import MessageScreen from "./screens/MessageScreen";
