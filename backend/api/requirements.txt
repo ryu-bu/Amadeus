@@ -9,4 +9,3 @@ alembic
 psycopg2
 google-auth
 flask_jwt_extended
-kafka-python

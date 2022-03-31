@@ -7,7 +7,7 @@ import axios from 'axios';
 
 
 const CreateGigScreen = ({route, navigation}) => {
-    const {name, jwt, uuid} = route.params;
+    const {ename, jwt, uuid} = route.params;
     // console.log(route.params)
 
     const [gigName, onChangeName] = useState("");
@@ -21,11 +21,9 @@ const CreateGigScreen = ({route, navigation}) => {
     const [members, onChangeMembers] = useState([]);
 
     const createGig = async() => {
-        console.log("user name: ", name)
         try{
             axios.post(restApiConfig.GIG_ENDPOINT, {
                 "name": gigName,
-                "user_name": name,
                 "description": description,
                 "genre": genre,
                 "location": location,
@@ -39,10 +37,10 @@ const CreateGigScreen = ({route, navigation}) => {
                 navigation.navigate("Home");
             })
             .catch((err) => {
-                console.log("server returned error ", err);
+                console.log(err);
             })
         } catch (err) {
-            console.log("Error with gig creation ", err);
+            console.log("Error with gig creation". err);
         }
     }
 

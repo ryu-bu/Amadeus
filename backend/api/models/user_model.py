@@ -13,8 +13,6 @@ class Users(db.Model):
     instrument = db.Column(db.String(500), nullable=True)
     dob = db.Column(db.String(200), nullable=True)
     gig = db.relationship('Gigplayers', back_populates='user', lazy=True) # relation to Gigplayer table
-    # following = db.relationship('Subscription', back_populates='user', lazy=True)
-    follower = db.relationship('Subscription', back_populates='musician', lazy=True)
 
     def __init__(self, name, email, pic):
         self.name = name

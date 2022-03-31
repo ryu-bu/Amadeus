@@ -1,3 +1,4 @@
+from operator import ge
 from models import db 
 from sqlalchemy.dialects.postgresql import UUID, JSON
 import uuid
