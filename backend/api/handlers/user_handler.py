@@ -1,8 +1,5 @@
 from models.user_model import Users as UserModel
 from models import db
-import json
-
-from handlers.gig_handler import GigHandler
 
 class UserHandler():
     def get_all():
@@ -40,12 +37,6 @@ class UserHandler():
         if not user:
             return {"message" : "no match"}, 404
 
-        gigs = []
-
-        for item in user.gig:
-            gig = item.gig
-            gigs.append(GigHandler().objdata(str(gig.id), gig.name, gig.description, gig.genre, gig.location))
-
         return {
             "name": user.name,
             "email": user.email,
@@ -53,8 +44,7 @@ class UserHandler():
             "genre": user.genre,
             "instrument": user.instrument,
             "picture": user.pic,
-            "location": user.location,
-            "gigs": gigs
+            "location": user.location
         }, 200
 
     def create(user):

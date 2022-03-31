@@ -126,13 +126,11 @@ function Home({route, navigation}) {
           />
           <Tab.Screen
             name="Map"
-            // component={MapScreen} // Replaced Screen 3
-            options={{unmountOnBlur: true}}
-            children = {()=><MapScreen name={name} uuid={uuid} jwt={jwt}/>}          />
+            component={MapScreen} // Replaced Screen 3
+          />
           <Tab.Screen
             name="Profile"
             children = {()=><ProfileScreen name={name} uuid={uuid} jwt={jwt}/>}
-            options={{unmountOnBlur: true}}
             // component={ProfileScreenNavigator} // Replace Screen 4
           />
         </Tab.Navigator>
