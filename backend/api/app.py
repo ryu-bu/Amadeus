@@ -1,6 +1,6 @@
 from flask import Flask, Blueprint
 from flask_restful import Api
-from resources.Users import Users, User, SearchUsersByName, SearchUsersByGenre, SearchUsersByInstrument
+from resources.Users import Users, User, SearchUsersByName, SearchUsersByGenre, SearchUsersByInstrument, SearchUsersAdvancedAnd, SearchUsersAdvancedOr
 from resources.Login import Login, LoginTest, RefreshToken
 from resources.Gigs import Gigs
 from config import Config
@@ -29,6 +29,9 @@ def create_app():
     api.add_resource(SearchUsersByName, '/users/name/<string:query>')
     api.add_resource(SearchUsersByGenre, '/users/genre/<string:query>')
     api.add_resource(SearchUsersByInstrument, '/users/instrument/<string:query>')
+    # advanced search api
+    api.add_resource(SearchUsersAdvancedAnd, '/users/advanced_and')
+    api.add_resource(SearchUsersAdvancedOr, '/users/advanced_or')
 
     
     # for testing

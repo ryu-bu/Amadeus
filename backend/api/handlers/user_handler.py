@@ -1,5 +1,9 @@
+from operator import and_, or_
 from models.user_model import Users as UserModel
 from models import db
+
+# maximum amount of users that can be returned form  a single query
+MAX_RETURNED_USERS = 50;
 
 class UserHandler():
     def get_all():
@@ -70,9 +74,55 @@ class UserHandler():
 
         except Exception:
             return {"message": "update failed"}, 500
+    
+    # perform advanced search for users matching all of the parameters
+    def advanced_search_and(name= '.*', genre = '.*', instrument = '.*'):
+        users = db.session.query(UserModel).filter(
+            and_(
+                UserModel.name.regexp_match('{}'.format(name), 'i'),
+                UserModel.genre.regexp_match('{}'.format(genre), 'i'),
+                UserModel.instrument.regexp_match('{}'.format(instrument), 'i')
+            )
+        ).limit(MAX_RETURNED_USERS).all()
+      
+        print(users)
+
+        results = [{
+            "name": user.name,
+            "email": user.email,
+            "dob": user.dob,
+            "genre": user.genre,
+            "instrument": user.instrument,
+            "picture": user.pic,
+            "location": user.location
+        } for user in users]
+
+        return results, 200
+
+    # perform advanced search for users matching at least one of the  parameters 
+    def advanced_search_or(name = '.*', genre = '.*', instrument = '.*'):
+        users = db.session.query(UserModel).filter(
+            or_(
+                UserModel.name.regexp_match('{}'.format(name), 'i'),
+                UserModel.genre.regexp_match('{}'.format(genre), 'i'),
+                UserModel.instrument.regexp_match('{}'.format(instrument), 'i')
+            )
+        ).limit(MAX_RETURNED_USERS).all()
+      
+        results = [{
+            "name": user.name,
+            "email": user.email,
+            "dob": user.dob,
+            "genre": user.genre,
+            "instrument": user.instrument,
+            "picture": user.pic,
+            "location": user.location
+        } for user in users]
+
+        return results, 200
 
     def search_name(query):
-        users = db.session.query(UserModel).filter(UserModel.name.regexp_match('{}'.format(query), 'i')).all()
+        users = db.session.query(UserModel).filter(UserModel.name.regexp_match('{}'.format(query), 'i')).limit(MAX_RETURNED_USERS).all()
       
         print(users)
 
@@ -89,7 +139,7 @@ class UserHandler():
         return results, 200
 
     def search_genre(query):
-        users = db.session.query(UserModel).filter(UserModel.genre.regexp_match('{}'.format(query), 'i')).all()
+        users = db.session.query(UserModel).filter(UserModel.genre.regexp_match('{}'.format(query), 'i')).limit(MAX_RETURNED_USERS).all()
     
         results = [{
             "name": user.name,
@@ -104,7 +154,7 @@ class UserHandler():
         return results, 200
 
     def search_instrument(query):
-        users = db.session.query(UserModel).filter(UserModel.instrument.regexp_match('{}'.format(query), 'i')).all()
+        users = db.session.query(UserModel).filter(UserModel.instrument.regexp_match('{}'.format(query), 'i')).limit(MAX_RETURNED_USERS).all()
     
         results = [{
             "name": user.name,
