@@ -83,7 +83,7 @@ function DrawerNavi({route, navigation}) {
 }
 
 function Home({route, navigation}) {
-  const {email, name, jwt, uuid, picture} = route.params;
+  const {email, name, jwt, uuid} = route.params;
   return (
     <Tab.Navigator
           screenOptions={({ route }) => ({
@@ -121,7 +121,7 @@ function Home({route, navigation}) {
           <Tab.Screen
             name="Message"
             component={MessageScreen}
-            initialParams={{name: name, uuid: uuid, jwt: jwt, picture: picture}}
+            initialParams={{name: name, uuid: uuid, jwt: jwt}}
             //children = {()=><MessageScreen name={name} uuid={uuid} jwt={jwt}/>} // Replaced Screen 2
           />
           <Tab.Screen

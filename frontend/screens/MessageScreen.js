@@ -48,7 +48,7 @@ const chatList = [
     }*/
 ]
 
-const createChat = async (userID, userDisplayName, picture, otherUserID, otherUserDisplayName, otherPicture) => {
+const createChat = async (userID, userDisplayName, otherUserID, otherUserDisplayName) => {
   // create new thread using firebase & firestore
   let response = await addDoc(
     collection(firestore, MESSAGE_THREADS_COLLECTION),
@@ -57,8 +57,8 @@ const createChat = async (userID, userDisplayName, picture, otherUserID, otherUs
       createdAt: new Date().getTime(),
       system: true,
       users: [
-        { _id: userID, displayName: userDisplayName, avatar_url: picture},
-        { _id: otherUserID, displayName: otherUserDisplayName, avatar_url: otherPicture},
+        { _id: userID, displayName: userDisplayName },
+        { _id: otherUserID, displayName: otherUserDisplayName},
       ],
     }
   ); 
@@ -91,7 +91,8 @@ const retrieveDiscoverChats = async (userID, discoverList, setDiscoverList) => {
 }
 
 export default function MessageScreen({route, navigation}) {
-  const {name, uuid, jwt, picture} = route.params;
+  const {name, uuid, jwt} = route.params;
+
   const [chatMode, setChatMode] = useState(0);
 
   const [existingThreads, setExistingThreads] = useState([]);
@@ -99,19 +100,19 @@ export default function MessageScreen({route, navigation}) {
 
   const [discoverList, setDiscoverList] = useState([
     // add test user. will show if there are no other users to chat with
-    /*{
+    {
       _id: '19NQlBhQUjKijYvLbG2w',
       displayName: 'James Wasson',
       avatar_url: 'https://www.bu.edu/eng/files/2018/03/Osama-Alshaykh-700x700.jpg',
       subtitle: 'Worlds #1 best man',
-    }*/
+    }
   ])
 
   useEffect(() => {
     const q = query(
       collection(firestore, MESSAGE_THREADS_COLLECTION),
       orderBy("createdAt", "desc"),
-      where("users", "array-contains", {_id: uuid, displayName: name, avatar_url: picture})
+      where("users", "array-contains", {_id: uuid, displayName: name})
     );
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const existingThreads = querySnapshot.docs.map((documentSnapshot) => {
@@ -119,11 +120,10 @@ export default function MessageScreen({route, navigation}) {
           _id: documentSnapshot.id,
           text: documentSnapshot.text,
           latestMessage: { text: "" },
-          user: uuid !== documentSnapshot.data().users[0]["_id"] && documentSnapshot.data().users[0] || documentSnapshot.data().users[1],
           ...documentSnapshot.data(),
         };
       });
-      
+
       setExistingThreads(existingThreads);
       if (loading) {
         setLoading(false);
@@ -160,9 +160,9 @@ export default function MessageScreen({route, navigation}) {
         {existingThreads.map((l, i) => (
           <TouchableOpacity onPress={() => navigation.navigate("Messages", { thread: l, uuid: uuid, name: name })} >
             <ListItem key={l._id} bottomDivider>
-              <Avatar source={name !== l.users[0]["displayName"] && {uri: l.users[0]["avatar_url"]} || {uri: l.users[1]["avatar_url"]}} />
+              <Avatar source={{uri: l.avatar_url}} />
               <ListItem.Content>
-                <ListItem.Title>{l.user.displayName}</ListItem.Title>
+                <ListItem.Title>{name !== l.users[0]["displayName"] && l.users[0]["displayName"] || l.users[1]["displayName"]}</ListItem.Title>
                 <ListItem.Subtitle>{l.latestMessage.text.slice(0, 90)}</ListItem.Subtitle>
               </ListItem.Content>
               <ListItem.Chevron/>
@@ -173,7 +173,7 @@ export default function MessageScreen({route, navigation}) {
         <ScrollView style={{flex: 10}}> 
           {discoverList.map((l, i) => (
             <TouchableOpacity onPress={async() => {
-              createChat(uuid, name, picture, l._id, l.displayName, l.avatar_url);
+              createChat(uuid, name, l._id, l.displayName);
             }} >
               <ListItem key={l._id} bottomDivider>
                 <Avatar source={{uri: l.avatar_url}} />

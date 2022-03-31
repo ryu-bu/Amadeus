@@ -199,7 +199,7 @@ export default function LoginScreen({ navigation }) {
 
                     
                     // console.log("jwt saved: " + deviceStorage.getJWT("id_token"));
-                    console.log(result.user)
+
                     if (res.data["message"] === "existing user"){
                         // console.log("AHHHHHHHH")
                         // take this out later
@@ -208,8 +208,7 @@ export default function LoginScreen({ navigation }) {
                             email: result.user.email,
                             name: result.user.name,
                             jwt: jwt,
-                            uuid: uuid,
-                            picture: result.user.photoUrl,
+                            uuid: uuid
                         })
                         
                     } else {
