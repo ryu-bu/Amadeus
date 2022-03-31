@@ -1,9 +1,7 @@
 from models.gig_model import Gigs as GigModel
 from models.gigPlayer_model import Gigplayers
 from models.user_model import Users
-from models import db, gigProducer
-# from kafka import KafkaTimeoutError
-from config import Config
+from models import db
 
 class GigHandler():
     def objdata(self, id, name, description, genre, location):
@@ -12,17 +10,6 @@ class GigHandler():
             "name": name,
             "description": description,
             "genre": genre,
-            "location": location
-        }
-
-    def kafkaData(self, gig_id, host_id, gig_name, host_name, description, genre, location):
-        return {
-            "gig_id": gig_id,
-            "host_id": host_id,
-            "gig_name": gig_name,
-            "host_name": host_name,
-            "description": description,
-            "genre": genre, 
             "location": location
         }
 
@@ -47,15 +34,6 @@ class GigHandler():
         gigmodel = GigModel(gig['name'], gig['description'], gig['genre'], gig['location'])
         
         print("creating a new gig: ", gig)
-
-        kafka_record = self.kafkaData(gigmodel.id, gig['uuid'], gig['name'], gig['user_name'], gig['description'], gig['genre'], gig['location'])
-
-        try:
-            gigProducer.send(Config.GIG_TOPIC, key=kafka_record['host_id'], value=kafka_record)
-            gigProducer.flush()
-        
-        except KafkaTimeoutError as kte:
-            print("KafkaLogsProducer timeout sending log to Kafka: %s", kte)
 
         try:
             db.session.add(gigmodel)
