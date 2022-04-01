@@ -38,6 +38,7 @@ import {
 } from "react-native-elements";
 
 //import MainContainer from "./MainContainer";
+import OtherProfileScreen from "./screens/OtherProfileScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import HomeScreen from "./screens/HomeScreen";
 import MessageScreen from "./screens/MessageScreen";
@@ -85,7 +86,7 @@ function DrawerNavi({route, navigation}) {
 }
 
 function Home({route, navigation}) {
-  const {email, name, jwt, uuid} = route.params;
+  const {email, name, jwt, uuid, picture} = route.params;
   return (
     <Tab.Navigator
           screenOptions={({ route }) => ({
@@ -123,7 +124,7 @@ function Home({route, navigation}) {
           <Tab.Screen
             name="Message"
             component={MessageScreen}
-            initialParams={{name: name, uuid: uuid, jwt: jwt}}
+            initialParams={{name: name, uuid: uuid, jwt: jwt, picture: picture}}
             //children = {()=><MessageScreen name={name} uuid={uuid} jwt={jwt}/>} // Replaced Screen 2
           />
           <Tab.Screen
@@ -201,9 +202,10 @@ const App: () => React$Node = () => {
           <Stack.Screen name="Location Selection Screen" component={LocationSelect} />
 
           <Stack.Screen name="Main" component={Home} />
-          <Stack.Screen name="NestScreens" component={NestScreens} />
-          <Stack.Screen name="CreateGig" component={CreateGigScreen} />
+          <Stack.Screen name="NestScreens" component={NestScreens} options={{headerShown: true}}/>
+          <Stack.Screen name="Create Gig" component={CreateGigScreen} options={{headerShown: true}} />
           <Stack.Screen name="Messages" component={Messages} options={{headerShown: true}} />
+          <Stack.Screen name="Profile Display" component={OtherProfileScreen} options={{headerShown: true}}/>
         </Stack.Navigator>
       </NavigationContainer>
     </>

@@ -37,3 +37,68 @@ class User(Users):
             return {"message" : "no id"}, 204
 
         return UserHandler.get_one(id)
+
+class SearchUsersAdvancedAnd(Resource):
+    # @jwt_required()
+    def get(self):
+        name  = request.args.get('name', None)
+        genre  = request.args.get('genre', None)
+        instrument  = request.args.get('instrument', None)
+
+        if not name or genre or instrument:
+            return {"message" : "no query"}, 204
+
+        name = ".*" if (name == "") else name
+        genre = ".*" if (genre == "") else genre
+        instrument = ".*" if (instrument == "") else instrument
+
+        return UserHandler.advanced_search_and(name, genre, instrument)
+
+class SearchUsersAdvancedOr(Resource):
+    # @jwt_required()
+    def get(self):
+        name  = request.args.get('name', None)
+        genre  = request.args.get('genre', None)
+        instrument  = request.args.get('instrument', None)
+
+        if not name or genre or instrument:
+            return {"message" : "no query"}, 204
+
+        name = ".*" if (name == "") else name
+        genre = ".*" if (genre == "") else genre
+        instrument = ".*" if (instrument == "") else instrument
+
+        return UserHandler.advanced_search_or(name, genre, instrument)
+
+
+class SearchUsersByName(Resource):
+
+    # @jwt_required()
+    def get(self, query):
+
+        if not query:
+            return {"message" : "no query"}, 204
+
+        return UserHandler.search_name(query)
+
+
+class SearchUsersByGenre(Resource):
+
+    # @jwt_required()
+    def get(self, query):
+
+        if not query:
+            return {"message" : "no query"}, 204
+
+        return UserHandler.search_genre(query)
+
+
+class SearchUsersByInstrument(Resource):
+
+    # @jwt_required()
+    def get(self, query):
+
+        if not query:
+            return {"message" : "no query"}, 204
+
+        return UserHandler.search_instrument(query)

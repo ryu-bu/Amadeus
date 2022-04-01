@@ -1,11 +1,11 @@
-from resources.Subscribe import Subscribe
+#from resources.Subscribe import Subscribe
 from flask import Flask, Blueprint
 from flask_restful import Api
-from resources.Users import Users, User
+from resources.Users import Users, User, SearchUsersByName, SearchUsersByGenre, SearchUsersByInstrument, SearchUsersAdvancedAnd, SearchUsersAdvancedOr
 from resources.Login import Login, LoginTest, RefreshToken
 from resources.Gigs import Gigs
 from config import Config
-from models import db, enrichedConsumer
+from models import db#, enrichedConsumer
 from flask_migrate import Migrate
 from datetime import timedelta
 
@@ -26,7 +26,15 @@ def create_app():
     api.add_resource(Login, '/login')
     api.add_resource(RefreshToken, '/refresh')
     api.add_resource(Gigs, '/gigs/')
-    api.add_resource(Subscribe, '/subscribe/')
+    # search api
+    api.add_resource(SearchUsersByName, '/users/name/<string:query>')
+    api.add_resource(SearchUsersByGenre, '/users/genre/<string:query>')
+    api.add_resource(SearchUsersByInstrument, '/users/instrument/<string:query>')
+    # advanced search api
+    api.add_resource(SearchUsersAdvancedAnd, '/users/advanced_and')
+    api.add_resource(SearchUsersAdvancedOr, '/users/advanced_or')
+
+    #api.add_resource(Subscribe, '/subscribe/')
     
     # for testing
     api.add_resource(LoginTest, '/dev/login')
@@ -54,7 +62,7 @@ if __name__ == '__main__':
     with app.app_context():
         from models.gig_model import Gigs as gigModel
         from models.gigPlayer_model import Gigplayers
-        from models.subscription_model import Subscription
+        #from models.subscription_model import Subscription
         
         db.create_all()
         db.session.commit()

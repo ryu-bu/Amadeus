@@ -1,17 +1,17 @@
 from config import Config
 from models.subscription_model import Subscription as SubModel
 from models.user_model import Users as UserModel
-from models import db, subProducer
+from models import db#, subProducer
 import json
 
 class SubscriptionHandler():
-    def kafka_producer(self, key, value):
-        try:
-            subProducer.send(Config.SUB_TOPIC, key=key, value=value)
-            subProducer.flush()
+    # def kafka_producer(self, key, value):
+    #     try:
+    #         subProducer.send(Config.SUB_TOPIC, key=key, value=value)
+    #         subProducer.flush()
 
-        except KafkaTimeoutError as kte:
-            print("KafkaLogsProducer timeout sending log to Kafka: %s", kte)
+    #     except KafkaTimeoutError as kte:
+    #         print("KafkaLogsProducer timeout sending log to Kafka: %s", kte)
             
     def create(self, sub):
         musician = sub["musician"]
@@ -34,9 +34,9 @@ class SubscriptionHandler():
 
             followers.append(push_token)
 
-            self.kafka_producer(musician, {
-                "followers": followers
-                })
+            # self.kafka_producer(musician, {
+            #     "followers": followers
+            #     })
 
             print("followers now: ", {
                 "followers": followers
