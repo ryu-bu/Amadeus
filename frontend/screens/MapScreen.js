@@ -17,6 +17,7 @@ import {
   Image,
   ImageBackground,
   KeyboardAvoidingView,
+  TouchableOpacity
 } from 'react-native';
 //import { stringLiteral } from '@babel/types';
 //import { Ionicons } from '@expo/vector-icons';
@@ -40,10 +41,11 @@ const SPACE = 0.01;
 //const [region, setRegion] = useState(false);
 
 export default class MapScreen extends React.Component {
-
+  navigation = this.props.navigation;
   constructor(props) {
     super(props);
 
+    this.name = props.name;
     this.uuid = props.uuid;
     this.jwt = props.jwt;
 
@@ -199,7 +201,7 @@ export default class MapScreen extends React.Component {
 
   render() {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container}>  
         <MapView
           provider={PROVIDER_GOOGLE}
           ref={(ref) => (this.mapView = ref)}
@@ -221,6 +223,17 @@ export default class MapScreen extends React.Component {
           // onChangeText={food => setQuery(food)} //onChangeText is how you store user input
           // onDragEnd={(e) => this.setState({ x: e.nativeEvent.coordinate })}
           />
+        {/* <View style={{ flex: .5, justifyContent: 'center', alignItems: 'center'}}>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate("CreateGig", {
+              name: this.props.name,
+              uuid: this.props.uuid,
+              jwt: this.props.jwt
+            }
+            )}> 
+            <Text>Create Gig</Text>           
+          </TouchableOpacity>
+        </View> */}
            <View
               style={{
                   position: 'absolute',//use absolute position to show button on top of the map
@@ -238,7 +251,7 @@ export default class MapScreen extends React.Component {
           {this.mapMarkers()}
           {console.log("trigger map")}
         </MapView >
-
+        
         <View style={styles.panel}>
           <GooglePlacesAutocomplete
             //style={styles.header}
@@ -401,26 +414,22 @@ const styles = StyleSheet.create({
   footer: {
     backgroundColor: 'white',
     bottom: 0,
-    position: 'absolute',
     width: '100%',
     height: '30%',
   },
   header: {
-    position: 'absolute',
     top: 50,
     right: 0,
     left: 0,
   },
   panel: {
-    position: 'absolute',
     top: 50,
     alignSelf: 'stretch',
     right: 0,
     left: 0,
-    flex: 1,
+    flex: 5,
   },
   panelFill: {
-    position: 'absolute',
     top: 0,
     alignSelf: 'stretch',
     right: 0,
