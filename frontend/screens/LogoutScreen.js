@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Text, View, SafeAreaView, Image, TouchableOpacity, StyleSheet, ScrollView, Button, Alert } from 'react-native';
 
-export default function LogoutScreen() {
+const LogoutScreen = ({route,navigation}) => {
     return (
       <SafeAreaView style={{ flex: 1}}>
         <Image source={require('../src/images/logout.png')} style={styles.image} resizeMode="cover"></Image>
@@ -11,12 +11,13 @@ export default function LogoutScreen() {
           <Button title="Cancel"
           onPress={() => Alert.alert('Cancel is pressed')} />
           <Button title="Yes"
-          onPress={() => Alert.alert('Logout')} />
+          onPress={() => navigation.navigate("Login Screen")} />
           </View>
         </View>
       </SafeAreaView>
     )
   }
+export default LogoutScreen
 
   const styles = StyleSheet.create({
     image: {

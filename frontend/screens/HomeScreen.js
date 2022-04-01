@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Text, View, SafeAreaView, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { useNavigation} from '@react-navigation/native';
-import { SearchBar, Buttons, ListItem, Avatar, FlatList } from 'react-native-elements';
+import { SearchBar, Button, ListItem, Avatar, FlatList } from 'react-native-elements';
 
 const displayOtherUserProfile = (userInfo, navigation) => {
     navigation.navigate("Profile Display", {userInfo});
@@ -10,22 +10,41 @@ const displayOtherUserProfile = (userInfo, navigation) => {
 const HomeScreen = ({route, navigation}) => {
     const {name, jwt, uuid} = route.params;
     // console.log("user name in home screen: ", name)
+    const [searchQuery, setSearchQuery] = React.useState('');
+
+    const onChangeSearch = query => setSearchQuery(query);
     return (
        <SafeAreaView style={styles.container}>
-           <SearchBar
-                placeholder="Search Here..."
+           {/* <SearchBar
+                placeholder="Search..."
                 lightTheme
-                round
-                value
+                //round
+                //value
                 // value={this.state.searchValue}
                 // onChangeText={(text) => this.searchFunction(text)}
                 // autoCorrect={false}
-            /> 
+            />  */}
+            <SearchBar
+                placeholder="Search"
+                lightTheme
+                onChangeText={onChangeSearch}
+                value={searchQuery}
+    />
+            <Button 
+                onPress={() => navigation.navigate("Create Gig", {
+                name: name,
+                jwt: jwt,
+                uuid: uuid
+                })}
+                title="Create Gig"
+                color="#e3e3e3"
+                background="#d3d3d3"
+            />
            <ScrollView showsVerticalScrollIndicator={false}>
-                <View style={styles.GridViewContainer}>
+                {/* <View style={styles.GridViewContainer}>
                 <TouchableOpacity 
                 style={styles.mainProfile}
-                onPress={() => navigation.navigate("CreateGig", {
+                onPress={() => navigation.navigate("Create Gig", {
                     name: name,
                     jwt: jwt,
                     uuid: uuid
@@ -33,7 +52,7 @@ const HomeScreen = ({route, navigation}) => {
                    <Image source={require('../src/images/drums.jpeg')} resizeMode='contain' style={{flex:.6}} />
                    <Text style={{flex:1}}>     Create Gigs </Text>
                </TouchableOpacity>
-                </View>
+                </View> */}
                 <View style={styles.GridViewContainer}>
                 <TouchableOpacity 
                 style={styles.mainProfile}

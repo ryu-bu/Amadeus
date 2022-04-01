@@ -49,7 +49,6 @@ const CreateGigScreen = ({route, navigation}) => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.questionwrapper}>
-            <Text style={styles.title}>Create Gig!</Text>
              <Text style={styles.section}>1. Gig Name</Text>
             <TextInput
                 style={styles.input}
@@ -166,7 +165,7 @@ const styles = StyleSheet.create({
         height: 40,
         margin: 12,
         borderWidth: 1,
-        padding: 10,
+        padding: 10
       },
     inputBox: {
         height: 80,
