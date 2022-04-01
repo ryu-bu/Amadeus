@@ -4,6 +4,10 @@ import { useNavigation} from '@react-navigation/native';
 import { SearchBar, Button, ListItem, Avatar, FlatList } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons'; 
+//import { Collapsible } from 'react-native-collapsible';
+//import {Dropdown } from 'react-native-dropdown';
+import SelectBox  from 'react-native-multi-selectbox';
+import  xorBy  from 'lodash';
 
 import axios from 'axios';
 import { restApiConfig } from './../config';
@@ -12,7 +16,102 @@ const displayOtherUserProfile = (user, navigation) => {
     navigation.navigate("Profile Display", {user});
 }
 
+const GENRE_OPTIONS = [
+    {
+        item: 'Alternative',
+        id: 'AL',
+    },
+    {
+        item: 'Classical',
+        id: 'CL',
+    },
+    {
+        item: 'Blues',
+        id: 'BL',
+    },
+    {
+        item: 'Country',
+        id: 'CR',
+    },
+    {
+        item: 'EMD',
+        id: 'ED',
+    },
+    {
+        item: 'Hip-Hop',
+        id: 'HP',
+    },
+    {
+        item: 'Indie',
+        id: 'ID',
+    },
+]
+
+const INSTR_OPTIONS = [
+    {
+        item: 'Keyboard',
+        id: 'KB',
+    },
+    {
+        item: 'Guitar',
+        id: 'GT',
+    },
+    {
+        item: 'Piano',
+        id: 'PN',
+    },
+    {
+        item: 'Flute',
+        id: 'FT',
+    },
+    {
+        item: 'Violin',
+        id: 'VL',
+    },
+    {
+        item: 'Drum',
+        id: 'DM',
+    },
+    {
+        item: 'Saxophone',
+        id: 'SE',
+    },
+    {
+        item: 'Cello',
+        id: 'CL',
+    },
+    {
+        item: 'Clarinet',
+        id: 'CT',
+    },
+    {
+        item: 'Trumpet',
+        id: 'TR',
+    },
+    {
+        item: 'Harp',
+        id: 'HA',
+    },
+]
 const HomeScreen = ({route, navigation}) => {
+
+    // const [collapsed, setCollapsed] = useState(true);
+
+    // const toggleExpanded = () => {
+    //     //Toggling the state of single Collapsible
+    //     setCollapsed(!collapsed);
+    //   };
+    
+    // const setSections = (sections) => {
+    // //setting up a active section state
+    // setActiveSections(sections.includes(undefined) ? [] : sections);
+    // };
+
+    const [selectedInst, setSelectedInst] = useState("");
+    const [selectedGenr, setSelectedGenr] = useState("");
+
+    //const [selectedTeams, setSelectedTeams] = useState([])
+
     const {name, jwt, uuid} = route.params;
 
     const [nameQuery, setNameQuery] = useState("");
@@ -39,7 +138,7 @@ const HomeScreen = ({route, navigation}) => {
             endpoint = restApiConfig.USER_SEARCH_OR_ENDPOINT;
         }
     
-        axios.get(endpoint, { params: { name: nameQuery, genre: genreQuery, intrument: instrumentQuery }})
+        axios.get(endpoint, { params: { name: nameQuery, genre: selectedGenr, intrument: selectedInst }})
         .then((res) => 
         { 
             if (res.data.length > 0) {
@@ -64,26 +163,60 @@ const HomeScreen = ({route, navigation}) => {
     
     return (
        <SafeAreaView style={styles.container}>
-            <SearchBar
-                placeholder="Search by name"
-                lightTheme
-                onChangeText={onChangeSearch}
-                value={nameQuery}
-                searchIcon={false}
-                clearIcon={()=>< Feather name="search" size={32} color="black" />}
-                onSubmitEditing={searchForUser}
-                autoCorrect={false}
-            />
-            <Button 
-                onPress={() => navigation.navigate("Create Gig", {
-                name: name,
-                jwt: jwt,
-                uuid: uuid
-                })}
-                title="Create Gig"
-                color="#e3e3e3"
-                background="#d3d3d3"
-            />
+                <View style={styles.row}>
+                    <SearchBar
+                        placeholder="Search by name"
+                        lightTheme
+                        onChangeText={onChangeSearch}
+                        value={nameQuery}
+                        searchIcon={false}
+                        clearIcon={()=>< Feather name="search" size={32} color="black" />}
+                        onSubmitEditing={searchForUser}
+                        autoCorrect={false}
+                        style={{flex: 5, flexBasis: 320}}
+                    />
+                    {/* <Button
+                        onPress={() => {navigation.navigate("Create Gig", {
+                        name: name,
+                        jwt: jwt,
+                        uuid: uuid
+                        })}}
+                        icon={()=><Feather name="filter" size={25} color="black"/>}                      
+                        style={{padding: 10, flex: 2}}
+                    /> */}
+                    <TouchableOpacity
+                        style={{padding: 10, flex: 2}}
+                        onPress={() => navigation.navigate("NestScreens")}>
+                        <Feather name="filter" size={25} color="black" backgroundColor="grey"/>                      
+                    </TouchableOpacity>
+                   {/*  <Collapsible collapsed={collapsed} align="center">
+                        <View style={styles.content}>
+                        <Text style={{ textAlign: 'center' }}>
+                            This is a dummy text of Single Collapsible View
+                        </Text>
+                        </View>
+                    </Collapsible> */}
+                </View>
+                <View style={{ margin: 10 }}>
+                    <Text style={{ fontSize: 18, paddingBottom: 10 }}>Search by Instrument</Text>
+                    <SelectBox
+                        label="Select instrument"
+                        options={INSTR_OPTIONS}
+                        value={selectedInst}
+                        onChange={onChange()}
+                        hideInputFilter={false}
+                    />
+                </View>
+                <View style={{ margin: 10 }}>
+                    <Text style={{ fontSize: 18, paddingBottom: 10 }}>Search by Genre</Text>
+                    <SelectBox
+                        label="Select Genre"
+                        options={GENRE_OPTIONS}
+                        value={selectedGenr}
+                        onChange={onChangeG()}
+                        hideInputFilter={false}
+                    />
+                </View>
            <ScrollView showsVerticalScrollIndicator={false}>
                 {userList.map((l, i) => (
                 <TouchableOpacity onPress={() => displayOtherUserProfile(l, navigation) } >
@@ -141,12 +274,32 @@ const HomeScreen = ({route, navigation}) => {
                </View>
                 */}
            </ScrollView> 
+           <Button 
+                onPress={() => navigation.navigate("Create Gig", {
+                name: name,
+                jwt: jwt,
+                uuid: uuid
+                })}
+                title="Create Gig"
+                color="#e3e3e3"
+                background="#d3d3d3"
+            />
        </SafeAreaView>
     );
+    function onChange() {
+        return (val) => setSelectedInst(val)
+      }
+    function onChangeG() {
+        return (val) => setSelectedGenr(val)
+    }
 }
 
 export default HomeScreen 
+
    const styles = StyleSheet.create({
+    row: {
+        flexDirection: "row",
+    },
     mainProfile: {
         flexDirection:"row",
         alignItems:'center',

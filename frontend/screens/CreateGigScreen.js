@@ -49,7 +49,7 @@ const CreateGigScreen = ({route, navigation}) => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.questionwrapper}>
-             <Text style={styles.section}>1. Gig Name</Text>
+            <Text style={styles.section}>1. Gig Name</Text>
             <TextInput
                 style={styles.input}
                 onChangeText={onChangeName}
@@ -147,7 +147,8 @@ const styles = StyleSheet.create({
         fontSize:30
     },
     section:{
-        fontSize:15
+        fontSize:15,
+        paddingHorizontal: 10
     },
     screen:{
         flex:1,
