@@ -167,7 +167,7 @@ const App: () => React$Node = () => {
           <Stack.Screen name="NestScreens" component={NestScreens} options={{headerShown: true}}/>
           <Stack.Screen name="Create Gig" component={CreateGigScreen} options={{headerShown: true}} />
           <Stack.Screen name="Messages" component={Messages} options={{headerShown: true}} />
-          <Stack.Screen name="Profile Display" component={OtherProfileScreen} />
+          <Stack.Screen name="Profile Display" component={OtherProfileScreen} options={{headerShown: true}}/>
         </Stack.Navigator>
       </NavigationContainer>
     </>

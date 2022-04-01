@@ -2,47 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Text, View, SafeAreaView, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { useNavigation} from '@react-navigation/native';
 import { SearchBar, Button, ListItem, Avatar, FlatList } from 'react-native-elements';
+import { Ionicons } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons'; 
 
 import axios from 'axios';
 import { restApiConfig } from './../config';
 
 const displayOtherUserProfile = (user, navigation) => {
     navigation.navigate("Profile Display", {user});
-}
-
-const searchForUser = (email, nameQuery, genreQuery, instrumentQuery, useAnd) => {
-
-    endpoint = "";
-
-    if (useAnd) {
-        endpoint = restApiConfig.USER_SEARCH_AND_ENDPOINT;
-    } else {
-        endpoint = restApiConfig.USER_SEARCH_OR_ENDPOINT;
-    }
-
-    axios.get(endpoint, { params: { name: nameQuery, genre: genreQuery, intrument: instrumentQuery }})
-    .then((res) => 
-    { 
-        if (res.data.length > 0) {
-            userList = [];
-
-            res.data.forEach(element => {
-                if (element.email !== email) {
-                    userList.push({
-                        name: element.name,
-                        email: element.email,
-                        dob: element.dob,
-                        genre: element.genre,
-                        instrument: element.instrument,
-                        picture: element.picture,
-                        location: element.location,
-                    });
-                }
-            });
-        }
-    
-        return userList;
-    });
 }
 
 const HomeScreen = ({route, navigation}) => {
@@ -53,29 +20,60 @@ const HomeScreen = ({route, navigation}) => {
     const [genreQuery, setGenreQuery] = useState("");
 
     const [userList, setUserList] = useState([]);
+
+    // use to change whether all search parameters need to be found, or just one of them
+    // ex. find user by name AND genre AND instrument 
+    const [useAnd, setUseAnd] = useState(true);
   
     // console.log("user name in home screen: ", name)
     const [searchQuery, setSearchQuery] = React.useState('');
 
-    const onChangeSearch = query => setSearchQuery(query);
+    const onChangeSearch = (query) => setNameQuery(query);
+
+    const searchForUser = () => {
+        let endpoint = "";
+    
+        if (useAnd) {
+            endpoint = restApiConfig.USER_SEARCH_AND_ENDPOINT;
+        } else {
+            endpoint = restApiConfig.USER_SEARCH_OR_ENDPOINT;
+        }
+    
+        axios.get(endpoint, { params: { name: nameQuery, genre: genreQuery, intrument: instrumentQuery }})
+        .then((res) => 
+        { 
+            if (res.data.length > 0) {
+                let newUserList = [];
+    
+                res.data.forEach(element => {
+                    newUserList.push({
+                        name: element.name,
+                        email: element.email,
+                        dob: element.dob,
+                        genre: element.genre,
+                        instrument: element.instrument,
+                        picture: element.picture,
+                        location: element.location,
+                    });
+                });
+                
+                setUserList(newUserList);
+            }
+        });
+    }
     
     return (
        <SafeAreaView style={styles.container}>
-           {/* <SearchBar
-                placeholder="Search..."
-                lightTheme
-                //round
-                //value
-                // value={this.state.searchValue}
-                // onChangeText={(text) => this.searchFunction(text)}
-                // autoCorrect={false}
-            />  */}
             <SearchBar
-                placeholder="Search"
+                placeholder="Search by name"
                 lightTheme
                 onChangeText={onChangeSearch}
-                value={searchQuery}
-    />
+                value={nameQuery}
+                searchIcon={false}
+                clearIcon={()=>< Feather name="search" size={32} color="black" />}
+                onSubmitEditing={searchForUser}
+                autoCorrect={false}
+            />
             <Button 
                 onPress={() => navigation.navigate("Create Gig", {
                 name: name,
@@ -90,7 +88,7 @@ const HomeScreen = ({route, navigation}) => {
                 {userList.map((l, i) => (
                 <TouchableOpacity onPress={() => displayOtherUserProfile(l, navigation) } >
                     <ListItem key={i} bottomDivider>
-                        <Avatar source={l.picture} />
+                        <Avatar source={{uri: l.picture}} />
                         <ListItem.Content>
                             <ListItem.Title>{l.name}</ListItem.Title>
                             <ListItem.Subtitle>{l.instrument}</ListItem.Subtitle>
@@ -100,58 +98,48 @@ const HomeScreen = ({route, navigation}) => {
                 </TouchableOpacity>
                 ))}
                 
-                {/* <View style={styles.GridViewContainer}>
-                <TouchableOpacity 
-                style={styles.mainProfile}
-                onPress={() => navigation.navigate("Create Gig", {
-                    name: name,
-                    jwt: jwt,
-                    uuid: uuid
-                })}>
-                   <Image source={require('../src/images/drums.jpeg')} resizeMode='contain' style={{flex:.6}} />
-                   <Text style={{flex:1}}>     Create Gigs </Text>
-               </TouchableOpacity>
-                </View> */}
+                {/* placeholder profiles
                 <View style={styles.GridViewContainer}>
-                <TouchableOpacity 
-                style={styles.mainProfile}
-                onPress={() => navigation.navigate("NestScreens")}>
-                   <Image source={require('../src/images/dj.jpeg')} resizeMode='contain' style={{flex:.6}} />
-                   <Text style={{flex:1}}>     Irmak Vita </Text>
-               </TouchableOpacity>
-                </View>
-                <View style={styles.GridViewContainer}>
-                <TouchableOpacity 
-                style={styles.mainProfile}
-                onPress={() => navigation.navigate("NestScreens")}>
-                   <Image source={require('../src/images/guitar.jpeg')} resizeMode='contain' style={{flex:.6}} />
-                   <Text style={{flex:1}}>     Aristodemos Adela </Text>
-               </TouchableOpacity>
-                </View>
-                <View style={styles.GridViewContainer}>
-                <TouchableOpacity 
-                style={styles.mainProfile}
-                onPress={() => navigation.navigate("NestScreens")}>
-                   <Image source={require('../src/images/axophonist.jpeg')} resizeMode='contain' style={{flex:.6}} />
-                   <Text style={{flex:1}}>     Sabina Tadeja </Text>
-               </TouchableOpacity>
-                </View>
-                <View style={styles.GridViewContainer}>
-                <TouchableOpacity 
-                style={styles.mainProfile}
-                onPress={() => navigation.navigate("NestScreens")}>
-                   <Image source={require('../src/images/classic.jpeg')} resizeMode='contain' style={{flex:.6}} />
-                   <Text style={{flex:1}}>     Gloria Gunilla </Text>
-               </TouchableOpacity>
-                </View>
-                <View style={styles.GridViewContainer}>
-                <TouchableOpacity 
-                style={styles.mainProfile}
-                onPress={() => navigation.navigate("NestScreens")}>
-                   <Image source={require('../src/images/piano.jpg')} resizeMode='contain' style={{flex:.6}} />
-                   <Text style={{flex:1}}>     Patrick Meiriona </Text>
-               </TouchableOpacity>
-                </View>
+                    <TouchableOpacity 
+                    style={styles.mainProfile}
+                    onPress={() => navigation.navigate("NestScreens")}>
+                    <Image source={require('../src/images/dj.jpeg')} resizeMode='contain' style={{flex:.6}} />
+                    <Text style={{flex:1}}>     Irmak Vita </Text>
+                </TouchableOpacity>
+                    </View>
+                    <View style={styles.GridViewContainer}>
+                    <TouchableOpacity 
+                    style={styles.mainProfile}
+                    onPress={() => navigation.navigate("NestScreens")}>
+                    <Image source={require('../src/images/guitar.jpeg')} resizeMode='contain' style={{flex:.6}} />
+                    <Text style={{flex:1}}>     Aristodemos Adela </Text>
+                </TouchableOpacity>
+                    </View>
+                    <View style={styles.GridViewContainer}>
+                    <TouchableOpacity 
+                    style={styles.mainProfile}
+                    onPress={() => navigation.navigate("NestScreens")}>
+                    <Image source={require('../src/images/axophonist.jpeg')} resizeMode='contain' style={{flex:.6}} />
+                    <Text style={{flex:1}}>     Sabina Tadeja </Text>
+                </TouchableOpacity>
+                    </View>
+                    <View style={styles.GridViewContainer}>
+                    <TouchableOpacity 
+                    style={styles.mainProfile}
+                    onPress={() => navigation.navigate("NestScreens")}>
+                    <Image source={require('../src/images/classic.jpeg')} resizeMode='contain' style={{flex:.6}} />
+                    <Text style={{flex:1}}>     Gloria Gunilla </Text>
+                </TouchableOpacity>
+                    </View>
+                    <View style={styles.GridViewContainer}>
+                    <TouchableOpacity 
+                    style={styles.mainProfile}
+                    onPress={() => navigation.navigate("NestScreens")}>
+                    <Image source={require('../src/images/piano.jpg')} resizeMode='contain' style={{flex:.6}} />
+                    <Text style={{flex:1}}>     Patrick Meiriona </Text>
+                </TouchableOpacity>
+               </View>
+                */}
            </ScrollView> 
        </SafeAreaView>
     );
