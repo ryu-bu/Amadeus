@@ -26,7 +26,6 @@ def create_app():
     api.add_resource(Login, '/login')
     api.add_resource(RefreshToken, '/refresh')
     api.add_resource(Gigs, '/gigs/')
-<<<<<<< HEAD
     # search api
     api.add_resource(SearchUsersByName, '/users/name/<string:query>')
     api.add_resource(SearchUsersByGenre, '/users/genre/<string:query>')
@@ -35,9 +34,7 @@ def create_app():
     api.add_resource(SearchUsersAdvancedAnd, '/users/advanced_and')
     api.add_resource(SearchUsersAdvancedOr, '/users/advanced_or')
 
-=======
     api.add_resource(Subscribe, '/subscribe/')
->>>>>>> origin/main
     
     # for testing
     api.add_resource(LoginTest, '/dev/login')
