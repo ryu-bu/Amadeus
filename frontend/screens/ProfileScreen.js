@@ -26,6 +26,7 @@ export default function ProfileScreen(props, {navigation}){
     const [location, setLocation] = useState("");
     const [genre, setGenre] = useState("");
     const [instrument, setInstrument] = useState("");
+    const [gigs, setGigs] = useState([])
 
     const GetLocation = async(coords) => {
         let { latitude, longitude } = coords;
@@ -37,22 +38,62 @@ export default function ProfileScreen(props, {navigation}){
         setLocation(`${loc[0].city}, ${loc[0].country}`);
     }
 
-    useEffect(() => {
+    const updateProf = () => {
+        setGigs([]);
         axios.get(restApiConfig.FIND_USER_ENDPOINT + props.uuid, {
             headers: {
                 Authorization: "Bearer " + props.jwt
             }})
         .then((res) => {
-            console.log(res.data.location.coords.latitude);
+            // console.log(res.data.location.coords.latitude);
+            // console.log(res.data.gigs)
             setImage(res.data.picture);
             setInstrument(res.data.instrument);
             setGenre(res.data.genre);
             GetLocation(res.data.location.coords);
+            setGigs(res.data.gigs)
+
+            console.log("updated gig ", gigs)
         })
         .catch(err => {
             console.log(err)
         });
+    }
+
+    useEffect(() => {
+        updateProf.call()
     }, []);
+
+    const populateList = () => {
+        console.log(gigs)
+        return gigs.map((gig) => 
+        <View>
+            <Text>Gig: {gig.name}, {gig.id}</Text>
+            <Text>Description: {gig.description}</Text>
+            <Text>Genre: {gig.genre}</Text>
+            <Text>Location: {gig.location.name}</Text>
+            <Button
+                title="delete"
+                onPress={() => axios.delete(restApiConfig.GIG_ENDPOINT, {
+                    data: {
+                        "id": gig.id
+                    }
+                }, {
+                    header: {
+                        Authorization: "Bearer " + props.jwt
+                    }
+                }).then((res) => {
+                    console.log(res.data);
+                    updateProf.call(); // refresh the list
+                }).catch((err) => {
+                    console.log(err);
+                })
+            
+            }
+            />
+        </View>
+        )
+    }
 
     return (
 <SafeAreaView style={styles.container}>
@@ -120,6 +161,7 @@ export default function ProfileScreen(props, {navigation}){
                     </View>
                 </View>
             </View>
+            {populateList.call()}
         </ScrollView>
     </SafeAreaView>
     );

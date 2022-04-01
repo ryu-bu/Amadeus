@@ -9,6 +9,7 @@ const displayOtherUserProfile = (userInfo, navigation) => {
 
 const HomeScreen = ({route, navigation}) => {
     const {name, jwt, uuid} = route.params;
+    // console.log("user name in home screen: ", name)
     return (
        <SafeAreaView style={styles.container}>
            <SearchBar
