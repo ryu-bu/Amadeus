@@ -5,7 +5,7 @@ from .user_handler import UserHandler
 from flask_jwt_extended import create_access_token, create_refresh_token, get_jwt_identity
 
 class LoginHandler():
-    def verify_google(token):
+    def verify_google(token, push_token):
         #try:
             # Specify the CLIENT_ID of the app that accesses the backend:
             print(token)
@@ -27,7 +27,7 @@ class LoginHandler():
             refresh_token = create_refresh_token(identity="example_user")
 
             if db_response[1] == 404:
-                UserHandler.create(idinfo)
+                UserHandler.create(idinfo, push_token)
 
                 uuid = str(UserHandler.filter_email(idinfo['email'])[0]['uuid'])
 

@@ -16,12 +16,13 @@ class SubscriptionHandler():
     def create(self, sub):
         musician = sub["musician"]
         user = sub["user"]
+        push_token = sub["push_token"]
 
         followers = self.find_followers(musician)["followers"]
 
         if user not in followers:
 
-            submodel = SubModel(musician, user)
+            submodel = SubModel(musician, user, push_token)
 
             print("create a new subscription: ", sub)
 
@@ -31,7 +32,7 @@ class SubscriptionHandler():
             except Exception:
                 return {"message": "error creating a new sub"}, 400
 
-            followers.append(user)
+            followers.append(push_token)
 
             self.kafka_producer(musician, {
                 "followers": followers
@@ -59,7 +60,7 @@ class SubscriptionHandler():
 
         followers = []
         for item in sub.follower:
-            follower = item.user_id
+            follower = item.push_token
             followers.append(str(follower))
 
         return {"followers": followers}

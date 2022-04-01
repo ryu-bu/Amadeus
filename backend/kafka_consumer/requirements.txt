@@ -1,0 +1,4 @@
+exponent_server_sdk
+requests
+python-dotenv
+kafka-python

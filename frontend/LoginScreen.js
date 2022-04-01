@@ -30,6 +30,8 @@ import logo from './assets/logo.png'; //this is the amadeus logo that I placed i
 // import Map from './Map';
 //const Stack = createNativeStackNavigator();
 
+import { useNavigation } from '@react-navigation/native';
+
 
 
 const styles = StyleSheet.create({
@@ -164,7 +166,10 @@ const styles = StyleSheet.create({
 });
 
 
-export default function LoginScreen({ navigation }) {
+export default function LoginScreen(props) {
+
+    const navigation = useNavigation(); 
+
     const [username, setUsername] = useState(false);
     const [password, setPassword] = useState(false);
 
@@ -187,7 +192,13 @@ export default function LoginScreen({ navigation }) {
                 //             email: result.user.email,
                 //             name: result.user.name
                 //         })
-                axios.post(restApiConfig.LOGIN_ENDPOINT, result)
+
+                const content = {
+                    "result": result,
+                    "push_token": props.pushToken
+                }
+
+                axios.post(restApiConfig.LOGIN_ENDPOINT, content)
                 .then((res) => {
                     console.log(res.data);
                     var jwt = res.data["access_token"];

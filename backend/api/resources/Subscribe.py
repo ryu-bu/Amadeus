@@ -5,9 +5,9 @@ from flask_jwt_extended import jwt_required
 from handlers.subscription_handler import SubscriptionHandler
 
 class Subscribe(Resource):
-    def get(self):
+    # def get(self):
 
-        return SubscriptionHandler().find_followers("f29698f1-8624-4739-9073-37149475435a")
+    #     return SubscriptionHandler().find_followers("f29698f1-8624-4739-9073-37149475435a")
     def post(self):
         subscription = request.get_json()
         

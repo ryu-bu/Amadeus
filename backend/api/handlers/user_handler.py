@@ -54,13 +54,14 @@ class UserHandler():
             "instrument": user.instrument,
             "picture": user.pic,
             "location": user.location,
+            "push_token": user.pushtoken,
             "gigs": gigs
         }, 200
 
-    def create(user):
+    def create(user, push_token):
 
         print("called")
-        usermodel = UserModel(user['name'], user['email'], user['picture'])
+        usermodel = UserModel(user['name'], user['email'], user['picture'], push_token)
 
         try:
             db.session.add(usermodel)
