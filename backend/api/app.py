@@ -5,7 +5,7 @@ from resources.Users import Users, User, SearchUsersByName, SearchUsersByGenre, 
 from resources.Login import Login, LoginTest, RefreshToken
 from resources.Gigs import Gigs
 from config import Config
-from models import db, enrichedConsumer
+from models import db#, enrichedConsumer
 from flask_migrate import Migrate
 from datetime import timedelta
 
