@@ -22,9 +22,12 @@ import { restApiConfig } from './config';
 
 
 export default function GenreSelect({route, navigation}) {
-    const {email, name, jwt, uuid} = route.params;
+    const {email, name, jwt, uuid, pushToken} = route.params;
     const [selectedValue, setSelectedValue] = useState("Rock");
     const [setInstrument, instrumentText] = useState();
+
+    console.log("push token is: ", pushToken);
+
 
     const move = async () => {
       console.log("Prof Create movement");
@@ -33,7 +36,8 @@ export default function GenreSelect({route, navigation}) {
           axios.put(restApiConfig.USER_ENDPOINT, { 
               "email": email, 
               "key": 'genre', 
-              "val": selectedValue })
+              "val": selectedValue 
+            })
           .then((res) => {
               console.log(res.data);
               navigation.navigate("Instrument Selection Screen", {

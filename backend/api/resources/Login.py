@@ -10,9 +10,10 @@ class Login(Resource):
             if not googleInfo:
                 return {"message": "no body received"}, 204
 
-            idToken = googleInfo['idToken']
+            idToken = googleInfo['result']['idToken']
+            pushToken = googleInfo['push_token']
 
-            return LoginHandler.verify_google(idToken)
+            return LoginHandler.verify_google(idToken, pushToken)
 
 # refresh access token
 class RefreshToken(Resource):

@@ -12,11 +12,13 @@ class Users(db.Model):
     location = db.Column(JSON, nullable=True)
     instrument = db.Column(db.String(500), nullable=True)
     dob = db.Column(db.String(200), nullable=True)
+    pushtoken = db.Column(db.String(200), nullable=False)
     gig = db.relationship('Gigplayers', back_populates='user', lazy=True) # relation to Gigplayer table
     # following = db.relationship('Subscription', back_populates='user', lazy=True)
     follower = db.relationship('Subscription', back_populates='musician', lazy=True)
 
-    def __init__(self, name, email, pic):
+    def __init__(self, name, email, pic, push_token):
         self.name = name
         self.email = email
         self.pic = pic
+        self.pushtoken = push_token
