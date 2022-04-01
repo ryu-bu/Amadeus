@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
       },
       panel: {
         position: 'absolute',
-        top: 400,
+        top: 310,
         alignSelf: 'stretch',
         right: 0,
         left: 0,
