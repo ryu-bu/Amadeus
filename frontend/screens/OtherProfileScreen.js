@@ -20,8 +20,9 @@ import * as Location from 'expo-location';
 
 import { restApiConfig } from '../config';
 
-export default function OtherProfileScreen(props, {navigation}){
+export default function OtherProfileScreen(props, jwt, uuid, pushToken){
     const name = props.route.params.user.name;
+    const musician_uuid = props.route.params.user.uuid
     const picture = props.route.params.user.picture;
     const genre = props.route.params.user.genre;
     const instrument = props.route.params.user.instrument;
@@ -36,6 +37,26 @@ export default function OtherProfileScreen(props, {navigation}){
             longitude
         });
         setLocation(`${loc[0].city}, ${loc[0].country}`);
+    }
+
+    const subscribe = async() => {
+        try {
+            axios.post(restApiConfig.SUBSCRIBE_ENDPOINT, {
+                "musician": musician_uuid,
+                "user": uuid,
+                "push_token": pushToken
+            }, { header: {
+                Authorization: "Bearer " + jwt
+            }})
+            .then((res) => {
+                console.log(res.data);
+            })
+            .catch((err) => {
+                console.log("error subscribe")
+            })
+        } catch (err) {
+            console.log("err")
+        }
     }
 
     return (
@@ -73,7 +94,7 @@ export default function OtherProfileScreen(props, {navigation}){
                     </View>
                 </View>
                 <View style={styles.bottomContainer}>
-                    <TouchableOpacity onPress={() => console.log("pressed")} >
+                    <TouchableOpacity onPress={() => subscribe.call()} >
                         <Text style={[styles.text, { fontSize: 36, paddingVertical: 50 }]}> Subscribe </Text>
                     </TouchableOpacity>
                 </View>

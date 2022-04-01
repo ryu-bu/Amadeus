@@ -221,6 +221,7 @@ export default function LoginScreen(props) {
                             jwt: jwt,
                             uuid: uuid,
                             picture: result.user.photoUrl,
+                            pushToken: props.pushToken
                         })
                         
                     } else {

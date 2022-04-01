@@ -10,6 +10,8 @@ class Subscribe(Resource):
     #     return SubscriptionHandler().find_followers("f29698f1-8624-4739-9073-37149475435a")
     def post(self):
         subscription = request.get_json()
+
+        print("sub: ", subscription)
         
         if not subscription:
             return {"message": "no body received"}, 204

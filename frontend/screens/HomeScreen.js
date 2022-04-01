@@ -8,12 +8,12 @@ import { Feather } from '@expo/vector-icons';
 import axios from 'axios';
 import { restApiConfig } from './../config';
 
-const displayOtherUserProfile = (user, navigation) => {
-    navigation.navigate("Profile Display", {user});
+const displayOtherUserProfile = (user, navigation, jwt, uuid, pushToken) => {
+    navigation.navigate("Profile Display", {user, jwt, uuid, pushToken});
 }
 
 const HomeScreen = ({route, navigation}) => {
-    const {name, jwt, uuid} = route.params;
+    const {name, jwt, uuid, pushToken} = route.params;
 
     const [nameQuery, setNameQuery] = useState("");
     const [instrumentQuery, setInstrumentQuery] = useState("");
@@ -42,11 +42,13 @@ const HomeScreen = ({route, navigation}) => {
         axios.get(endpoint, { params: { name: nameQuery, genre: genreQuery, intrument: instrumentQuery }})
         .then((res) => 
         { 
+            console.log(res)
             if (res.data.length > 0) {
                 let newUserList = [];
     
                 res.data.forEach(element => {
                     newUserList.push({
+                        uuid: element.uuid,
                         name: element.name,
                         email: element.email,
                         dob: element.dob,
@@ -86,7 +88,7 @@ const HomeScreen = ({route, navigation}) => {
             />
            <ScrollView showsVerticalScrollIndicator={false}>
                 {userList.map((l, i) => (
-                <TouchableOpacity onPress={() => displayOtherUserProfile(l, navigation) } >
+                <TouchableOpacity onPress={() => displayOtherUserProfile(l, navigation, jwt, l.uuid, pushToken) } >
                     <ListItem key={i} bottomDivider>
                         <Avatar source={{uri: l.picture}} />
                         <ListItem.Content>

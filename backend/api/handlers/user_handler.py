@@ -88,15 +88,18 @@ class UserHandler():
     
     # perform advanced search for users matching all of the parameters
     def advanced_search_and(name= '.*', genre = '.*', instrument = '.*'):
-        users = db.session.query(UserModel).filter(
-            (UserModel.name.regexp_match('{}'.format(name), 'i')) &
-            (UserModel.genre.regexp_match('{}'.format(genre), 'i')) &
-            (UserModel.instrument.regexp_match('{}'.format(instrument), 'i'))
-        ).limit(MAX_RETURNED_USERS).all()
+        print("advanced: ", name)
+        users = UserModel.query.filter(UserModel.name.regexp_match('{}'.format(name), 'i')).all()
+        # users = db.session.query(UserModel).filter(
+        #     (UserModel.name.regexp_match('{}'.format(name), 'i')) 
+        #     # (UserModel.genre.regexp_match('{}'.format(genre), 'i')) |
+        #     # (UserModel.instrument.regexp_match('{}'.format(instrument), 'i'))
+        # ).limit(MAX_RETURNED_USERS).all()
       
         print(users)
 
         results = [{
+            "uuid": user.id,
             "name": user.name,
             "email": user.email,
             "dob": user.dob,
