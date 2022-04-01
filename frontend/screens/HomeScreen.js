@@ -6,6 +6,7 @@ import { SearchBar, Buttons, ListItem, Avatar, FlatList } from 'react-native-ele
 //combine tab with stack
 const HomeScreen = ({route, navigation}) => {
     const {name, jwt, uuid} = route.params;
+    // console.log("user name in home screen: ", name)
     return (
        <SafeAreaView style={styles.container}>
            <ScrollView showsVerticalScrollIndicator={false}>
