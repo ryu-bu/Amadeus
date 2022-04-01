@@ -13,6 +13,7 @@ import {
     Image,
     ImageBackground,
     Picker,
+    TouchableOpacity,
 } from 'react-native';
 import axios from 'axios';
 import * as Location from 'expo-location';

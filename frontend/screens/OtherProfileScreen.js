@@ -13,6 +13,7 @@ import {
     Image,
     ImageBackground,
     Picker,
+    TouchableOpacity,
 } from 'react-native';
 import axios from 'axios';
 import * as Location from 'expo-location';
@@ -20,10 +21,12 @@ import * as Location from 'expo-location';
 import { restApiConfig } from '../config';
 
 export default function OtherProfileScreen(props, {navigation}){
-    const [image, setImage] = useState("");
+    const name = props.route.params.user.name;
+    const picture = props.route.params.user.picture;
+    const genre = props.route.params.user.genre;
+    const instrument = props.route.params.user.instrument;
+
     const [location, setLocation] = useState("");
-    const [genre, setGenre] = useState("");
-    const [instrument, setInstrument] = useState("");
 
     const GetLocation = async(coords) => {
         let { latitude, longitude } = coords;
@@ -35,84 +38,47 @@ export default function OtherProfileScreen(props, {navigation}){
         setLocation(`${loc[0].city}, ${loc[0].country}`);
     }
 
-    useEffect(() => {
-        axios.get(restApiConfig.FIND_USER_ENDPOINT + props.uuid, {
-            headers: {
-                Authorization: "Bearer " + props.jwt
-            }})
-        .then((res) => {
-            console.log(res.data.location.coords.latitude);
-            setImage(res.data.picture);
-            setInstrument(res.data.instrument);
-            setGenre(res.data.genre);
-            GetLocation(res.data.location.coords);
-        })
-        .catch(err => {
-            console.log(err)
-        });
-    }, []);
-
     return (
-<SafeAreaView style={styles.container}>
-        <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={{ alignSelf: "center" }}>
-                <View style={styles.profileImage}>
-                    <Image source={{'uri': image }} style={styles.image} resizeMode="cover"></Image>
+        <SafeAreaView style={styles.container}>
+            <ScrollView showsVerticalScrollIndicator={false}>
+                <View style={{ alignSelf: "center" }}>
+                    <View style={styles.profileImage}>
+                        <Image source={{uri: picture }} style={styles.image} resizeMode="cover"></Image>
+                    </View>
                 </View>
-            </View>
 
-            <View style={styles.infoContainer}>
-                <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>{props.name}</Text>
-                <Text style={[styles.text, { color: "#FF0000", fontSize: 22 }]}>{instrument}</Text>
-                <Text style={[styles.text, { color: "#d3d3d3", fontSize: 15 }]}>{location}  Band: My Chemical Romance</Text>
-                <Text style={[styles.text, { color: "#d3d3d3", fontSize: 15 }]}>Level: Professional   Genre: {genre}</Text>
-            </View>
+                <View style={styles.infoContainer}>
+                    <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>{props.name}</Text>
+                    <Text style={[styles.text, { color: "#FF0000", fontSize: 22 }]}>{instrument}</Text>
+                    <Text style={[styles.text, { color: "#d3d3d3", fontSize: 15 }]}>{location}  Band: My Chemical Romance</Text>
+                    <Text style={[styles.text, { color: "#d3d3d3", fontSize: 15 }]}>Level: Professional   Genre: {genre}</Text>
+                </View>
 
-            <View style={styles.statsContainer}>
-                <View style={styles.statsBox}>
-                    <Text style={[styles.text, { fontSize: 24 }]}>345</Text>
-                    <Text style={[styles.text, styles.subText]}>Interested</Text>
-                </View>
-                <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
-                    <Text style={[styles.text, { fontSize: 24 }]}>234</Text>
-                    <Text style={[styles.text, styles.subText]}>Interest</Text>
-                </View>
-                <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
-                    <Text style={[styles.text, { fontSize: 24 }]}>35,631</Text>
-                    <Text style={[styles.text, styles.subText]}>Followers</Text>
-                </View>
-                <View style={styles.statsBox}>
-                    <Text style={[styles.text, { fontSize: 24 }]}>753</Text>
-                    <Text style={[styles.text, styles.subText]}>Following</Text>
-                </View>
-            </View>
-
-            <View style={{ marginTop: 32 }}>
-                <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                    <View style={styles.mediaImageContainer}>
-                        <Image source={require("../src/images/media1.jpg")} style={styles.image} resizeMode="cover"></Image>
+                <View style={styles.statsContainer}>
+                    <View style={styles.statsBox}>
+                        <Text style={[styles.text, { fontSize: 24 }]}>345</Text>
+                        <Text style={[styles.text, styles.subText]}>Interested</Text>
                     </View>
-                    <View style={styles.mediaImageContainer}>
-                        <Image source={require("../src/images/media2.jpg")} style={styles.image} resizeMode="cover"></Image>
+                    <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
+                        <Text style={[styles.text, { fontSize: 24 }]}>234</Text>
+                        <Text style={[styles.text, styles.subText]}>Interest</Text>
                     </View>
-                    <View style={styles.mediaImageContainer}>
-                        <Image source={require("../src/images/media3.jpg")} style={styles.image} resizeMode="cover"></Image>
+                    <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
+                        <Text style={[styles.text, { fontSize: 24 }]}>35,631</Text>
+                        <Text style={[styles.text, styles.subText]}>Followers</Text>
                     </View>
-                </ScrollView>
-            </View>
-            <Text style={[styles.subText, styles.recent]}>Recent Activity</Text>
-            <View style={{ alignItems: "center" }}>
-                <View style={styles.recentItem}>
-                    <View style={styles.activityIndicator}></View>
-                    <View style={{ width: 250 }}>
-                        <Text style={[styles.text, { color: "#41444B", fontWeight: "300" }]}>
-                            Started following <Text style={{ fontWeight: "400" }}>Alan Pisano</Text> and <Text style={{ fontWeight: "400" }}>Michael Hirsch</Text>
-                        </Text>
+                    <View style={styles.statsBox}>
+                        <Text style={[styles.text, { fontSize: 24 }]}>753</Text>
+                        <Text style={[styles.text, styles.subText]}>Following</Text>
                     </View>
                 </View>
-            </View>
-        </ScrollView>
-    </SafeAreaView>
+                <View style={styles.bottomContainer}>
+                    <TouchableOpacity onPress={() => console.log("pressed")} >
+                        <Text style={[styles.text, { fontSize: 36, paddingVertical: 50 }]}> Subscribe </Text>
+                    </TouchableOpacity>
+                </View>
+            </ScrollView>
+        </SafeAreaView>
     );
 };
 
@@ -235,5 +201,11 @@ const styles = StyleSheet.create({
   },
   musiciansProfile: {
       flexDirection: "column"
+  },
+  bottomContainer: {
+      flexDirection: "column",
+      justifyContent: "space-evenly",
+      alignItems: "center",
+      flexBasis: 500,
   }
 });
