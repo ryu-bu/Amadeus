@@ -1,15 +1,59 @@
-import * as React from 'react';
+import React, { useState, useEffect } from "react";
 import { Text, View, SafeAreaView, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { useNavigation} from '@react-navigation/native';
 import { SearchBar, Buttons, ListItem, Avatar, FlatList } from 'react-native-elements';
 
-const displayOtherUserProfile = (userInfo, navigation) => {
-    navigation.navigate("Profile Display", {userInfo});
+import axios from 'axios';
+import { restApiConfig } from './../config';
+
+const displayOtherUserProfile = (user, navigation) => {
+    navigation.navigate("Profile Display", {user});
+}
+
+const searchForUser = (email, nameQuery, genreQuery, instrumentQuery, useAnd) => {
+
+    endpoint = "";
+
+    if (useAnd) {
+        endpoint = restApiConfig.USER_SEARCH_AND_ENDPOINT;
+    } else {
+        endpoint = restApiConfig.USER_SEARCH_OR_ENDPOINT;
+    }
+
+    axios.get(endpoint, { params: { name: nameQuery, genre: genreQuery, intrument: instrumentQuery }})
+    .then((res) => 
+    { 
+        if (res.data.length > 0) {
+            userList = [];
+
+            res.data.forEach(element => {
+                if (element.email !== email) {
+                    userList.push({
+                        name: element.name,
+                        email: element.email,
+                        dob: element.dob,
+                        genre: element.genre,
+                        instrument: element.instrument,
+                        picture: element.picture,
+                        location: element.location,
+                    });
+                }
+            });
+        }
+    
+        return userList;
+    });
 }
 
 const HomeScreen = ({route, navigation}) => {
     const {name, jwt, uuid} = route.params;
-    // console.log("user name in home screen: ", name)
+
+    const [nameQuery, setNameQuery] = useState("");
+    const [instrumentQuery, setInstrumentQuery] = useState("");
+    const [genreQuery, setGenreQuery] = useState("");
+
+    const [userList, setUserList] = useState([]);
+  
     return (
        <SafeAreaView style={styles.container}>
            <SearchBar
@@ -22,6 +66,19 @@ const HomeScreen = ({route, navigation}) => {
                 // autoCorrect={false}
             /> 
            <ScrollView showsVerticalScrollIndicator={false}>
+                {userList.map((l, i) => (
+                <TouchableOpacity onPress={() => displayOtherUserProfile(l, navigation) } >
+                    <ListItem key={i} bottomDivider>
+                        <Avatar source={l.picture} />
+                        <ListItem.Content>
+                            <ListItem.Title>{l.name}</ListItem.Title>
+                            <ListItem.Subtitle>{l.instrument}</ListItem.Subtitle>
+                        </ListItem.Content>
+                        <ListItem.Chevron/>
+                    </ListItem>
+                </TouchableOpacity>
+                ))}
+                
                 <View style={styles.GridViewContainer}>
                 <TouchableOpacity 
                 style={styles.mainProfile}
