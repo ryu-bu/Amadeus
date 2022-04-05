@@ -20,7 +20,9 @@ class SubscriptionHandler():
 
         followers = self.find_followers(musician)["followers"]
 
-        if user not in followers:
+        print(followers)
+
+        if push_token not in followers:
 
             submodel = SubModel(musician, user, push_token)
 
@@ -66,10 +68,20 @@ class SubscriptionHandler():
         return {"followers": followers}
 
     def delete(self, sub):
-        user = sub["user"]
+        push_token = sub["push_token"]
         musician = sub["musician"]
 
-        submodel = SubModel.query.filter_by(user=user, musician=musician).first()
+        submodel = SubModel.query.filter_by(push_token=push_token, musician_id=musician).first()
+
+        followers = self.find_followers(musician)["followers"]
+
+        print(followers)
+
+        followers.remove(push_token)
+
+        self.kafka_producer(musician, {
+                "followers": followers
+                })
 
         id = submodel.id
 

@@ -20,6 +20,8 @@ import * as Location from 'expo-location';
 
 import { restApiConfig } from '../config';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 export default function OtherProfileScreen(props, jwt, uuid, pushToken){
     const name = props.route.params.user.name;
     const musician_uuid = props.route.params.user.uuid
@@ -28,6 +30,11 @@ export default function OtherProfileScreen(props, jwt, uuid, pushToken){
     const instrument = props.route.params.user.instrument;
 
     const [location, setLocation] = useState("");
+    const [host, setHost] = useState({
+        jwt: "",
+        uuid: "",
+        push_token: ""
+    })
 
     const GetLocation = async(coords) => {
         let { latitude, longitude } = coords;
@@ -39,14 +46,41 @@ export default function OtherProfileScreen(props, jwt, uuid, pushToken){
         setLocation(`${loc[0].city}, ${loc[0].country}`);
     }
 
+    const getData = async () => {
+        try {
+          const value = await AsyncStorage.getItem('@storage_Key')
+          console.log("setting values");
+          if (value === null) {
+              console.log("storage is null");
+          } else {
+              const info = await JSON.parse(value);
+              setHost({
+                jwt: info.jwt,
+                uuid: info.uuid,
+                push_token: info.push_token
+            });
+            //     setUuid(info.uuid);
+            //   setJwt(info.jwt);
+
+            //   console.log("uuid is: ", uuid);
+            //   console.log("jwt is: ", jwt);
+
+          }
+        } catch(e) {
+          // error reading value
+          console.log("error: ", e)
+        }
+      };
+
     const subscribe = async() => {
+        console.log(musician_uuid);
         try {
             axios.post(restApiConfig.SUBSCRIBE_ENDPOINT, {
                 "musician": musician_uuid,
-                "user": uuid,
-                "push_token": pushToken
-            }, { header: {
-                Authorization: "Bearer " + jwt
+                "user": host.uuid,
+                "push_token": host.push_token
+            }, { headers: {
+                Authorization: "Bearer " + host.jwt
             }})
             .then((res) => {
                 console.log(res.data);
@@ -58,6 +92,10 @@ export default function OtherProfileScreen(props, jwt, uuid, pushToken){
             console.log("err")
         }
     }
+
+    useEffect(() => {
+        getData();
+    }, []);
 
     return (
         <SafeAreaView style={styles.container}>

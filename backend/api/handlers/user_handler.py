@@ -6,7 +6,7 @@ import json
 from handlers.gig_handler import GigHandler
 
 # maximum amount of users that can be returned form  a single query
-MAX_RETURNED_USERS = 50;
+MAX_RETURNED_USERS = 50
 
 class UserHandler():
     def get_all():
@@ -99,7 +99,7 @@ class UserHandler():
         print(users)
 
         results = [{
-            "uuid": user.id,
+            "uuid": str(user.id),
             "name": user.name,
             "email": user.email,
             "dob": user.dob,

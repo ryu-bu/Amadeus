@@ -31,7 +31,7 @@ const CreateGigScreen = ({route, navigation}) => {
                 "location": location,
                 "uuid": uuid,
                 "members": members
-            }, { header: {
+            }, { headers: {
                 Authorization: "Bearer " + jwt
             }})
             .then((res) => {

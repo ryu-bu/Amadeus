@@ -83,7 +83,7 @@ export default class MapScreen extends React.Component {
       key={marker.locationName}
       coordinate={marker.coordinates}
       title={marker.gigName}
-      description={marker.locationName + "\n" + marker.description + "\n" + "Hosted by: " + marker.hostname}
+      description={marker.locationName + "\n" + "Genre: " + marker.genre + "\n" + marker.description + "\n" + "Hosted by: " + marker.hostname}
       // stopPropagation={true}
       // onSelect={() => console.log("marker pressed")}
       // onCalloutPress={() => console.log("button pressed")}
@@ -413,16 +413,19 @@ const styles = StyleSheet.create({
   },
   footer: {
     backgroundColor: 'white',
+    position: 'absolute',
     bottom: 0,
     width: '100%',
     height: '30%',
   },
   header: {
+    position: 'absolute',
     top: 50,
     right: 0,
     left: 0,
   },
   panel: {
+    position: 'absolute',
     top: 50,
     alignSelf: 'stretch',
     right: 0,
@@ -430,6 +433,7 @@ const styles = StyleSheet.create({
     flex: 5,
   },
   panelFill: {
+    position: 'absolute',
     top: 0,
     alignSelf: 'stretch',
     right: 0,

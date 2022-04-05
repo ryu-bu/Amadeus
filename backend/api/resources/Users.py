@@ -8,7 +8,7 @@ class Users(Resource):
     def get(self):
         return UserHandler.get_all()
 
-    # @jwt_required()
+    @jwt_required()
     def post(self):
         newUser = request.get_json()
 
@@ -30,7 +30,7 @@ class Users(Resource):
 
 class User(Users):
 
-    @jwt_required()
+    # @jwt_required()
     def get(self, id):
 
         if not id:
