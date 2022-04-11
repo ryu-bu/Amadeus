@@ -152,7 +152,7 @@ Notifications.setNotificationHandler({
 
 const App: () => React$Node = () => {
 
-  const [expoPushToken, setExpoPushToken] = useState('');
+  const [expoPushToken, setExpoPushToken] = useState('ExponentPushToken[a9Ii7IPG_-qU8romyTHWuC]');
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
