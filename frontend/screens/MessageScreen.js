@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, SafeAreaView, Image, TouchableOpacity, TouchableHighlight, StyleSheet, ScrollView, Touchable, ActivityIndicator, ProgressViewIOSComponent } from 'react-native';
-import { SearchBar, Buttons, ListItem, Avatar, FlatList } from 'react-native-elements';
+import { SearchBar, Buttons, ListItem, Avatar, FlatList, Button } from 'react-native-elements';
 import { initializeApp } from "firebase/app";
 import {
   getFirestore,
@@ -161,8 +161,12 @@ export default function MessageScreen({route, navigation}) {
       {chatMode == 0 && 
       <ScrollView style={{flex: 10, flexGrow: 1}}> 
         {existingThreads.map((l, i) => (
-          <TouchableOpacity onPress={() => navigation.navigate("Messages", { thread: l, uuid: uuid, name: name })} >
-            <ListItem key={l._id} bottomDivider>
+            <ListItem 
+              key={l.user._id} 
+              bottomDivider
+              button
+              onPress={()=>navigation.navigate("Messages", { thread: l, uuid: uuid, name: name })}
+            >
               <Avatar source={name !== l.users[0]["displayName"] && {uri: l.users[0]["avatar_url"]} || {uri: l.users[1]["avatar_url"]}} />
               <ListItem.Content>
                 <ListItem.Title>{l.user.displayName}</ListItem.Title>
@@ -170,23 +174,25 @@ export default function MessageScreen({route, navigation}) {
               </ListItem.Content>
               <ListItem.Chevron/>
             </ListItem>
-          </TouchableOpacity>
         ))} 
         </ScrollView> || 
-        <ScrollView style={{flex: 10}}> 
+        <ScrollView style={{flex: 10, flexGrow: 1}}> 
           {discoverList.map((l, i) => (
-            <TouchableOpacity onPress={async() => {
-              createChat(uuid, name, picture, l._id, l.displayName, l.avatar_url);
-            }} >
-              <ListItem key={l._id} bottomDivider>
-                <Avatar source={{uri: l.avatar_url}} />
-                <ListItem.Content>
-                  <ListItem.Title>{l.displayName}</ListItem.Title>
-                  <ListItem.Subtitle>{l.subtitle}</ListItem.Subtitle>
-                </ListItem.Content>
-                <ListItem.Chevron/>
-              </ListItem>
-            </TouchableOpacity>
+            <ListItem 
+              button
+              onPress={async() => {
+                createChat(uuid, name, picture, l._id, l.displayName, l.avatar_url);
+              }}
+              key={l._id} 
+              bottomDivider
+            >
+              <Avatar source={{uri: l.avatar_url}} />
+              <ListItem.Content>
+                <ListItem.Title>{l.displayName}</ListItem.Title>
+                <ListItem.Subtitle>{l.subtitle}</ListItem.Subtitle>
+              </ListItem.Content>
+              <ListItem.Chevron/>
+            </ListItem>
           ))}
         </ScrollView>  
       }
