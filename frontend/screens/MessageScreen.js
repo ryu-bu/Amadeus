@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, SafeAreaView, Image, TouchableOpacity, TouchableHighlight, StyleSheet, ScrollView, Touchable, ActivityIndicator, ProgressViewIOSComponent } from 'react-native';
 import { SearchBar, Buttons, ListItem, Avatar, FlatList, Button } from 'react-native-elements';
+import { Ionicons } from "@expo/vector-icons";
 import { initializeApp } from "firebase/app";
 import {
   getFirestore,
@@ -172,7 +173,7 @@ export default function MessageScreen({route, navigation}) {
                 <ListItem.Title>{l.user.displayName}</ListItem.Title>
                 <ListItem.Subtitle>{l.latestMessage.text.slice(0, 90)}</ListItem.Subtitle>
               </ListItem.Content>
-              <ListItem.Chevron/>
+              <Ionicons name={"chevron-forward-outline"} size={30}/>
             </ListItem>
         ))} 
         </ScrollView> || 
@@ -191,7 +192,7 @@ export default function MessageScreen({route, navigation}) {
                 <ListItem.Title>{l.displayName}</ListItem.Title>
                 <ListItem.Subtitle>{l.subtitle}</ListItem.Subtitle>
               </ListItem.Content>
-              <ListItem.Chevron/>
+              <Ionicons name={"chevron-forward-outline"} size={30}/>
             </ListItem>
           ))}
         </ScrollView>  

@@ -99,7 +99,7 @@ const ProfileSearchScreen = ({route, navigation}) => {
                         <ListItem.Title>{l.name}</ListItem.Title>
                         <ListItem.Subtitle>{l.instrument}</ListItem.Subtitle>
                     </ListItem.Content>
-                    <ListItem.Chevron/>
+                    <Ionicons name={"chevron-forward-outline"} size={30}/>
                 </ListItem>
                 ))}
                 
