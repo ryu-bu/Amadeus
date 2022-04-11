@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Text, View, SafeAreaView, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { useNavigation} from '@react-navigation/native';
 import { SearchBar, Button, ListItem, Avatar, FlatList } from 'react-native-elements';
-import { Ionicons } from '@expo/vector-icons';
+// import { Ionicons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons'; 
 
 import axios from 'axios';
@@ -88,7 +88,6 @@ const ProfileSearchScreen = ({route, navigation}) => {
             />
            <ScrollView showsVerticalScrollIndicator={false}>
                 {userList.map((l, i) => (
-                //<TouchableOpacity onPress={() => displayOtherUserProfile(l, navigation, jwt, l.uuid, pushToken) } >
                 <ListItem 
                     key={l.uuid} 
                     bottomDivider
@@ -102,16 +101,6 @@ const ProfileSearchScreen = ({route, navigation}) => {
                     </ListItem.Content>
                     <ListItem.Chevron/>
                 </ListItem>
-
-                    // <ListItem key={i} bottomDivider>
-                    //     <Avatar source={{uri: l.picture}} />
-                    //     <ListItem.Content>
-                    //         <ListItem.Title>{l.name}</ListItem.Title>
-                    //         <ListItem.Subtitle>{l.instrument}</ListItem.Subtitle>
-                    //     </ListItem.Content>
-                    //     <ListItem.Chevron/>
-                    // </ListItem>
-                //</TouchableOpacity>
                 ))}
                 
                 {/* placeholder profiles
