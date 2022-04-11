@@ -88,16 +88,30 @@ const ProfileSearchScreen = ({route, navigation}) => {
             />
            <ScrollView showsVerticalScrollIndicator={false}>
                 {userList.map((l, i) => (
-                <TouchableOpacity onPress={() => displayOtherUserProfile(l, navigation, jwt, l.uuid, pushToken) } >
-                    <ListItem key={i} bottomDivider>
-                        <Avatar source={{uri: l.picture}} />
-                        <ListItem.Content>
-                            <ListItem.Title>{l.name}</ListItem.Title>
-                            <ListItem.Subtitle>{l.instrument}</ListItem.Subtitle>
-                        </ListItem.Content>
-                        <ListItem.Chevron/>
-                    </ListItem>
-                </TouchableOpacity>
+                //<TouchableOpacity onPress={() => displayOtherUserProfile(l, navigation, jwt, l.uuid, pushToken) } >
+                <ListItem 
+                    key={l.uuid} 
+                    bottomDivider
+                    button
+                    onPress={() => displayOtherUserProfile(l, navigation, jwt, l.uuid, pushToken) }
+                >
+                    <Avatar source={{uri: l.picture}} />
+                    <ListItem.Content>
+                        <ListItem.Title>{l.name}</ListItem.Title>
+                        <ListItem.Subtitle>{l.instrument}</ListItem.Subtitle>
+                    </ListItem.Content>
+                    <ListItem.Chevron/>
+                </ListItem>
+
+                    // <ListItem key={i} bottomDivider>
+                    //     <Avatar source={{uri: l.picture}} />
+                    //     <ListItem.Content>
+                    //         <ListItem.Title>{l.name}</ListItem.Title>
+                    //         <ListItem.Subtitle>{l.instrument}</ListItem.Subtitle>
+                    //     </ListItem.Content>
+                    //     <ListItem.Chevron/>
+                    // </ListItem>
+                //</TouchableOpacity>
                 ))}
                 
                 {/* placeholder profiles
