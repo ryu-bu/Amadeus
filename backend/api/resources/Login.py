@@ -11,11 +11,7 @@ class Login(Resource):
                 return {"message": "no body received"}, 204
 
             idToken = googleInfo['result']['idToken']
-            
-            # if push token does not exist (when using simulator, for example), do not set it yet
-            pushToken = ""
-            if 'push_token' in googleInfo:
-                pushToken = googleInfo['push_token']
+            pushToken = googleInfo['push_token']
 
             return LoginHandler.verify_google(idToken, pushToken)
 
