@@ -112,6 +112,8 @@ export default function MessageScreen({route, navigation}) {
   ])
 
   useEffect(() => {
+    console.warn = () => {};
+    
     const q = query(
       collection(firestore, MESSAGE_THREADS_COLLECTION),
       orderBy("createdAt", "desc"),
