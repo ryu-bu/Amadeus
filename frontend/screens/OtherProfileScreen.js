@@ -29,6 +29,8 @@ export default function OtherProfileScreen(props, jwt, uuid, pushToken){
     const genre = props.route.params.user.genre;
     const instrument = props.route.params.user.instrument;
 
+    const [subStatus, setSubStatus] = useState("Subscribe");
+
     const [location, setLocation] = useState("");
     const [host, setHost] = useState({
         jwt: "",
@@ -84,6 +86,7 @@ export default function OtherProfileScreen(props, jwt, uuid, pushToken){
             }})
             .then((res) => {
                 console.log(res.data);
+                setSubStatus("Subscribed");
             })
             .catch((err) => {
                 console.log("error subscribe")
@@ -133,7 +136,7 @@ export default function OtherProfileScreen(props, jwt, uuid, pushToken){
                 </View>
                 <View style={styles.bottomContainer}>
                     <TouchableOpacity onPress={() => subscribe.call()} >
-                        <Text style={[styles.text, { fontSize: 36, paddingVertical: 50 }]}> Subscribe </Text>
+                        <Text style={[styles.text, { fontSize: 36, paddingVertical: 50 }]}> {subStatus} </Text>
                     </TouchableOpacity>
                 </View>
             </ScrollView>
