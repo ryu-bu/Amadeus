@@ -1,4 +1,8 @@
 # Amadeus
+## Introduction
+Amadeus is an application designed for musicians to collaborate, learn about events, and meet one another. For installation instructions, please continue reading below. For an overview of the software design, please go to the [Amadeus Wiki](https://github.com/ryu-bu/Amadeus/wiki).
+
+## Installation Instructions
 PostgreSQL DB needed. 
 
 1. Go to directory /backend/api after cloning the Amadeus project
