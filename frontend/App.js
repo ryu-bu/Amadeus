@@ -38,6 +38,7 @@ import {
 } from "react-native-elements";
 
 //import MainContainer from "./MainContainer";
+import OtherProfileScreen from "./screens/OtherProfileScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import HomeScreen from "./screens/HomeScreen";
 import MessageScreen from "./screens/MessageScreen";
@@ -74,10 +75,10 @@ const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 
 function DrawerNavi({route, navigation}) {
-  const {email, name, jwt, uuid} = route.params;
+  const {email, name, jwt, uuid, pushToken} = route.params;
     return (
         <Drawer.Navigator initialRouteName="Home">
-            <Drawer.Screen name = "Home" component = { HomeScreen } initialParams={ {name: name, uuid: uuid, jwt: jwt} }/>
+            <Drawer.Screen name = "Home" component = { HomeScreen } initialParams={ {name: name, uuid: uuid, jwt: jwt, pushToken: pushToken} }/>
             <Drawer.Screen name = "About Us" component = { AboutScreen } />
             <Drawer.Screen name = "Logout" component = { LogoutScreen } />
         </Drawer.Navigator>
@@ -85,7 +86,7 @@ function DrawerNavi({route, navigation}) {
 }
 
 function Home({route, navigation}) {
-  const {email, name, jwt, uuid, picture} = route.params;
+  const {email, name, jwt, uuid, picture, pushToken} = route.params;
   return (
     <Tab.Navigator
           screenOptions={({ route }) => ({
@@ -114,7 +115,7 @@ function Home({route, navigation}) {
           <Tab.Screen
             name="Home"
             component={DrawerNavi} // Replaced Screen 1
-            initialParams={{name: name, uuid: uuid, jwt: jwt}}
+            initialParams={{name: name, uuid: uuid, jwt: jwt, pushToken: pushToken}}
             options={{
                 headerShown: false,
             }}
@@ -201,9 +202,10 @@ const App: () => React$Node = () => {
           <Stack.Screen name="Location Selection Screen" component={LocationSelect} />
 
           <Stack.Screen name="Main" component={Home} />
-          <Stack.Screen name="NestScreens" component={NestScreens} />
-          <Stack.Screen name="CreateGig" component={CreateGigScreen} />
+          <Stack.Screen name="NestScreens" component={NestScreens} options={{headerShown: true}}/>
+          <Stack.Screen name="Create Gig" component={CreateGigScreen} options={{headerShown: true}} />
           <Stack.Screen name="Messages" component={Messages} options={{headerShown: true}} />
+          <Stack.Screen name="Profile Display" component={OtherProfileScreen} options={{headerShown: true}}/>
         </Stack.Navigator>
       </NavigationContainer>
     </>

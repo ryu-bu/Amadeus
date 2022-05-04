@@ -26,10 +26,11 @@ enrichedConsumer = KafkaConsumer(
 
 # Basic arguments. You should extend this function with the push features you
 # want to use, or simply pass in a `PushMessage` object.
-def send_push_message(token, message, extra=None):
+def send_push_message(token, title, message, extra=None):
     try:
         response = PushClient().publish(
             PushMessage(to=token,
+                        title=title,
                         body=message,
                         data=extra))
     except PushServerError as exc:
@@ -74,8 +75,9 @@ def send_push_message(token, message, extra=None):
 for item in enrichedConsumer:
     for token in item.key["followers"]:
         print(token)
-        send_push_message(token, str(item.value))
+        title = item.value["host_name"] + " just updated a new gig: " + item.value["gig_name"] + "!"
+        send_push_message(token, title, str(item.value))
     print("key is: ", item.key)
     print("val is: ", item.value)
 
-# send_push_message("ExponentPushToken[YmRtZuK0buC5PvB23kcQqr]", "test")
+# send_push_message("ExponentPushToken[WSv6IPPCGJ5Aq8Fo85URJp]", "body")

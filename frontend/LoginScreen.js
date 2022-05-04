@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as Google from "expo-google-app-auth";
 import axios from 'axios';
 import { restApiConfig } from './config';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import deviceStorage from './src/services/deviceStorage';
 
@@ -173,7 +174,13 @@ export default function LoginScreen(props) {
     const [username, setUsername] = useState(false);
     const [password, setPassword] = useState(false);
 
-    // data = axios.get("")
+    const storeData = async (value) => {
+        try {
+          await AsyncStorage.setItem('@storage_Key', JSON.stringify(value))
+        } catch (e) {
+          // saving error
+        }
+      }
 
     const signInAsync = async () => {
         console.log("LoginScreen.js 6 | loggin in");
@@ -204,6 +211,14 @@ export default function LoginScreen(props) {
                     var jwt = res.data["access_token"];
                     var uuid = res.data["uuid"]
 
+                    var info = {
+                        jwt: jwt,
+                        uuid: uuid,
+                        push_token: props.pushToken,
+                        name: result.user.name
+                    }
+                    storeData(info);
+
                     deviceStorage.saveJWT("id_token", jwt);
 
                     console.log("jwt obtained from backend: ", jwt);
@@ -221,6 +236,7 @@ export default function LoginScreen(props) {
                             jwt: jwt,
                             uuid: uuid,
                             picture: result.user.photoUrl,
+                            pushToken: props.pushToken
                         })
                         
                     } else {

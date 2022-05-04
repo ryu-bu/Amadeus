@@ -64,8 +64,11 @@ const createChat = async (userID, userDisplayName, picture, otherUserID, otherUs
   ); 
 }
 
-const retrieveDiscoverChats = async (userID, discoverList, setDiscoverList) => {
-  axios.get(restApiConfig.USER_ENDPOINT)
+const retrieveDiscoverChats = async (userID, discoverList, setDiscoverList, jwt) => {
+  console.log(jwt)
+  axios.get(restApiConfig.USER_ENDPOINT, { headers: {
+    Authorization: "Bearer " + jwt
+}})
   .then((res) => 
   { 
     //console.log(res.data[0].name);
@@ -148,7 +151,7 @@ export default function MessageScreen({route, navigation}) {
           <Text style={styles.buttonText}>Chats: </Text>
         </TouchableHighlight>
         <TouchableHighlight style={styles.button} onPress={() => {
-            retrieveDiscoverChats(uuid, discoverList, setDiscoverList);
+            retrieveDiscoverChats(uuid, discoverList, setDiscoverList, jwt);
             setChatMode(1);
         }}> 
           <Text style={styles.buttonText}>Discover: </Text>

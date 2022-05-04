@@ -13,14 +13,25 @@ import {
     Image,
     ImageBackground,
     Picker,
+    TouchableOpacity,
 } from 'react-native';
 import axios from 'axios';
 import * as Location from 'expo-location';
 
 import { restApiConfig } from '../config';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 export default function ProfileScreen(props, {navigation}){
     console.log(props)
+
+    // const[jwt, setJwt] = useState("");
+    // const[uuid, setUuid] = useState("");
+
+    const[userinfo, setUserinfo] = useState({
+        jwt: "",
+        uuid: ""
+    })
 
     const [image, setImage] = useState("");
     const [location, setLocation] = useState("");
@@ -38,11 +49,40 @@ export default function ProfileScreen(props, {navigation}){
         setLocation(`${loc[0].city}, ${loc[0].country}`);
     }
 
-    const updateProf = () => {
+    const getData = async () => {
+        try {
+          const value = await AsyncStorage.getItem('@storage_Key')
+          console.log("setting values");
+          if (value === null) {
+              console.log("storage is null");
+          } else {
+              const info = await JSON.parse(value);
+              setUserinfo({
+                jwt: info.jwt,
+                uuid: info.uuid
+            });
+            //     setUuid(info.uuid);
+            //   setJwt(info.jwt);
+
+            //   console.log("uuid is: ", uuid);
+            //   console.log("jwt is: ", jwt);
+
+            updateProf(info.jwt, info.uuid); 
+
+          }
+        } catch(e) {
+          // error reading value
+          console.log("error: ", e)
+        }
+      };
+      
+
+    const updateProf = (jwt, uuid) => {
+        console.log("profile update called: ", uuid, jwt)
         setGigs([]);
-        axios.get(restApiConfig.FIND_USER_ENDPOINT + props.uuid, {
+        axios.get(restApiConfig.FIND_USER_ENDPOINT + uuid, {
             headers: {
-                Authorization: "Bearer " + props.jwt
+                Authorization: "Bearer " + jwt
             }})
         .then((res) => {
             // console.log(res.data.location.coords.latitude);
@@ -61,11 +101,15 @@ export default function ProfileScreen(props, {navigation}){
     }
 
     useEffect(() => {
-        updateProf.call()
+        getData();
+        console.log("userinfo: ", userinfo);
     }, []);
+
+
 
     const populateList = () => {
         console.log(gigs)
+        console.log("in populateList: ", userinfo.uuid)
         return gigs.map((gig) => 
         <View>
             <Text>Gig: {gig.name}, {gig.id}</Text>
@@ -79,12 +123,12 @@ export default function ProfileScreen(props, {navigation}){
                         "id": gig.id
                     }
                 }, {
-                    header: {
-                        Authorization: "Bearer " + props.jwt
+                    headers: {
+                        Authorization: "Bearer " + userinfo.jwt
                     }
                 }).then((res) => {
-                    console.log(res.data);
-                    updateProf.call(); // refresh the list
+                    // console.log(res.data);
+                    updateProf(userinfo.jwt, userinfo.uuid); // refresh the list
                 }).catch((err) => {
                     console.log(err);
                 })
