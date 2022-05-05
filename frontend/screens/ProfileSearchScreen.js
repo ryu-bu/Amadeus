@@ -59,6 +59,10 @@ const retrieveDiscoverChats = async (userID, discoverList, setDiscoverList, jwt)
 //full list according to https://www.musicgenreslist.com
 const GENRE_OPTIONS = [
     {
+        item: "Any",
+        id: 'AI',
+    },
+    {
         item: 'Alternative',
         id: 'AL',
     },
@@ -205,6 +209,10 @@ const GENRE_OPTIONS = [
 ]
 
 const INSTR_OPTIONS = [
+    {
+        item: 'Any',
+        id: 'GE',
+    },
     {
         item: 'Keyboard',
         id: 'KB',
@@ -356,7 +364,6 @@ const ProfileSearchScreen = ({route, navigation}) => {
                             onChange={onChangeI()}
                             hideInputFilter={false}
                         />
-                        <Button title="Any Instruments"/>
                     </View>
                     <View style={{ margin: 10 }}>
                         <Text style={{ fontSize: 18, paddingBottom: 10 }}>Search by Genre</Text>
@@ -367,7 +374,6 @@ const ProfileSearchScreen = ({route, navigation}) => {
                             onChange={onChangeG()}
                             hideInputFilter={false}
                         />
-                        <Button title="Any Genre"/>
                     </View>
                     <ScrollView showsVerticalScrollIndicator={false}>
                         {userList.map((l, i) => (
