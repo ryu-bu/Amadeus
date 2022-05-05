@@ -1,7 +1,7 @@
 from models.gig_model import Gigs as GigModel
 from models.gigPlayer_model import Gigplayers
 from models.user_model import Users
-from models import db#, gigProducer
+from models import db, gigProducer
 from config import Config
 
 class GigHandler():

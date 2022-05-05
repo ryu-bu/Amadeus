@@ -110,6 +110,8 @@ export default function OtherProfileScreen(props){
    const name = props.route.params.name;
    const picture = props.route.params.picture;
 
+    const [subStatus, setSubStatus] = useState("Subscribe");
+
     const [location, setLocation] = useState("");
     const [host, setHost] = useState({
         jwt: "",
@@ -165,6 +167,7 @@ export default function OtherProfileScreen(props){
             }})
             .then((res) => {
                 console.log(res.data);
+                setSubStatus("Subscribed");
             })
             .catch((err) => {
                 console.log("error subscribe")
@@ -217,7 +220,7 @@ export default function OtherProfileScreen(props){
                         <Text style={[styles.text, { fontSize: 28, paddingVertical: 50 }]}> Chat </Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => subscribe.call()} >
-                        <Text style={[styles.text, { fontSize: 36, paddingVertical: 50 }]}> Subscribe </Text>
+                        <Text style={[styles.text, { fontSize: 36, paddingVertical: 50 }]}> {subStatus} </Text>
                     </TouchableOpacity>
                 </View>
             </ScrollView>

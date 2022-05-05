@@ -9,7 +9,7 @@ class LoginHandler():
         #try:
             # Specify the CLIENT_ID of the app that accesses the backend:
             print(token)
-            idinfo = id_token.verify_oauth2_token(token, requests.Request(), Config.GOOGLE_CLIENT_ID)
+            idinfo = id_token.verify_oauth2_token(token, requests.Request(), Config.GOOGLE_CLIENT_ID, clock_skew_in_seconds=60)
             print("CLIENT: ", Config.GOOGLE_CLIENT_ID)
 
             print(idinfo)
