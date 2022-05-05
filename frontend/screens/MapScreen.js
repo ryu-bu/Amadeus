@@ -1,5 +1,3 @@
-//James Wasson
-
 import React, { Component, useEffect, useState } from 'react';
 //import { NavigationContainer } from '@react-navigation/native';
 import { restApiConfig } from '../config';
@@ -36,12 +34,13 @@ const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = 0.0421;
 const SPACE = 0.01;
 
-
+console.warn = () => {};
 
 //const [region, setRegion] = useState(false);
 
 export default class MapScreen extends React.Component {
   navigation = this.props.navigation;
+  
   constructor(props) {
     super(props);
 
@@ -68,7 +67,6 @@ export default class MapScreen extends React.Component {
       //marker2: false,
     };
   }
-  
 
   goToInitPos = (region) => {
     let initialRegion = Object.assign({}, region);

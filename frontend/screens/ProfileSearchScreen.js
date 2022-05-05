@@ -114,6 +114,16 @@ const ProfileSearchScreen = ({route, navigation}) => {
     
     return (
        <SafeAreaView style={styles.container}>
+            <Button 
+                onPress={() => navigation.navigate("Create Gig", {
+                    name: name,
+                    jwt: jwt,
+                    uuid: uuid
+                })}
+                title="Create Gig"
+                color="#e3e3e3"
+                background="#d3d3d3"
+            />
             <View style={{flexBasis: 50, flex: 1, flexGrow: 0, flexDirection: "row", justifyContent: "center", alignContent: "flex-start"}}>
                 <TouchableHighlight style={styles.button} onPress={() => setDiscoverMode(0)}>
                 <Text style={styles.buttonText}>Search: </Text>
@@ -136,16 +146,6 @@ const ProfileSearchScreen = ({route, navigation}) => {
                         clearIcon={()=>< Feather name="search" size={32} color="black" />}
                         onSubmitEditing={searchForUser}
                         autoCorrect={false}
-                    />
-                    <Button 
-                        onPress={() => navigation.navigate("Create Gig", {
-                            name: name,
-                            jwt: jwt,
-                            uuid: uuid
-                        })}
-                        title="Create Gig"
-                        color="#e3e3e3"
-                        background="#d3d3d3"
                     />
                     <ScrollView showsVerticalScrollIndicator={false}>
                         {userList.map((l, i) => (
