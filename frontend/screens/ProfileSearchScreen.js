@@ -44,7 +44,8 @@ const retrieveDiscoverChats = async (userID, discoverList, setDiscoverList, jwt)
               _id: element.uuid,
               displayName: element.name,
               avatar_url: element.picture,
-              subtitle: element.genre,
+              instrument: element.instrument,
+              genre: element.genre,
             });
           }
         });
@@ -379,6 +380,7 @@ const ProfileSearchScreen = ({route, navigation}) => {
                             <Avatar source={{uri: l.picture}} />
                             <ListItem.Content>
                                 <ListItem.Title>{l.name}</ListItem.Title>
+                                <ListItem.Subtitle>{l.genre}</ListItem.Subtitle>
                                 <ListItem.Subtitle>{l.instrument}</ListItem.Subtitle>
                             </ListItem.Content>
                             <Ionicons name={"chevron-forward-outline"} size={30}/>
@@ -399,7 +401,8 @@ const ProfileSearchScreen = ({route, navigation}) => {
                     <Avatar source={{uri: l.avatar_url}} />
                     <ListItem.Content>
                       <ListItem.Title>{l.displayName}</ListItem.Title>
-                      <ListItem.Subtitle>{l.subtitle}</ListItem.Subtitle>
+                      <ListItem.Subtitle>{l.genre}</ListItem.Subtitle>
+                      <ListItem.Subtitle>{l.instrument}</ListItem.Subtitle>
                     </ListItem.Content>
                     <Ionicons name={"chevron-forward-outline"} size={30}/>
                   </ListItem>
