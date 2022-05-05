@@ -355,6 +355,7 @@ const ProfileSearchScreen = ({route, navigation}) => {
                             onChange={onChangeI()}
                             hideInputFilter={false}
                         />
+                        <Button title="Any Instruments"/>
                     </View>
                     <View style={{ margin: 10 }}>
                         <Text style={{ fontSize: 18, paddingBottom: 10 }}>Search by Genre</Text>
@@ -365,6 +366,7 @@ const ProfileSearchScreen = ({route, navigation}) => {
                             onChange={onChangeG()}
                             hideInputFilter={false}
                         />
+                        <Button title="Any Genre"/>
                     </View>
                     <ScrollView showsVerticalScrollIndicator={false}>
                         {userList.map((l, i) => (
