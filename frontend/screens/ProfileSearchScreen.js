@@ -257,6 +257,9 @@ const ProfileSearchScreen = ({route, navigation}) => {
     const [instrumentQuery, setInstrumentQuery] = useState("");
     const [genreQuery, setGenreQuery] = useState("");
 
+    const [selectedInstrument, setSelectedInstrument] = useState("");
+    const [selectedGenre, setSelectedGenre] = useState("");
+
     const [userList, setUserList] = useState([]);
 
     // use to change whether all search parameters need to be found, or just one of them
@@ -348,7 +351,7 @@ const ProfileSearchScreen = ({route, navigation}) => {
                         <SelectBox
                             label="Select instrument"
                             options={INSTR_OPTIONS}
-                            value={instrumentQuery}
+                            value={selectedInstrument}
                             onChange={onChangeI()}
                             hideInputFilter={false}
                         />
@@ -358,7 +361,7 @@ const ProfileSearchScreen = ({route, navigation}) => {
                         <SelectBox
                             label="Select Genre"
                             options={GENRE_OPTIONS}
-                            value={genreQuery}
+                            value={selectedGenre}
                             onChange={onChangeG()}
                             hideInputFilter={false}
                         />
@@ -404,10 +407,18 @@ const ProfileSearchScreen = ({route, navigation}) => {
        </SafeAreaView>
     );
     function onChangeI() {
-        return (val) => setInstrumentQuery(val)
-      }
+        return (val) => {
+            // console.log("instrument: ", val.item);
+            setSelectedInstrument(val);
+            setInstrumentQuery(val.item);
+        }
+    }
     function onChangeG() {
-        return (val) => setGenreQuery(val)
+        return (val) => {
+            // console.log("genre: ", val.item);
+            setSelectedGenre(val);
+            setGenreQuery(val.item);
+        }
     }
 }
 export default ProfileSearchScreen 

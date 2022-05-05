@@ -103,8 +103,6 @@ class UserHandler():
             print("Error in advanced search and. handle this later")
             return None, 500
       
-        print(users)
-
         results = [{
             "uuid": str(user.id),
             "name": user.name,
