@@ -48,10 +48,12 @@ class SearchUsersAdvancedAnd(Resource):
         if not name or genre or instrument:
             return {"message" : "no query"}, 204
 
-        name = ".*" if (name == "") else name
-        genre = ".*" if (genre == "") else genre
-        instrument = ".*" if (instrument == "") else instrument
+        name = ".*" if (name == "" or name == None) else name
+        genre = ".*" if (genre == "" or genre == None) else genre
+        instrument = ".*" if (instrument == "" or instrument == None) else instrument
 
+        print("first thing: ", instrument)
+        print("second thing ", genre)
         return UserHandler.advanced_search_and(name, genre, instrument)
 
 class SearchUsersAdvancedOr(Resource):
@@ -64,9 +66,9 @@ class SearchUsersAdvancedOr(Resource):
         if not name or genre or instrument:
             return {"message" : "no query"}, 204
 
-        name = ".*" if (name == "") else name
-        genre = ".*" if (genre == "") else genre
-        instrument = ".*" if (instrument == "") else instrument
+        name = ".*" if (name == "" or name == None) else name
+        genre = ".*" if (genre == "" or name == None) else genre
+        instrument = ".*" if (instrument == "" or instrument == None) else instrument
 
         return UserHandler.advanced_search_or(name, genre, instrument)
 

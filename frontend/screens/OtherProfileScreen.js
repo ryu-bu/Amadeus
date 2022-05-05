@@ -21,6 +21,35 @@ import * as Location from 'expo-location';
 import { restApiConfig } from '../config';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {
+    getFirestore,
+    setDoc,
+    addDoc,
+    doc,
+    collection,
+    onSnapshot,
+    query,
+    where,
+    orderBy,
+} from "firebase/firestore";
+
+const createChat = async (userID, userDisplayName, picture, otherUserID, otherUserDisplayName, otherPicture) => {
+    const firestore = getFirestore();
+
+    // create new thread using firebase & firestore
+    let response = await addDoc(
+        collection(firestore, MESSAGE_THREADS_COLLECTION),
+        {
+            text: `chat between ${userDisplayName} and ${otherUserDisplayName}`,
+            createdAt: new Date().getTime(),
+            system: true,
+            users: [
+                { _id: userID, displayName: userDisplayName, avatar_url: picture},
+                { _id: otherUserID, displayName: otherUserDisplayName, avatar_url: otherPicture},
+            ],
+        }
+    ); 
+}
 
 export default function OtherProfileScreen(props, jwt, uuid, pushToken){
     const name = props.route.params.user.name;
