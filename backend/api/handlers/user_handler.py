@@ -3,7 +3,7 @@ from models.user_model import Users as UserModel
 from models import db
 import json
 
-from handlers.gig_handler import GigHandler
+#from handlers.gig_handler import GigHandler
 
 # maximum amount of users that can be returned form  a single query
 MAX_RETURNED_USERS = 50
