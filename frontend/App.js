@@ -75,10 +75,10 @@ const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 
 function DrawerNavi({route, navigation}) {
-  const {email, name, jwt, uuid, pushToken} = route.params;
+  const {email, name, jwt, uuid, picture, pushToken} = route.params;
     return (
         <Drawer.Navigator initialRouteName="Main Tab">
-            <Drawer.Screen name = "Profile Search" component = { ProfileSearchScreen } initialParams={ {name: name, uuid: uuid, jwt: jwt, pushToken: pushToken} }/>
+            <Drawer.Screen name = "Profile Search" component = { ProfileSearchScreen } initialParams={ {name: name, uuid: uuid, jwt: jwt, pushToken: pushToken, picture: picture} }/>
             <Drawer.Screen name = "About Us" component = { AboutScreen } />
             <Drawer.Screen name = "Logout" component = { LogoutScreen } />
         </Drawer.Navigator>
@@ -115,7 +115,7 @@ function Home({route, navigation}) {
           <Tab.Screen
             name="Home"
             component={DrawerNavi} // Replaced Screen 1
-            initialParams={{name: name, uuid: uuid, jwt: jwt, pushToken: pushToken}}
+            initialParams={{name: name, uuid: uuid, jwt: jwt, pushToken: pushToken, picture: picture}}
             options={{
                 headerShown: false,
             }}

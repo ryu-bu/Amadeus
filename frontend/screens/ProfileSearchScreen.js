@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, SafeAreaView, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { Text, View, SafeAreaView, Image, TouchableOpacity, StyleSheet, ScrollView, TouchableHighlight } from 'react-native';
 import { useNavigation} from '@react-navigation/native';
 import { SearchBar, Button, ListItem, Avatar, FlatList } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
@@ -21,12 +21,41 @@ const firebaseConfig = {
 };
 initializeApp(firebaseConfig);
 
-const displayOtherUserProfile = (user, navigation, jwt, uuid, pushToken) => {
-    navigation.navigate("Profile Display", {user, jwt, uuid, pushToken});
+const displayOtherUserProfile = (user, navigation, jwt, uuid, pushToken, name, picture) => {
+    navigation.navigate("Profile Display", {user, jwt, uuid, pushToken, name, picture});
+}
+
+const retrieveDiscoverChats = async (userID, discoverList, setDiscoverList, jwt) => {
+    console.log(jwt)
+    axios.get(restApiConfig.USER_ENDPOINT, { headers: {
+      Authorization: "Bearer " + jwt
+    }})
+    .then((res) => 
+    { 
+      //console.log(res.data[0].name);
+  
+      if (res.data.length > 0) {
+        discoverList = [];
+  
+        res.data.forEach(element => {
+          if (element.uuid !== userID) {
+            discoverList.push({
+              _id: element.uuid,
+              displayName: element.name,
+              avatar_url: element.picture,
+              subtitle: element.genre,
+            });
+          }
+        });
+    
+        setDiscoverList(discoverList);
+      }
+  
+    });
 }
 
 const ProfileSearchScreen = ({route, navigation}) => {
-    const {name, jwt, uuid, pushToken} = route.params;
+    const {name, jwt, uuid, pushToken, picture} = route.params;
 
     const [nameQuery, setNameQuery] = useState("");
     const [instrumentQuery, setInstrumentQuery] = useState("");
@@ -40,6 +69,12 @@ const ProfileSearchScreen = ({route, navigation}) => {
   
     // console.log("user name in home screen: ", name)
     const [searchQuery, setSearchQuery] = React.useState('');
+
+    // should use discover mode or search mode?
+    const [discoverMode, setDiscoverMode] = useState(0);
+    const [discoverList, setDiscoverList] = useState([
+
+    ])
 
     const onChangeSearch = (query) => setNameQuery(query);
 
@@ -79,86 +114,77 @@ const ProfileSearchScreen = ({route, navigation}) => {
     
     return (
        <SafeAreaView style={styles.container}>
-            <SearchBar
-                placeholder="Search by name"
-                lightTheme
-                onChangeText={onChangeSearch}
-                value={nameQuery}
-                searchIcon={false}
-                clearIcon={()=>< Feather name="search" size={32} color="black" />}
-                onSubmitEditing={searchForUser}
-                autoCorrect={false}
-            />
-            <Button 
-                onPress={() => navigation.navigate("Create Gig", {
-                name: name,
-                jwt: jwt,
-                uuid: uuid
-                })}
-                title="Create Gig"
-                color="#e3e3e3"
-                background="#d3d3d3"
-            />
-           <ScrollView showsVerticalScrollIndicator={false}>
-                {userList.map((l, i) => (
-                <ListItem 
-                    key={l.uuid} 
-                    bottomDivider
+            <View style={{flexBasis: 50, flex: 1, flexGrow: 0, flexDirection: "row", justifyContent: "center", alignContent: "flex-start"}}>
+                <TouchableHighlight style={styles.button} onPress={() => setDiscoverMode(0)}>
+                <Text style={styles.buttonText}>Chats: </Text>
+                </TouchableHighlight>
+                <TouchableHighlight style={styles.button} onPress={() => {
+                    retrieveDiscoverChats(uuid, discoverList, setDiscoverList, jwt);
+                    setDiscoverMode(1);
+                }}> 
+                <Text style={styles.buttonText}>Discover: </Text>
+                </TouchableHighlight>
+            </View>
+            {discoverMode == 0 &&
+                <View>
+                    <SearchBar
+                        placeholder="Search by name"
+                        lightTheme
+                        onChangeText={onChangeSearch}
+                        value={nameQuery}
+                        searchIcon={false}
+                        clearIcon={()=>< Feather name="search" size={32} color="black" />}
+                        onSubmitEditing={searchForUser}
+                        autoCorrect={false}
+                    />
+                    <Button 
+                        onPress={() => navigation.navigate("Create Gig", {
+                            name: name,
+                            jwt: jwt,
+                            uuid: uuid
+                        })}
+                        title="Create Gig"
+                        color="#e3e3e3"
+                        background="#d3d3d3"
+                    />
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                        {userList.map((l, i) => (
+                        <ListItem 
+                            key={l.uuid} 
+                            bottomDivider
+                            button
+                            onPress={() => displayOtherUserProfile(l, navigation, jwt, uuid, pushToken, name, picture) }
+                        >
+                            <Avatar source={{uri: l.picture}} />
+                            <ListItem.Content>
+                                <ListItem.Title>{l.name}</ListItem.Title>
+                                <ListItem.Subtitle>{l.instrument}</ListItem.Subtitle>
+                            </ListItem.Content>
+                            <Ionicons name={"chevron-forward-outline"} size={30}/>
+                        </ListItem>
+                        ))}
+                    </ScrollView> 
+                </View> ||
+                <ScrollView style={{flex: 10, flexGrow: 1}}> 
+                {discoverList.map((l, i) => (
+                  <ListItem 
                     button
-                    onPress={() => displayOtherUserProfile(l, navigation, jwt, l.uuid, pushToken) }
-                >
-                    <Avatar source={{uri: l.picture}} />
+                    onPress={async() => {
+                      createChat(uuid, name, picture, l._id, l.displayName, l.avatar_url);
+                    }}
+                    key={l._id} 
+                    bottomDivider
+                  >
+                    <Avatar source={{uri: l.avatar_url}} />
                     <ListItem.Content>
-                        <ListItem.Title>{l.name}</ListItem.Title>
-                        <ListItem.Subtitle>{l.instrument}</ListItem.Subtitle>
+                      <ListItem.Title>{l.displayName}</ListItem.Title>
+                      <ListItem.Subtitle>{l.subtitle}</ListItem.Subtitle>
                     </ListItem.Content>
                     <Ionicons name={"chevron-forward-outline"} size={30}/>
-                </ListItem>
+                  </ListItem>
                 ))}
-                
-                {/* placeholder profiles
-                <View style={styles.GridViewContainer}>
-                    <TouchableOpacity 
-                    style={styles.mainProfile}
-                    onPress={() => navigation.navigate("NestScreens")}>
-                    <Image source={require('../src/images/dj.jpeg')} resizeMode='contain' style={{flex:.6}} />
-                    <Text style={{flex:1}}>     Irmak Vita </Text>
-                </TouchableOpacity>
-                    </View>
-                    <View style={styles.GridViewContainer}>
-                    <TouchableOpacity 
-                    style={styles.mainProfile}
-                    onPress={() => navigation.navigate("NestScreens")}>
-                    <Image source={require('../src/images/guitar.jpeg')} resizeMode='contain' style={{flex:.6}} />
-                    <Text style={{flex:1}}>     Aristodemos Adela </Text>
-                </TouchableOpacity>
-                    </View>
-                    <View style={styles.GridViewContainer}>
-                    <TouchableOpacity 
-                    style={styles.mainProfile}
-                    onPress={() => navigation.navigate("NestScreens")}>
-                    <Image source={require('../src/images/axophonist.jpeg')} resizeMode='contain' style={{flex:.6}} />
-                    <Text style={{flex:1}}>     Sabina Tadeja </Text>
-                </TouchableOpacity>
-                    </View>
-                    <View style={styles.GridViewContainer}>
-                    <TouchableOpacity 
-                    style={styles.mainProfile}
-                    onPress={() => navigation.navigate("NestScreens")}>
-                    <Image source={require('../src/images/classic.jpeg')} resizeMode='contain' style={{flex:.6}} />
-                    <Text style={{flex:1}}>     Gloria Gunilla </Text>
-                </TouchableOpacity>
-                    </View>
-                    <View style={styles.GridViewContainer}>
-                    <TouchableOpacity 
-                    style={styles.mainProfile}
-                    onPress={() => navigation.navigate("NestScreens")}>
-                    <Image source={require('../src/images/piano.jpg')} resizeMode='contain' style={{flex:.6}} />
-                    <Text style={{flex:1}}>     Patrick Meiriona </Text>
-                </TouchableOpacity>
-               </View>
-                */}
-           </ScrollView> 
+                </ScrollView>  
+            }  
        </SafeAreaView>
     );
 }

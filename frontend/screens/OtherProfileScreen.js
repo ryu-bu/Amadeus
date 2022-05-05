@@ -51,12 +51,12 @@ const createChat = async (userID, userDisplayName, picture, otherUserID, otherUs
     ); 
 }
 
-export default function OtherProfileScreen(props, jwt, uuid, pushToken){
-    const name = props.route.params.user.name;
+export default function OtherProfileScreen(props, jwt, uuid, pushToken, name, picture){
+    const other_name = props.route.params.user.name;
     const musician_uuid = props.route.params.user.uuid
-    const picture = props.route.params.user.picture;
-    const genre = props.route.params.user.genre;
-    const instrument = props.route.params.user.instrument;
+    const other_picture = props.route.params.user.picture;
+    const other_genre = props.route.params.user.genre;
+    const other_instrument = props.route.params.user.instrument;
 
     const [location, setLocation] = useState("");
     const [host, setHost] = useState({
@@ -131,15 +131,15 @@ export default function OtherProfileScreen(props, jwt, uuid, pushToken){
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={{ alignSelf: "center" }}>
                     <View style={styles.profileImage}>
-                        <Image source={{uri: picture }} style={styles.image} resizeMode="cover"></Image>
+                        <Image source={{uri: other_picture }} style={styles.image} resizeMode="cover"></Image>
                     </View>
                 </View>
 
                 <View style={styles.infoContainer}>
-                    <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>{props.name}</Text>
-                    <Text style={[styles.text, { color: "#FF0000", fontSize: 22 }]}>{instrument}</Text>
+                    <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>{other_name}</Text>
+                    <Text style={[styles.text, { color: "#FF0000", fontSize: 22 }]}>{other_instrument}</Text>
                     <Text style={[styles.text, { color: "#d3d3d3", fontSize: 15 }]}>{location}  Band: My Chemical Romance</Text>
-                    <Text style={[styles.text, { color: "#d3d3d3", fontSize: 15 }]}>Level: Professional   Genre: {genre}</Text>
+                    <Text style={[styles.text, { color: "#d3d3d3", fontSize: 15 }]}>Level: Professional   Genre: {other_genre}</Text>
                 </View>
 
                 <View style={styles.statsContainer}>
@@ -161,6 +161,9 @@ export default function OtherProfileScreen(props, jwt, uuid, pushToken){
                     </View>
                 </View>
                 <View style={styles.bottomContainer}>
+                    <TouchableOpacity onPress={() => createChat(uuid, name, picture, musician_uuid, other_name, other_picture)} >
+                        <Text style={[styles.text, { fontSize: 28, paddingVertical: 50 }]}> Initiate Chat </Text>
+                    </TouchableOpacity>
                     <TouchableOpacity onPress={() => subscribe.call()} >
                         <Text style={[styles.text, { fontSize: 36, paddingVertical: 50 }]}> Subscribe </Text>
                     </TouchableOpacity>

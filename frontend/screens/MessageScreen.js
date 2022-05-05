@@ -57,7 +57,7 @@ const retrieveDiscoverChats = async (userID, discoverList, setDiscoverList, jwt)
   console.log(jwt)
   axios.get(restApiConfig.USER_ENDPOINT, { headers: {
     Authorization: "Bearer " + jwt
-}})
+  }})
   .then((res) => 
   { 
     //console.log(res.data[0].name);
@@ -137,20 +137,9 @@ export default function MessageScreen({route, navigation}) {
       {/* <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <Text>Messages!</Text>
       </View> */}
-      <View style={{flexBasis: 50, flex: 1, flexGrow: 0, flexDirection: "row", justifyContent: "center", alignContent: "flex-start"}}>
-        <TouchableHighlight style={styles.button} onPress={() => setChatMode(0)}>
-          <Text style={styles.buttonText}>Chats: </Text>
-        </TouchableHighlight>
-        <TouchableHighlight style={styles.button} onPress={() => {
-            retrieveDiscoverChats(uuid, discoverList, setDiscoverList, jwt);
-            setChatMode(1);
-        }}> 
-          <Text style={styles.buttonText}>Discover: </Text>
-        </TouchableHighlight>
-      </View>
 
       {chatMode == 0 && 
-      <ScrollView style={{flex: 10, flexGrow: 1}}> 
+        <ScrollView style={{flex: 10, flexGrow: 1}}> 
         {existingThreads.map((l, i) => (
             <ListItem 
               key={l.user._id} 
