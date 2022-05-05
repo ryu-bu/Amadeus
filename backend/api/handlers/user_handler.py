@@ -92,11 +92,16 @@ class UserHandler():
         print("instrument: ", instrument)
         print("genre: ", genre)
         # users = UserModel.query.filter(UserModel.name.regexp_match('{}'.format(name), 'i')).all()
-        users = UserModel.query.filter(
-            (UserModel.name.regexp_match('{}'.format(name), 'i')) &
-            (UserModel.genre.regexp_match('{}'.format(genre), 'i')) &
-            (UserModel.instrument.regexp_match('{}'.format(instrument), 'i'))
-        ).limit(MAX_RETURNED_USERS).all()
+
+        try:
+            users = UserModel.query.filter(
+                (UserModel.name.regexp_match('{}'.format(name), 'i')) &
+                (UserModel.genre.regexp_match('{}'.format(genre), 'i')) &
+                (UserModel.instrument.regexp_match('{}'.format(instrument), 'i'))
+            ).limit(MAX_RETURNED_USERS).all()
+        except:
+            print("Error in advanced search and. handle this later")
+            return None, 500
       
         print(users)
 
@@ -115,12 +120,16 @@ class UserHandler():
 
     # perform advanced search for users matching at least one of the  parameters 
     def advanced_search_or(name = '.*', genre = '.*', instrument = '.*'):
-        users = UserModel.query.filter(
-            (UserModel.name.regexp_match('{}'.format(name), 'i')) |
-            (UserModel.genre.regexp_match('{}'.format(genre), 'i')) |
-            (UserModel.instrument.regexp_match('{}'.format(instrument), 'i'))
-        ).limit(MAX_RETURNED_USERS).all()
-      
+        try:
+            users = UserModel.query.filter(
+                (UserModel.name.regexp_match('{}'.format(name), 'i')) |
+                (UserModel.genre.regexp_match('{}'.format(genre), 'i')) |
+                (UserModel.instrument.regexp_match('{}'.format(instrument), 'i'))
+            ).limit(MAX_RETURNED_USERS).all()
+        except:
+            print("Error in advanced search or. handle this later")
+            return None, 500
+
         results = [{
             "name": user.name,
             "email": user.email,
