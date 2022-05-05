@@ -311,16 +311,13 @@ export default function LoginScreen(props) {
                     <Ionicons style={styles.Icon1} name="logo-facebook" size={20} color="blue" />
                     <Button title="Sign in with Facebook" color="white"/>
                 </View>
-            </View> */}
-
-
+            </View> */}  
             <View style={styles.section2}>
-                <View style={styles.button2}>
-                    <Ionicons style={styles.Icon2} name="logo-google" size={20} color="red" />
-                    <Button title="Sign in with Google" color="white" onPress={signInAsync} />
-                </View>
+            <View style={styles.button2}>
+                <Ionicons style={styles.Icon2} name="logo-google" size={20} color="red" />
+                <Button title="Sign in with Google" color="white" alignItems="center" justifyContent="center" onPress={signInAsync} />
             </View>
-
+            </View>
         </View>
 
     )

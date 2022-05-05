@@ -4,6 +4,7 @@ import { useNavigation} from '@react-navigation/native';
 import { SearchBar, Button, ListItem, Avatar, FlatList } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons'; 
+import SelectBox  from 'react-native-multi-selectbox';
 
 import { initializeApp } from "firebase/app";
 
@@ -53,6 +54,201 @@ const retrieveDiscoverChats = async (userID, discoverList, setDiscoverList, jwt)
   
     });
 }
+
+//full list according to https://www.musicgenreslist.com
+const GENRE_OPTIONS = [
+    {
+        item: 'Alternative',
+        id: 'AL',
+    },
+    {
+        item: 'Anime',
+        id: 'AN',
+    },
+    {
+        item: 'Blues',
+        id: 'BL',
+    },
+    {
+        item: 'Children Music',
+        id: 'CM',
+    },
+    {
+        item: 'Classical',
+        id: 'CL',
+    },
+    {
+        item: 'Comedy',
+        id: 'CO',
+    },
+    {
+        item: 'Commercial',
+        id: 'CA',
+    },
+    {
+        item: 'Country',
+        id: 'CR',
+    },
+    {
+        item: 'Dance',
+        id: 'DN',
+    },
+    {
+        item: 'Disney',
+        id: 'AL',
+    },
+    {
+        item: 'Easy Listening',
+        id: 'EL',
+    },
+    {
+        item: 'Electronic',
+        id: 'EC',
+    },
+    {
+        item: 'Enka',
+        id: 'EK',
+    },
+    {
+        item: 'French Pop',
+        id: 'FP',
+    },
+    {
+        item: 'Folk Music',
+        id: 'FM',
+    },
+    {
+        item: 'Fitness/Workout',
+        id: 'FW',
+    },
+    {
+        item: 'Hip-Hop',
+        id: 'HP',
+    },
+    {
+        item: 'Holiday',
+        id: 'HD',
+    },
+    {
+        item: 'Indie Pop',
+        id: 'ID',
+    },
+    {
+        item: 'Industrial',
+        id: 'IN',
+    },
+    {
+        item: 'Inspirational - Christian & Gospel',
+        id: 'CG',
+    },
+    {
+        item: 'Instrumental',
+        id: 'IT',
+    },
+    {
+        item: 'J-Pop',
+        id: 'JP',
+    },
+    {
+        item: 'Jazz',
+        id: 'JZ',
+    },
+    {
+        item: 'K-Pop',
+        id: 'KP',
+    },
+    {
+        item: 'Karaoke',
+        id: 'KO',
+    },
+    {
+        item: 'Latin',
+        id: 'LT',
+    },
+    {
+        item: 'Metal',
+        id: 'MT',
+    },
+    {
+        item: 'New Age',
+        id: 'NA',
+    },
+    {
+        item: 'Opera',
+        id: 'OP',
+    },
+    {
+        item: 'Pop',
+        id: 'PO',
+    },
+    {
+        item: 'R&B/Soul',
+        id: 'AL',
+    },
+    {
+        item: 'Reggae',
+        id: 'RE',
+    },
+    {
+        item: 'Rock',
+        id: 'RK',
+    },
+    {
+        item: 'Singer/Songwriter',
+        id: 'SS',
+    },
+    {
+        item: 'World',
+        id: 'WD',
+    },
+]
+
+const INSTR_OPTIONS = [
+    {
+        item: 'Keyboard',
+        id: 'KB',
+    },
+    {
+        item: 'Guitar',
+        id: 'GT',
+    },
+    {
+        item: 'Piano',
+        id: 'PN',
+    },
+    {
+        item: 'Flute',
+        id: 'FT',
+    },
+    {
+        item: 'Violin',
+        id: 'VL',
+    },
+    {
+        item: 'Drum',
+        id: 'DM',
+    },
+    {
+        item: 'Saxophone',
+        id: 'SE',
+    },
+    {
+        item: 'Cello',
+        id: 'CL',
+    },
+    {
+        item: 'Clarinet',
+        id: 'CT',
+    },
+    {
+        item: 'Trumpet',
+        id: 'TR',
+    },
+    {
+        item: 'Harp',
+        id: 'HA',
+    },
+]
 
 const ProfileSearchScreen = ({route, navigation}) => {
     const {name, jwt, uuid, pushToken, picture} = route.params;
@@ -147,6 +343,26 @@ const ProfileSearchScreen = ({route, navigation}) => {
                         onSubmitEditing={searchForUser}
                         autoCorrect={false}
                     />
+                    <View style={{ margin: 10 }}>
+                        <Text style={{ fontSize: 18, paddingBottom: 10 }}>Search by Instrument</Text>
+                        <SelectBox
+                            label="Select instrument"
+                            options={INSTR_OPTIONS}
+                            value={instrumentQuery}
+                            onChange={onChangeI()}
+                            hideInputFilter={false}
+                        />
+                    </View>
+                    <View style={{ margin: 10 }}>
+                        <Text style={{ fontSize: 18, paddingBottom: 10 }}>Search by Genre</Text>
+                        <SelectBox
+                            label="Select Genre"
+                            options={GENRE_OPTIONS}
+                            value={genreQuery}
+                            onChange={onChangeG()}
+                            hideInputFilter={false}
+                        />
+                    </View>
                     <ScrollView showsVerticalScrollIndicator={false}>
                         {userList.map((l, i) => (
                         <ListItem 
@@ -187,6 +403,12 @@ const ProfileSearchScreen = ({route, navigation}) => {
             }  
        </SafeAreaView>
     );
+    function onChangeI() {
+        return (val) => setInstrumentQuery(val)
+      }
+    function onChangeG() {
+        return (val) => setGenreQuery(val)
+    }
 }
 export default ProfileSearchScreen 
 
