@@ -99,9 +99,7 @@ export default function MessageScreen({route, navigation}) {
     }*/
   ])
 
-  useEffect(() => {
-    console.warn = () => {};
-    
+  useEffect(() => {    
     const q = query(
       collection(firestore, MESSAGE_THREADS_COLLECTION),
       orderBy("createdAt", "desc"),
@@ -145,7 +143,7 @@ export default function MessageScreen({route, navigation}) {
               key={l.user._id} 
               bottomDivider
               button
-              onPress={()=>navigation.navigate("Messages", { thread: l, uuid: uuid, name: name })}
+              onPress={()=>navigation.navigate("Messages", { thread_id: l._id, uuid: uuid, name: name })}
             >
               <Avatar source={name !== l.users[0]["displayName"] && {uri: l.users[0]["avatar_url"]} || {uri: l.users[1]["avatar_url"]}} />
               <ListItem.Content>

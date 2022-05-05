@@ -25,6 +25,7 @@ import {
     getFirestore,
     setDoc,
     addDoc,
+    getDocs,
     doc,
     collection,
     onSnapshot,
@@ -33,30 +34,81 @@ import {
     orderBy,
 } from "firebase/firestore";
 
-const createChat = async (userID, userDisplayName, picture, otherUserID, otherUserDisplayName, otherPicture) => {
-    const firestore = getFirestore();
+const MESSAGE_THREADS_COLLECTION = "Message_threads";
 
-    // create new thread using firebase & firestore
-    let response = await addDoc(
-        collection(firestore, MESSAGE_THREADS_COLLECTION),
-        {
-            text: `chat between ${userDisplayName} and ${otherUserDisplayName}`,
-            createdAt: new Date().getTime(),
-            system: true,
-            users: [
-                { _id: userID, displayName: userDisplayName, avatar_url: picture},
-                { _id: otherUserID, displayName: otherUserDisplayName, avatar_url: otherPicture},
-            ],
-        }
-    ); 
+function deepEqual(object1, object2) {
+    const keys1 = Object.keys(object1);
+    const keys2 = Object.keys(object2);
+    if (keys1.length !== keys2.length) {
+      return false;
+    }
+    for (const key of keys1) {
+      const val1 = object1[key];
+      const val2 = object2[key];
+      const areObjects = isObject(val1) && isObject(val2);
+      if (
+        areObjects && !deepEqual(val1, val2) ||
+        !areObjects && val1 !== val2
+      ) {
+        return false;
+      }
+    }
+    return true;
+}
+function isObject(object) {
+return object != null && typeof object === 'object';
 }
 
-export default function OtherProfileScreen(props, jwt, uuid, pushToken, name, picture){
+const createChat = async (navigation, userID, userDisplayName, picture, otherUserID, otherUserDisplayName, otherPicture) => {
+    const firestore = getFirestore();
+
+    // see if existing chat thread already exists between the users
+    const q = query(
+        collection(firestore, MESSAGE_THREADS_COLLECTION),
+        where("users", "array-contains", {_id: userID, displayName: userDisplayName, avatar_url: picture}),
+        //where("users", "array-contains", {_id: otherUserID, displayName: otherUserDisplayName, avatar_url: otherPicture})
+    );
+    
+    const querySnapshot = await getDocs(q);
+    let create_thread = true;
+    querySnapshot.forEach((thread_doc) => {
+        if(thread_doc.data().users.length < 2) { return; }
+
+        const other_user = {_id: otherUserID, displayName: otherUserDisplayName, avatar_url: otherPicture};
+        if(deepEqual(thread_doc.data().users[0], other_user) || deepEqual(thread_doc.data().users[1], other_user)) {
+            // chat already found. do not create a new one
+            create_thread = false;
+            navigation.navigate("Messages", { thread_id: thread_doc.id, uuid: userID, name: userDisplayName });
+        }
+    });
+
+    if(create_thread) {
+        // create new thread using firebase & firestore
+        let response = await addDoc(
+            collection(firestore, MESSAGE_THREADS_COLLECTION),
+            {
+                text: `chat between ${userDisplayName} and ${otherUserDisplayName}`,
+                createdAt: new Date().getTime(),
+                system: true,
+                users: [
+                    { _id: userID, displayName: userDisplayName, avatar_url: picture},
+                    { _id: otherUserID, displayName: otherUserDisplayName, avatar_url: otherPicture},
+                ],
+            }
+        ); 
+    }
+}
+
+export default function OtherProfileScreen(props){
     const other_name = props.route.params.user.name;
     const musician_uuid = props.route.params.user.uuid
     const other_picture = props.route.params.user.picture;
     const other_genre = props.route.params.user.genre;
     const other_instrument = props.route.params.user.instrument;
+
+   const uuid = props.route.params.uuid;
+   const name = props.route.params.name;
+   const picture = props.route.params.picture;
 
     const [location, setLocation] = useState("");
     const [host, setHost] = useState({
@@ -161,8 +213,8 @@ export default function OtherProfileScreen(props, jwt, uuid, pushToken, name, pi
                     </View>
                 </View>
                 <View style={styles.bottomContainer}>
-                    <TouchableOpacity onPress={() => createChat(uuid, name, picture, musician_uuid, other_name, other_picture)} >
-                        <Text style={[styles.text, { fontSize: 28, paddingVertical: 50 }]}> Initiate Chat </Text>
+                    <TouchableOpacity onPress={() => createChat(props.navigation, uuid, name, picture, musician_uuid, other_name, other_picture)} >
+                        <Text style={[styles.text, { fontSize: 28, paddingVertical: 50 }]}> Chat </Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => subscribe.call()} >
                         <Text style={[styles.text, { fontSize: 36, paddingVertical: 50 }]}> Subscribe </Text>

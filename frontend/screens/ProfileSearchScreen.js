@@ -116,7 +116,7 @@ const ProfileSearchScreen = ({route, navigation}) => {
        <SafeAreaView style={styles.container}>
             <View style={{flexBasis: 50, flex: 1, flexGrow: 0, flexDirection: "row", justifyContent: "center", alignContent: "flex-start"}}>
                 <TouchableHighlight style={styles.button} onPress={() => setDiscoverMode(0)}>
-                <Text style={styles.buttonText}>Chats: </Text>
+                <Text style={styles.buttonText}>Search: </Text>
                 </TouchableHighlight>
                 <TouchableHighlight style={styles.button} onPress={() => {
                     retrieveDiscoverChats(uuid, discoverList, setDiscoverList, jwt);
@@ -309,7 +309,15 @@ const styles = StyleSheet.create({
     },
     musiciansProfile: {
         flexDirection: "column"
-    }
+    },
+    button: {
+        flex: 1,
+        backgroundColor: "#e4e6ec",
+        borderWidth: .2,
+        opacity: .75,
+        justifyContent: "center",
+        alignItems: "center",
+    },
 });
 
 const styless = StyleSheet.create({

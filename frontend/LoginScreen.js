@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
         height: 100,
         backgroundColor: "white",
         marginLeft: 18,
-        position: 'absolute', top: 120, left: 0, right: 0, bottom: 0,
+        //position: 'absolute', top: 120, left: 0, right: 0, bottom: 0,
     },
     section1: {
         flex: 1,
@@ -142,6 +142,7 @@ const styles = StyleSheet.create({
     },
     section2: {
         flex: 1,
+        flexGrow: 1,
         flexDirection: "row",
         alignItems: 'center',
         backgroundColor: "white",
@@ -261,12 +262,12 @@ export default function LoginScreen(props) {
         }
     };
     return (
-        <View>
+        <View style={styles.container}>
             <View style={styles.container}>
                 <Image style={styles.logo} source={logo} />
             </View >
 
-            <TextInput
+            {/* <TextInput
                 style={styles.inputText1}
                 placeholder="Username"
                 placeholderTextColor="black"
@@ -286,10 +287,10 @@ export default function LoginScreen(props) {
                 maxLength={15}
                 onChangeText={pass => setPassword(pass)}
                 password={password}
-            />
+            /> */}
 
 
-            <View>
+            {/* <View>
                 <View style={styles.loginbtn}>
                     <Button title="Login" color="white"
                         onPress={signInAsync}//{() => navigation.navigate('Map Screen')}
@@ -301,16 +302,16 @@ export default function LoginScreen(props) {
                 </View>
                 <Text style={styles.OR}>OR </Text>
                 <Text style={styles.line}>____________________            ____________________ </Text>
-            </View>
+            </View> */}
 
 
 
-            <View style={styles.section1}>
+            {/* <View style={styles.section1}>
                 <View style={styles.button1}>
                     <Ionicons style={styles.Icon1} name="logo-facebook" size={20} color="blue" />
                     <Button title="Sign in with Facebook" color="white"/>
                 </View>
-            </View>
+            </View> */}
 
 
             <View style={styles.section2}>
