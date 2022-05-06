@@ -23,7 +23,7 @@ import { restApiConfig } from './config';
 
 
 export default function DobSelect({route, navigation}) {
-    const {email, name, jwt, uuid} = route.params;
+    const {email, name, jwt, uuid, picture} = route.params;
     const [date, setDate] = useState(new Date(Date.now()));
 
     const onChange = (event, value) => {
@@ -48,7 +48,8 @@ export default function DobSelect({route, navigation}) {
                   email: email,
                   name: name,
                   jwt: jwt,
-                  uuid: uuid
+                  uuid: uuid,
+                  picture: picture,
               });
           })
           .catch(err => {

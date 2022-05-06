@@ -22,7 +22,7 @@ import { restApiConfig } from './config';
 
 
 export default function GenreSelect({route, navigation}) {
-    const {email, name, jwt, uuid, pushToken} = route.params;
+    const {email, name, jwt, uuid, picture, pushToken} = route.params;
     const [selectedValue, setSelectedValue] = useState("Rock");
     const [setInstrument, instrumentText] = useState();
 
@@ -44,7 +44,8 @@ export default function GenreSelect({route, navigation}) {
                   email: email,
                   name: name,
                   jwt: jwt,
-                  uuid: uuid
+                  uuid: uuid,
+                  picture: picture
               });
           })
           .catch(err => {

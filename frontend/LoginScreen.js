@@ -259,7 +259,8 @@ export default function LoginScreen(props) {
                             email: result.user.email,
                             name: result.user.name,
                             jwt: jwt,
-                            uuid: uuid
+                            uuid: uuid,
+                            picture: result.user.photoUrl,
                         })
                     }
                 })

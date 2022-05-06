@@ -23,7 +23,7 @@ import { restApiConfig } from './config';
 
 
 export default function InstrumentSelect({route, navigation}) {
-    const {email, name, jwt, uuid} = route.params;
+    const {email, name, jwt, uuid, picture} = route.params;
     const [selectedValue, setSelectedValue] = useState();
     const move = async () => {
 
@@ -38,7 +38,8 @@ export default function InstrumentSelect({route, navigation}) {
                   email: email,
                   name: name,
                   jwt: jwt,
-                  uuid: uuid
+                  uuid: uuid,
+                  picture: picture,
               });
           })
           .catch(err => {

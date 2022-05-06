@@ -13,7 +13,7 @@ import { restApiConfig } from './config';
 
 
 export default function LocationSelect({route, navigation}) {
-    const {email, name, jwt, uuid} = route.params;
+    const {email, name, jwt, uuid, picture} = route.params;
     const [location, setLocation] = useState(null);
     const [local, setLocal] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
@@ -82,7 +82,8 @@ export default function LocationSelect({route, navigation}) {
                     email: email,
                     name: name,
                     jwt: jwt,
-                    uuid: uuid
+                    uuid: uuid,
+                    picture: picture,
                 });
             }).catch(err => {
                 console.log(err);
