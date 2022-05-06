@@ -4,6 +4,7 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import { restApiConfig } from '../config'
 import * as Location from 'expo-location';
 import axios from 'axios';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 
 
 const CreateGigScreen = ({route, navigation}) => {
@@ -47,80 +48,125 @@ const CreateGigScreen = ({route, navigation}) => {
     }
 
     return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.questionwrapper}>
-            <Text style={styles.section}>Gig Name</Text>
-            <TextInput
-                borderColor="#778899"
-                style={styles.input}
-                onChangeText={onChangeName}
-                value={gigName}
-                placeholder='gig name'
-                autoCapitalize='words'
-            >
-            </TextInput>
-            <Text Style={styles.section}>Genre</Text>
-            <TextInput
-                borderColor="#778899"
-                style={styles.input}
-                onChangeText={onChangeGenre}
-                value={genre}
-                placeholder='genre'
-                autoCapitalize='words'
-            >
-            </TextInput>
-            <Text Style={styles.section}>Description</Text>
-            <TextInput
-                borderColor="#778899"
-                multiline={true}
-                numberOfLines={4}
-                style={styles.inputBox}
-                onChangeText={onChangeDescription}
-                value={description}
-                placeholder='description'
-            >
-            </TextInput>
-            <Text Style={styles.section}>Location</Text>
+        <SafeAreaView>
+            <View style={styles.panel}>
+                <Text style={styles.text}>Gig Name</Text>
+                <TextInput
+                    borderColor="#778899"
+                    style={styles.input}
+                    onChangeText={onChangeName}
+                    value={gigName}
+                    placeholder='gig name'
+                    autoCapitalize='words'
+                >
+                </TextInput>
+                <Text style={styles.text}>Genre</Text>
+                <TextInput
+                    borderColor="#778899"
+                    style={styles.input}
+                    onChangeText={onChangeGenre}
+                    value={genre}
+                    placeholder='genre'
+                    autoCapitalize='words'
+                >
+                </TextInput>
+                <Text style={styles.text}>Description</Text>
+                <TextInput
+                    borderColor="#778899"
+                    multiline={true}
+                    numberOfLines={4}
+                    style={styles.inputBox}
+                    onChangeText={onChangeDescription}
+                    value={description}
+                    placeholder='description'
+                >
+                </TextInput>
+                <Text style={styles.text}>Location</Text>
+                <GooglePlacesAutocomplete
+                    currentLocation={false}
+                    enableHighAccuracyLocation={true}
+                    // ref={(c) => (this.searchText = c)}
+                    // placeholder="Enter Location to search"
+                    minLength={2}
+                    autoFocus={false}
+                    returnKEyType={"Search"}
+                    // listViewDisplayer={this.state.listViewDisplayer}
+                    fetchDetails={true}
+                    renderDescription={(row) => row.description}
+                    enablePoweredByContainer={false}
+                    listUnderlayColor="gray"
+                    placeholder="Search"
+                    query={{
+                        key: restApiConfig.GEOCODE_KEY,
+                        language: 'en', // language of the results
+                    }}
+                    // textInputProps={{
+                    //     onChangeText: (text) => { console.log(text) }
+                    // }}
+                    // onPress={(data, details) => console.log(data)}
+                    onPress={(data, details) => onChangeLocation({
+                        'name': data.description,
+                        'lat': details.geometry.location.lat,
+                        'lng': details.geometry.location.lng
+                    })}
+                    onFail={(error) => console.error(error)}
+                    styles=
+                    {{
+                        container: {
+                          flex: 1,
+                        },
+                        textInputContainer: {
+                          flexDirection: 'row',
+                        },
+                        textInput: {
+                          backgroundColor: 'aliceblue',
+                          height: 44,
+                          borderRadius: 5,
+                          paddingVertical: 5,
+                          paddingHorizontal: 10,
+                          fontSize: 15,
+                          flex: 1,
+                        },
+                        poweredContainer: {
+                          justifyContent: 'flex-end',
+                          alignItems: 'center',
+                          borderBottomRightRadius: 5,
+                          borderBottomLeftRadius: 5,
+                          borderColor: '#c8c7cc',
+                          borderTopWidth: 0.5,
+                        },
+                        powered: {},
+                        listView: {},
+                        row: {
+                          backgroundColor: '#FFFFFF',
+                          padding: 13,
+                          height: 44,
+                          flexDirection: 'row',
+                        },
+                        separator: {
+                          height: 0.5,
+                          backgroundColor: '#c8c7cc',
+                        },
+                        description: {},
+                        loader: {
+                          flexDirection: 'row',
+                          justifyContent: 'flex-end',
+                          height: 20,
+                        },
+                    }}
+                />
             </View>
             <View style={styles.panel}>
-        <GooglePlacesAutocomplete
-        currentLocation={false}
-        enableHighAccuracyLocation={true}
-        // ref={(c) => (this.searchText = c)}
-        // placeholder="Enter Location to search"
-        minLength={2}
-        autoFocus={false}
-        returnKEyType={"Search"}
-        // listViewDisplayer={this.state.listViewDisplayer}
-        fetchDetails={true}
-        renderDescription={(row) => row.description}
-        enablePoweredByContainer={false}
-        listUnderlayColor="gray"
-        placeholder="Search"
-        query={{
-          key: restApiConfig.GEOCODE_KEY,
-          language: 'en', // language of the results
-        }}
-        // textInputProps={{
-        //     onChangeText: (text) => { console.log(text) }
-        // }}
-        // onPress={(data, details) => console.log(data)}
-        onPress={(data, details) => onChangeLocation({
-            'name': data.description,
-            'lat': details.geometry.location.lat,
-            'lng': details.geometry.location.lng
-        })}
-        onFail={(error) => console.error(error)}
-      />
-      </View>
-      <View style={styles.buttonView}>
-            <Button title="Confirm" color="blue" onPress={() => createGig.call()} />
-        </View>
-      </SafeAreaView>
+                <View style={{flex: 1}}>
+                    <Image resizeMode="contain" source={require('../src/images/collaborate.png')} style={styles.imageFormat} resizeMode="center"></Image>
+                </View>
+                <View style={styles.buttonView}>
+                    <Button title="Confirm" color="white" borderColor="black" onPress={() => createGig.call()} />
+                </View>
+            </View>
+        </SafeAreaView>
     )
 }
-
-//            <Text style={styles.text}>{route.params.msg}</Text>
 
 export default CreateGigScreen
 
@@ -131,24 +177,23 @@ const styles = StyleSheet.create({
     container: {
         //...StyleSheet.absoluteFillObject,
         flexDirection: 'column',
-        height: 850,
-        width: 400,
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
         alignItems: 'center',
     },
     panel: {
-        position: 'absolute',
-        top: 310,
-        alignSelf: 'stretch',
-        right: 0,
-        left: 0,
-        flex: 1,
+        //top: 310,
+        flexDirection: "column",
+        alignContent: 'center',
+        justifyContent: 'center',
+        //right: 0,
+        //left: 0,
         backgroundColor: "white",
+        flexBasis: '50%',
     },
     imageFormat: {
         flexShrink: 1,
-        justifyContent: 'center', 
-        alignItems: 'center',
+        height: "90%",
+        alignSelf: "center",
     },
     questionwrapper:{
         height: '90%',
@@ -156,12 +201,14 @@ const styles = StyleSheet.create({
         marginLeft: 20,
     },
     title:{
-        fontSize:30
+        fontSize:25
     },
-    section:{
+    text:{
+        marginTop: 5,
+        marginLeft: 10,
         fontSize:15,
         alignContent: "center",
-        justifyContent: "center"
+        justifyContent: "center",
     },
     screen:{
         flex:1,
@@ -172,23 +219,28 @@ const styles = StyleSheet.create({
     },
     input: {
         height: 40,
-        margin: 12,
-        borderWidth: 1,
-        padding: 10
-      },
-    inputBox: {
-        height: 80,
-        margin: 12,
+        margin: 5,
         borderWidth: 1,
         padding: 10,
+        backgroundColor: "aliceblue",
+        borderColor: "lightgrey",
+    },
+    inputBox: {
+        height: 80,
+        margin: 5,
+        borderWidth: 1,
+        padding: 10,
+        backgroundColor: "aliceblue",
+        borderColor: "lightgrey",
     },
     buttonView: {
         height: 50,
         width: "70%",
         borderColor: 'black',
         borderRadius: 30,
-        backgroundColor: "white",
+        backgroundColor: "dodgerblue",
         alignSelf: 'center',
+        marginTop: 20,
         marginBottom: 30,
         justifyContent: 'center'
     },
