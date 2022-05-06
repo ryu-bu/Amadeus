@@ -164,19 +164,19 @@ export default function ProfileScreen(props, {navigation}){
 
             <View style={styles.statsContainer}>
                 <View style={styles.statsBox}>
-                    <Text style={[styles.text, { fontSize: 24 }]}>345</Text>
+                    <Text style={[styles.text, { fontSize: 24 }]}>34</Text>
                     <Text style={[styles.text, styles.subText]}>Interested</Text>
                 </View>
                 <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
-                    <Text style={[styles.text, { fontSize: 24 }]}>234</Text>
+                    <Text style={[styles.text, { fontSize: 24 }]}>23</Text>
                     <Text style={[styles.text, styles.subText]}>Interest</Text>
                 </View>
                 <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
-                    <Text style={[styles.text, { fontSize: 24 }]}>35,631</Text>
+                    <Text style={[styles.text, { fontSize: 24 }]}>34</Text>
                     <Text style={[styles.text, styles.subText]}>Followers</Text>
                 </View>
                 <View style={styles.statsBox}>
-                    <Text style={[styles.text, { fontSize: 24 }]}>753</Text>
+                    <Text style={[styles.text, { fontSize: 24 }]}>73</Text>
                     <Text style={[styles.text, styles.subText]}>Following</Text>
                 </View>
             </View>

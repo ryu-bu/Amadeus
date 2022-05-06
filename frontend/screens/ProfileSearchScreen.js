@@ -208,38 +208,51 @@ const GENRE_OPTIONS = [
     },
 ]
 
+//list according to https://visualdictionary.org/musical-instruments/
 const INSTR_OPTIONS = [
     {
         item: 'Any',
         id: 'GE',
     },
     {
-        item: 'Keyboard',
-        id: 'KB',
+        item: 'Accordion',
+        id: 'AC',
     },
     {
-        item: 'Guitar',
-        id: 'GT',
+        item: 'Bagpipe',
+        id: 'BA',
     },
     {
-        item: 'Piano',
-        id: 'PN',
+        item: 'Banjo',
+        id: 'BN',
     },
     {
-        item: 'Flute',
-        id: 'FT',
+        item: 'Bass drum',
+        id: 'BD',
+    },
+        {
+        item: 'Bass guitar',
+        id: 'BG',
     },
     {
-        item: 'Violin',
-        id: 'VL',
+        item: 'Banjo',
+        id: 'BN',
     },
     {
-        item: 'Drum',
-        id: 'DM',
+        item: 'Bell',
+        id: 'BL',
     },
     {
-        item: 'Saxophone',
-        id: 'SE',
+        item: 'Bongo Drum',
+        id: 'BO',
+    },
+    {
+        item: 'Bugle',
+        id: 'BL',
+    },
+    {
+        item: 'Castanets',
+        id: 'CS',
     },
     {
         item: 'Cello',
@@ -250,13 +263,161 @@ const INSTR_OPTIONS = [
         id: 'CT',
     },
     {
-        item: 'Trumpet',
-        id: 'TR',
+        item: 'Concertina',
+        id: 'CO',
+    }, 
+    {
+        item: 'Conga',
+        id: 'CA',
+    }, 
+    {
+        item: 'Cornet',
+        id: 'CN',
+    },  
+    {
+        item: 'Cymbal',
+        id: 'CY',
+    }, 
+    {
+        item: 'Double bass',
+        id: 'DB',
+    }, 
+    {
+        item: 'Drums',
+        id: 'DM',
+    },
+    {
+        item: 'Electric guitar',
+        id: 'EG',
+    }, 
+    {
+        item: 'Flute',
+        id: 'FT',
+    },
+    {
+        item: 'French horn',
+        id: 'FH',
+    }, 
+        {
+        item: 'Glockenspiel',
+        id: 'GL',
+    }, 
+    {
+        item: 'Gong',
+        id: 'GG',
+    },
+    {
+        item: 'Grand piano',
+        id: 'GP',
+    },
+    {
+        item: 'Guitar',
+        id: 'GT',
     },
     {
         item: 'Harp',
         id: 'HA',
     },
+    {
+        item: 'Harmonica',
+        id: 'HA',
+    },
+    {
+        item: 'Keyboard',
+        id: 'KB',
+    },
+    {
+        item: 'Mandolin',
+        id: 'MA',
+    },
+    {
+        item: 'Maracas',
+        id: 'MR',
+    },
+    {
+        item: 'Marimba',
+        id: 'MI',
+    },
+    {
+        item: 'Microphone',
+        id: 'MP',
+    },
+    {
+        item: 'Oboe',
+        id: 'OO',
+    },
+    {
+        item: 'Organ',
+        id: 'OG',
+    },
+    {
+        item: 'Piano',
+        id: 'PN',
+    },
+    {
+        item: 'Pan flute',
+        id: 'PF',
+    },
+    {
+        item: 'Recorder',
+        id: 'RE',
+    },
+    {
+        item: 'Sitar',
+        id: 'SI',
+    },
+    {
+        item: 'Snare drum',
+        id: 'SD',
+    },
+    {
+        item: 'Tambourine',
+        id: 'TA',
+    },
+    {
+        item: 'Timpani',
+        id: 'TP',
+    },
+    {
+        item: 'Triangle',
+        id: 'TR',
+    },
+    {
+        item: 'Trombone',
+        id: 'TB',
+    },
+    {
+        item: 'Tuba',
+        id: 'TU',
+    },
+    {
+        item: 'Ukulele',
+        id: 'UK',
+    },
+    {
+        item: 'Vibraphone',
+        id: 'VI',
+    },
+    {
+        item: 'Violin',
+        id: 'VL',
+    },
+    {
+        item: 'Saxophone',
+        id: 'SE',
+    },
+    {
+        item: 'Trumpet',
+        id: 'TR',
+    },
+    {
+        item: 'Xylophone',
+        id: 'XY',
+    },
+    {
+        item: 'Zither',
+        id: 'ZI',
+    }
 ]
 
 const ProfileSearchScreen = ({route, navigation}) => {
@@ -334,13 +495,13 @@ const ProfileSearchScreen = ({route, navigation}) => {
             />
             <View style={{flexBasis: 50, flex: 1, flexGrow: 0, flexDirection: "row", justifyContent: "center", alignContent: "flex-start"}}>
                 <TouchableHighlight style={styles.button} onPress={() => setDiscoverMode(0)}>
-                <Text style={styles.buttonText}>Search: </Text>
+                <Text style={styles.buttonText}>Search Users</Text>
                 </TouchableHighlight>
                 <TouchableHighlight style={styles.button} onPress={() => {
                     retrieveDiscoverChats(uuid, discoverList, setDiscoverList, jwt);
                     setDiscoverMode(1);
                 }}> 
-                <Text style={styles.buttonText}>Discover: </Text>
+                <Text style={styles.buttonText}>Discover Users</Text>
                 </TouchableHighlight>
             </View>
             {discoverMode == 0 &&

@@ -26,10 +26,11 @@ Through this platform, it can simplify communication with others and promote eve
   title: {
     textAlign: 'center',
     fontWeight: 'bold',
-    fontSize: 20,
+    fontSize: 23,
     letterSpacing: 2,
   },
   body: {
+    margin: 10,
     textAlign: 'auto',
     fontSize: 15,
     letterSpacing: 1,
