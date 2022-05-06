@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { StyleSheet, Text, View, TextInput, SafeAreaView, Button } from 'react-native'
+import { StyleSheet, Text, View, TextInput, SafeAreaView, Button, Image } from 'react-native'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'
 import { restApiConfig } from '../config'
 import * as Location from 'expo-location';
@@ -49,24 +49,29 @@ const CreateGigScreen = ({route, navigation}) => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.questionwrapper}>
-             <Text style={styles.section}>1. Gig Name</Text>
+            <Text style={styles.section}>Gig Name</Text>
             <TextInput
+                borderColor="#778899"
                 style={styles.input}
                 onChangeText={onChangeName}
                 value={gigName}
                 placeholder='gig name'
+                autoCapitalize='true'
             >
             </TextInput>
-            <Text Style={styles.section}>2. Genre</Text>
+            <Text Style={styles.section}>Genre</Text>
             <TextInput
+                borderColor="#778899"
                 style={styles.input}
                 onChangeText={onChangeGenre}
                 value={genre}
                 placeholder='genre'
+                autoCapitalize='true'
             >
             </TextInput>
-            <Text Style={styles.section}>3. Desription</Text>
+            <Text Style={styles.section}>Description</Text>
             <TextInput
+                borderColor="#778899"
                 multiline={true}
                 numberOfLines={4}
                 style={styles.inputBox}
@@ -75,7 +80,7 @@ const CreateGigScreen = ({route, navigation}) => {
                 placeholder='description'
             >
             </TextInput>
-            <Text Style={styles.section}>4. Location</Text>
+            <Text Style={styles.section}>Location</Text>
             </View>
             <View style={styles.panel}>
         <GooglePlacesAutocomplete
@@ -109,12 +114,11 @@ const CreateGigScreen = ({route, navigation}) => {
       />
       </View>
       <View style={styles.buttonView}>
-            <Button title="Confirm" color="gray" onPress={() => createGig.call()} />
+            <Button title="Confirm" color="blue" onPress={() => createGig.call()} />
         </View>
       </SafeAreaView>
     )
 }
-
 
 //            <Text style={styles.text}>{route.params.msg}</Text>
 
@@ -126,28 +130,37 @@ const styles = StyleSheet.create({
     // },
     container: {
         ...StyleSheet.absoluteFillObject,
-    height: 850,
-    width: 400,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-      },
-      panel: {
+        height: 850,
+        width: 400,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+    },
+    panel: {
         position: 'absolute',
         top: 310,
         alignSelf: 'stretch',
         right: 0,
         left: 0,
         flex: 1,
-      },
+        backgroundColor: "white",
+    },
+    imageFormat: {
+        flexShrink: 1,
+        justifyContent: 'center', 
+        alignItems: 'center',
+    },
     questionwrapper:{
         height: '90%',
-        width: '100%'
+        width: '100%',
+        marginLeft: 20,
     },
     title:{
         fontSize:30
     },
     section:{
-        fontSize:15
+        fontSize:15,
+        alignContent: "center",
+        justifyContent: "center"
     },
     screen:{
         flex:1,
@@ -155,11 +168,6 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         alignItems:'center',
         backgroundColor:'#00000025',
-    },
-    text:{
-        color:'#000',
-        fontWeight:'700',
-        fontSize:30
     },
     input: {
         height: 40,

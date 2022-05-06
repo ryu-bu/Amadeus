@@ -92,7 +92,6 @@ const styles = StyleSheet.create({
         marginLeft: 40,
         alignItems: 'center',
         justifyContent: 'center',
-
     },
     button1: {
         flexDirection: "row",
@@ -119,6 +118,20 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
+        alignItems: 'center',
+        backgroundColor: "white",
+        justifyContent: 'center',
+    },
+    imageFormat: {
+        flexShrink: 1,
+        backgroundColor: "white",
+        justifyContent: 'center', 
+        alignItems: 'center',
+        width: "60%",
+        height: "60%",
+    },
+    cotainerWithin: {
+        flex: 0.7,
         alignItems: 'center',
         backgroundColor: "white",
         justifyContent: 'center'
@@ -263,10 +276,10 @@ export default function LoginScreen(props) {
     };
     return (
         <View style={styles.container}>
-            <View style={styles.container}>
-                <Image style={styles.logo} source={logo} />
+            <Image style={styles.logo} source={logo} />
+            <View style={styles.imageFormat}>
+                <Image source={require('./src/images/login_image.png')} style={styles.image} resizeMode="center"></Image>
             </View >
-
             {/* <TextInput
                 style={styles.inputText1}
                 placeholder="Username"
@@ -312,12 +325,12 @@ export default function LoginScreen(props) {
                     <Button title="Sign in with Facebook" color="white"/>
                 </View>
             </View> */}  
-            <View style={styles.section2}>
+            {/* <View style={styles.section2}> */}
             <View style={styles.button2}>
                 <Ionicons style={styles.Icon2} name="logo-google" size={20} color="red" />
                 <Button title="Sign in with Google" color="white" alignItems="center" justifyContent="center" onPress={signInAsync} />
             </View>
-            </View>
+            {/* </View> */}
         </View>
 
     )
