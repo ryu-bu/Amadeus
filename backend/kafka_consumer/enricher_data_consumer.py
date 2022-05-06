@@ -76,8 +76,9 @@ for item in enrichedConsumer:
     for token in item.key["followers"]:
         print(token)
         title = item.value["host_name"] + " just updated a new gig: " + item.value["gig_name"] + "!"
-        send_push_message(token, title, str(item.value))
+        message = f'Gig Name: {item.value["gig_name"]}\nLocation: {item.value["location"]["name"]}\nDescription: {item.value["description"]}'
+        send_push_message(token, title, message)
     print("key is: ", item.key)
-    print("val is: ", item.value)
+    print("val is: ", message)
 
 # send_push_message("ExponentPushToken[WSv6IPPCGJ5Aq8Fo85URJp]", "body")
