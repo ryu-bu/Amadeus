@@ -56,7 +56,7 @@ const CreateGigScreen = ({route, navigation}) => {
                 onChangeText={onChangeName}
                 value={gigName}
                 placeholder='gig name'
-                autoCapitalize='true'
+                autoCapitalize='words'
             >
             </TextInput>
             <Text Style={styles.section}>Genre</Text>
@@ -66,7 +66,7 @@ const CreateGigScreen = ({route, navigation}) => {
                 onChangeText={onChangeGenre}
                 value={genre}
                 placeholder='genre'
-                autoCapitalize='true'
+                autoCapitalize='words'
             >
             </TextInput>
             <Text Style={styles.section}>Description</Text>
@@ -129,7 +129,8 @@ const styles = StyleSheet.create({
     //     zIndex: 10,
     // },
     container: {
-        ...StyleSheet.absoluteFillObject,
+        //...StyleSheet.absoluteFillObject,
+        flexDirection: 'column',
         height: 850,
         width: 400,
         justifyContent: 'flex-end',
