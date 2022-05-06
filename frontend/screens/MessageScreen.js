@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, SafeAreaView, Image, TouchableOpacity, TouchableHighlight, StyleSheet, ScrollView, Touchable, ActivityIndicator, ProgressViewIOSComponent } from 'react-native';
-import { SearchBar, Buttons, ListItem, Avatar, FlatList } from 'react-native-elements';
-import { initializeApp } from "firebase/app";
+import { SearchBar, Buttons, ListItem, Avatar, FlatList, Button } from 'react-native-elements';
+import { Ionicons } from "@expo/vector-icons";
 import {
   getFirestore,
   setDoc,
@@ -16,17 +16,6 @@ import {
 
 import axios from 'axios';
 import { restApiConfig } from './../config';
-
-const firebaseConfig = {
-  apiKey: "AIzaSyBMSgBgaMAlX6hEVOpF-nHfZa6yUmIR-Wk",
-  authDomain: "amadeus-fa9d2.firebaseapp.com",
-  projectId: "amadeus-fa9d2",
-  storageBucket: "amadeus-fa9d2.appspot.com",
-  messagingSenderId: "95630763705",
-  appId: "1:95630763705:web:9c0d29be52a3d055e69d68",
-  measurementId: "G-WB6F7HPW51",
-};
-initializeApp(firebaseConfig);
 
 const firestore = getFirestore();
 const MESSAGE_THREADS_COLLECTION = "Message_threads";
@@ -68,7 +57,7 @@ const retrieveDiscoverChats = async (userID, discoverList, setDiscoverList, jwt)
   console.log(jwt)
   axios.get(restApiConfig.USER_ENDPOINT, { headers: {
     Authorization: "Bearer " + jwt
-}})
+  }})
   .then((res) => 
   { 
     //console.log(res.data[0].name);
@@ -110,7 +99,7 @@ export default function MessageScreen({route, navigation}) {
     }*/
   ])
 
-  useEffect(() => {
+  useEffect(() => {    
     const q = query(
       collection(firestore, MESSAGE_THREADS_COLLECTION),
       orderBy("createdAt", "desc"),
@@ -146,47 +135,42 @@ export default function MessageScreen({route, navigation}) {
       {/* <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <Text>Messages!</Text>
       </View> */}
-      <View style={{flexBasis: 50, flex: 1, flexGrow: 0, flexDirection: "row", justifyContent: "center", alignContent: "flex-start"}}>
-        <TouchableHighlight style={styles.button} onPress={() => setChatMode(0)}>
-          <Text style={styles.buttonText}>Chats: </Text>
-        </TouchableHighlight>
-        <TouchableHighlight style={styles.button} onPress={() => {
-            retrieveDiscoverChats(uuid, discoverList, setDiscoverList, jwt);
-            setChatMode(1);
-        }}> 
-          <Text style={styles.buttonText}>Discover: </Text>
-        </TouchableHighlight>
-      </View>
 
       {chatMode == 0 && 
-      <ScrollView style={{flex: 10, flexGrow: 1}}> 
+        <ScrollView style={{flex: 10, flexGrow: 1}}> 
         {existingThreads.map((l, i) => (
-          <TouchableOpacity onPress={() => navigation.navigate("Messages", { thread: l, uuid: uuid, name: name })} >
-            <ListItem key={l._id} bottomDivider>
+            <ListItem 
+              key={l.user._id} 
+              bottomDivider
+              button
+              onPress={()=>navigation.navigate("Messages", { thread_id: l._id, uuid: uuid, name: name })}
+            >
               <Avatar source={name !== l.users[0]["displayName"] && {uri: l.users[0]["avatar_url"]} || {uri: l.users[1]["avatar_url"]}} />
               <ListItem.Content>
                 <ListItem.Title>{l.user.displayName}</ListItem.Title>
                 <ListItem.Subtitle>{l.latestMessage.text.slice(0, 90)}</ListItem.Subtitle>
               </ListItem.Content>
-              <ListItem.Chevron/>
+              <Ionicons name={"chevron-forward-outline"} size={30}/>
             </ListItem>
-          </TouchableOpacity>
         ))} 
         </ScrollView> || 
-        <ScrollView style={{flex: 10}}> 
+        <ScrollView style={{flex: 10, flexGrow: 1}}> 
           {discoverList.map((l, i) => (
-            <TouchableOpacity onPress={async() => {
-              createChat(uuid, name, picture, l._id, l.displayName, l.avatar_url);
-            }} >
-              <ListItem key={l._id} bottomDivider>
-                <Avatar source={{uri: l.avatar_url}} />
-                <ListItem.Content>
-                  <ListItem.Title>{l.displayName}</ListItem.Title>
-                  <ListItem.Subtitle>{l.subtitle}</ListItem.Subtitle>
-                </ListItem.Content>
-                <ListItem.Chevron/>
-              </ListItem>
-            </TouchableOpacity>
+            <ListItem 
+              button
+              onPress={async() => {
+                createChat(uuid, name, picture, l._id, l.displayName, l.avatar_url);
+              }}
+              key={l._id} 
+              bottomDivider
+            >
+              <Avatar source={{uri: l.avatar_url}} />
+              <ListItem.Content>
+                <ListItem.Title>{l.displayName}</ListItem.Title>
+                <ListItem.Subtitle>{l.subtitle}</ListItem.Subtitle>
+              </ListItem.Content>
+              <Ionicons name={"chevron-forward-outline"} size={30}/>
+            </ListItem>
           ))}
         </ScrollView>  
       }

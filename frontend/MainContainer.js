@@ -8,7 +8,7 @@ import { SearchBar, Buttons, ListItem, Avatar } from 'react-native-elements';
 import { SectionGrid } from 'react-native-super-grid';
 import PhotoGrid from 'react-native-photo-grid';
 import deviceStorage from './src/services/deviceStorage';
-// import { AsyncStorage } from 'react-native';
+// import { AsyncStorage } from '@react-native-async-storage/async-storage';
 
 
 export const navigationRef = createNavigationContainerRef()

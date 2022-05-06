@@ -92,7 +92,6 @@ const styles = StyleSheet.create({
         marginLeft: 40,
         alignItems: 'center',
         justifyContent: 'center',
-
     },
     button1: {
         flexDirection: "row",
@@ -121,6 +120,20 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         backgroundColor: "white",
+        justifyContent: 'center',
+    },
+    imageFormat: {
+        flexShrink: 1,
+        backgroundColor: "white",
+        justifyContent: 'center', 
+        alignItems: 'center',
+        width: "60%",
+        height: "60%",
+    },
+    cotainerWithin: {
+        flex: 0.7,
+        alignItems: 'center',
+        backgroundColor: "white",
         justifyContent: 'center'
     },
     logo: {
@@ -129,7 +142,7 @@ const styles = StyleSheet.create({
         height: 100,
         backgroundColor: "white",
         marginLeft: 18,
-        position: 'absolute', top: 120, left: 0, right: 0, bottom: 0,
+        //position: 'absolute', top: 120, left: 0, right: 0, bottom: 0,
     },
     section1: {
         flex: 1,
@@ -142,6 +155,7 @@ const styles = StyleSheet.create({
     },
     section2: {
         flex: 1,
+        flexGrow: 1,
         flexDirection: "row",
         alignItems: 'center',
         backgroundColor: "white",
@@ -261,12 +275,12 @@ export default function LoginScreen(props) {
         }
     };
     return (
-        <View>
-            <View style={styles.container}>
-                <Image style={styles.logo} source={logo} />
+        <View style={styles.container}>
+            <Image style={styles.logo} source={logo} />
+            <View style={styles.imageFormat}>
+                <Image source={require('./src/images/login_image.png')} style={styles.image} resizeMode="center"></Image>
             </View >
-
-            <TextInput
+            {/* <TextInput
                 style={styles.inputText1}
                 placeholder="Username"
                 placeholderTextColor="black"
@@ -286,10 +300,10 @@ export default function LoginScreen(props) {
                 maxLength={15}
                 onChangeText={pass => setPassword(pass)}
                 password={password}
-            />
+            /> */}
 
 
-            <View>
+            {/* <View>
                 <View style={styles.loginbtn}>
                     <Button title="Login" color="white"
                         onPress={signInAsync}//{() => navigation.navigate('Map Screen')}
@@ -301,25 +315,22 @@ export default function LoginScreen(props) {
                 </View>
                 <Text style={styles.OR}>OR </Text>
                 <Text style={styles.line}>____________________            ____________________ </Text>
-            </View>
+            </View> */}
 
 
 
-            <View style={styles.section1}>
+            {/* <View style={styles.section1}>
                 <View style={styles.button1}>
                     <Ionicons style={styles.Icon1} name="logo-facebook" size={20} color="blue" />
                     <Button title="Sign in with Facebook" color="white"/>
                 </View>
+            </View> */}  
+            {/* <View style={styles.section2}> */}
+            <View style={styles.button2}>
+                <Ionicons style={styles.Icon2} name="logo-google" size={20} color="red" />
+                <Button title="Sign in with Google" color="white" alignItems="center" justifyContent="center" onPress={signInAsync} />
             </View>
-
-
-            <View style={styles.section2}>
-                <View style={styles.button2}>
-                    <Ionicons style={styles.Icon2} name="logo-google" size={20} color="red" />
-                    <Button title="Sign in with Google" color="white" onPress={signInAsync} />
-                </View>
-            </View>
-
+            {/* </View> */}
         </View>
 
     )

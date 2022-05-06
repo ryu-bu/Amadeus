@@ -45,13 +45,13 @@ class SearchUsersAdvancedAnd(Resource):
         genre  = request.args.get('genre', None)
         instrument  = request.args.get('instrument', None)
 
-        if not name or genre or instrument:
-            return {"message" : "no query"}, 204
-
-        name = ".*" if (name == "") else name
-        genre = ".*" if (genre == "") else genre
-        instrument = ".*" if (instrument == "") else instrument
-
+        name = ".*" if (name == "" or name == None or name == "Any") else name
+        genre = ".*" if (genre == "" or genre == None or genre == "Any") else genre
+        instrument = ".*" if (instrument == "" or instrument == None or instrument == "Any") else instrument
+       
+        # if not name or genre or instrument:
+        #     return {"message" : "no query"}, 204
+        
         return UserHandler.advanced_search_and(name, genre, instrument)
 
 class SearchUsersAdvancedOr(Resource):
@@ -61,12 +61,12 @@ class SearchUsersAdvancedOr(Resource):
         genre  = request.args.get('genre', None)
         instrument  = request.args.get('instrument', None)
 
-        if not name or genre or instrument:
-            return {"message" : "no query"}, 204
+        name = ".*" if (name == "" or name == None or name == "Any") else name
+        genre = ".*" if (genre == "" or genre == None or genre == "Any") else genre
+        instrument = ".*" if (instrument == "" or instrument == None or instrument == "Any") else instrument
 
-        name = ".*" if (name == "") else name
-        genre = ".*" if (genre == "") else genre
-        instrument = ".*" if (instrument == "") else instrument
+        # if not name or genre or instrument:
+        #     return {"message" : "no query"}, 204
 
         return UserHandler.advanced_search_or(name, genre, instrument)
 

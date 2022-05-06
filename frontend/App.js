@@ -40,7 +40,7 @@ import {
 //import MainContainer from "./MainContainer";
 import OtherProfileScreen from "./screens/OtherProfileScreen";
 import ProfileScreen from "./screens/ProfileScreen";
-import HomeScreen from "./screens/HomeScreen";
+import ProfileSearchScreen from "./screens/ProfileSearchScreen";
 import MessageScreen from "./screens/MessageScreen";
 import MapScreen from "./screens/MapScreen";
 
@@ -75,10 +75,10 @@ const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 
 function DrawerNavi({route, navigation}) {
-  const {email, name, jwt, uuid, pushToken} = route.params;
+  const {email, name, jwt, uuid, picture, pushToken} = route.params;
     return (
-        <Drawer.Navigator initialRouteName="Home">
-            <Drawer.Screen name = "Home" component = { HomeScreen } initialParams={ {name: name, uuid: uuid, jwt: jwt, pushToken: pushToken} }/>
+        <Drawer.Navigator initialRouteName="Main Tab">
+            <Drawer.Screen name = "Profile Search" component = { ProfileSearchScreen } initialParams={ {name: name, uuid: uuid, jwt: jwt, pushToken: pushToken, picture: picture} }/>
             <Drawer.Screen name = "About Us" component = { AboutScreen } />
             <Drawer.Screen name = "Logout" component = { LogoutScreen } />
         </Drawer.Navigator>
@@ -115,7 +115,7 @@ function Home({route, navigation}) {
           <Tab.Screen
             name="Home"
             component={DrawerNavi} // Replaced Screen 1
-            initialParams={{name: name, uuid: uuid, jwt: jwt, pushToken: pushToken}}
+            initialParams={{name: name, uuid: uuid, jwt: jwt, pushToken: pushToken, picture: picture}}
             options={{
                 headerShown: false,
             }}
@@ -152,7 +152,7 @@ Notifications.setNotificationHandler({
 
 const App: () => React$Node = () => {
 
-  const [expoPushToken, setExpoPushToken] = useState('');
+  const [expoPushToken, setExpoPushToken] = useState('ExponentPushToken[a9Ii7IPG_-qU8romyTHWuC]');
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();

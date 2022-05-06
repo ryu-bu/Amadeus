@@ -87,17 +87,22 @@ class UserHandler():
             return {"message": "update failed"}, 500
     
     # perform advanced search for users matching all of the parameters
-    def advanced_search_and(name= '.*', genre = '.*', instrument = '.*'):
+    def advanced_search_and(name = ".*", genre = ".*", instrument = ".*"):
         print("advanced: ", name)
-        users = UserModel.query.filter(UserModel.name.regexp_match('{}'.format(name), 'i')).all()
-        # users = db.session.query(UserModel).filter(
-        #     (UserModel.name.regexp_match('{}'.format(name), 'i')) 
-        #     # (UserModel.genre.regexp_match('{}'.format(genre), 'i')) |
-        #     # (UserModel.instrument.regexp_match('{}'.format(instrument), 'i'))
-        # ).limit(MAX_RETURNED_USERS).all()
-      
-        print(users)
+        print("instrument: ", instrument)
+        print("genre: ", genre)
+        # users = UserModel.query.filter(UserModel.name.regexp_match('{}'.format(name), 'i')).all()
 
+        try:
+            users = UserModel.query.filter(
+                (UserModel.name.regexp_match('{}'.format(name), 'i')) &
+                (UserModel.genre.regexp_match('{}'.format(genre), 'i')) &
+                (UserModel.instrument.regexp_match('{}'.format(instrument), 'i'))
+            ).limit(MAX_RETURNED_USERS).all()
+        except:
+            print("Error in advanced search and. handle this later")
+            return None, 500
+      
         results = [{
             "uuid": str(user.id),
             "name": user.name,
@@ -113,12 +118,16 @@ class UserHandler():
 
     # perform advanced search for users matching at least one of the  parameters 
     def advanced_search_or(name = '.*', genre = '.*', instrument = '.*'):
-        users = db.session.query(UserModel).filter(
-            (UserModel.name.regexp_match('{}'.format(name), 'i')) |
-            (UserModel.genre.regexp_match('{}'.format(genre), 'i')) |
-            (UserModel.instrument.regexp_match('{}'.format(instrument), 'i'))
-        ).limit(MAX_RETURNED_USERS).all()
-      
+        try:
+            users = UserModel.query.filter(
+                (UserModel.name.regexp_match('{}'.format(name), 'i')) |
+                (UserModel.genre.regexp_match('{}'.format(genre), 'i')) |
+                (UserModel.instrument.regexp_match('{}'.format(instrument), 'i'))
+            ).limit(MAX_RETURNED_USERS).all()
+        except:
+            print("Error in advanced search or. handle this later")
+            return None, 500
+
         results = [{
             "name": user.name,
             "email": user.email,

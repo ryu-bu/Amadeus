@@ -6,11 +6,11 @@ export default function AboutScreen() {
       <SafeAreaView style={{ flex: 1}}>
         <Image source={require('../src/images/tutor.png')} style={styles.image} resizeMode="cover"></Image>
         <View style={{ flex: .5, justifyContent: 'center', alignItems: 'center'}}>
-        <Text style={styles.title}>What is Amadeus? {'\n'}</Text>
+        <Text style={styles.title}>Our Mission. {'\n'}</Text>
         <Text style={styles.body}>We are designed for musicians to connect and self-promote. Focused
-on the Boston area, Amadeus will allow users to create a profile in order to showcase
+on the Boston area, We aim to allow users to create a profile in order to showcase
 themselves playing, tether those profiles to a musical group, and network with other musicians.
-You can communicate with others and promote events to their network.</Text>
+Through this platform, it can simplify communication with others and promote events to their network.</Text>
         </View>
       </SafeAreaView>
     )
@@ -26,10 +26,11 @@ You can communicate with others and promote events to their network.</Text>
   title: {
     textAlign: 'center',
     fontWeight: 'bold',
-    fontSize: 20,
+    fontSize: 23,
     letterSpacing: 2,
   },
   body: {
+    margin: 10,
     textAlign: 'auto',
     fontSize: 15,
     letterSpacing: 1,

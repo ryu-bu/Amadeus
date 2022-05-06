@@ -36,13 +36,15 @@ const MESSAGE_COLLECTION = "Messages";
 const MESSAGE_THREADS_COLLECTION = "Message_threads";
 
 export default function Messages({ route }) {
-  const {thread, uuid, name} = route.params;
+  console.warn = () => {};
+
+  const {thread_id, uuid, name} = route.params;
 
   const messageThreadsCollection = collection(
     firestore,
     MESSAGE_THREADS_COLLECTION
   );
-  const currentThreadRef = doc(messageThreadsCollection, thread._id);
+  const currentThreadRef = doc(messageThreadsCollection, thread_id);
   const messageCollection = collection(currentThreadRef, MESSAGE_COLLECTION);
 
   const [messages, setMessages] = useState([
@@ -74,7 +76,7 @@ export default function Messages({ route }) {
         tx.executeSql(
           "INSERT INTO text_cache (chat_id, message_id, created_at, text, sender_id, sender_name) VALUES (?, ?, ?, ?, ?, ?)",
           [
-            thread._id,
+            thread_id,
             _id,
             createdAtUnix.toString(),
             text,
@@ -153,7 +155,7 @@ export default function Messages({ route }) {
         (tx) => {
           tx.executeSql(
             "SELECT * FROM text_cache WHERE chat_id=? AND created_at>? ORDER BY created_at ASC",
-            [thread._id, retrieveStartTime],
+            [thread_id, retrieveStartTime],
             (txObj, resultSet) => {
               // loop through result set, adding each message to cachedMessages array
               resultSet.rows._array.forEach((element) => {
@@ -232,7 +234,7 @@ export default function Messages({ route }) {
                 tx.executeSql(
                   "INSERT INTO text_cache (chat_id, message_id, created_at, text, sender_id, sender_name) VALUES (?, ?, ?, ?, ?, ?)",
                   [
-                    thread._id,
+                    thread_id,
                     message._id,
                     message.createdAt,
                     message.text,
