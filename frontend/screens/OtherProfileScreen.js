@@ -96,6 +96,8 @@ const createChat = async (navigation, userID, userDisplayName, picture, otherUse
                 ],
             }
         ); 
+
+        navigation.navigate("Messages", { thread_id: response.id, uuid: userID, name: userDisplayName });
     }
 }
 
